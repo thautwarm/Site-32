@@ -1,0 +1,10 @@
+<html>
+<head>
+<title>
+Py vs Mat
+</title>
+</head>
+<body>
+isinstance(obj,type) 对应 isa(var,'type') .
+</body>
+</html>
