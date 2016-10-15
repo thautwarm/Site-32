@@ -1,0 +1,5 @@
+
+isinstance(obj,type) 对应 isa(var,'type') .
+(第一天使用)
+numpy.atleast_1d/numpy.atleast_2d: 转化成最低n维数组
+
