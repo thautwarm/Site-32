@@ -1,0 +1,23 @@
+    PS:今天做一个东西要把中文写入文档时发现并解决了一个问题。写一下博文，自己也加深理解。
+    mode 参数：'utf-8','gbk','ascii'等
+    str.encode(mode)  将字符串按照mode模式编码
+    str.decode(mode)  将字符串按照mode模式解码
+    
+    例如我在py2中输入一个带有中文的字符串 '赵王' ，那么这个时候它是按照ascii格式编码的
+    s='赵王'
+    则我们在shell中输入s
+    In[.] s='赵王'
+    In[.] s
+    Out[.]  '\xe8\xb5\xb5\xe7\x8e\x8b\xe5\xae\xa3'
+    In[.] s.decode('utf-8')
+    Out[.]  u'\u8d75\u738b\u5ba3'
+    我们知道通常的英文是按ascii码编码格式的（每个ascii码是\x00到\xff（0~255）），而对于一个汉字，它在被解密（解码，decode）后通常是一个unicode形式
+，即\u0000~\uffff，这个时候要能正确地输出汉字，是不应将汉字拆成两个字节ascii码输出的。但是问题是，在py2中,它是不支持unicode的,所以会出现一些问题：
+    我们的file.write(str)函数，将字符串str写入文件时，必须要求str是ascii码形式。
+    所以我们在py2中抓取了一个含中文的unicode编码的字符串时，应该将它编码为ascii格式，但是我们的函数str.encode不知道它初始是什么格式，所以需要你输入
+它初始的格式unicode。
+    即对于一个要输入文档的unicode字符串，我们需要这样做s=s.encode('utf8')（汉字通常是utf和gbk 一系列blabla之类格式编码的），然后file.write(s)
+就行了。
+    需要再提的是，对于被转化为ascii模式的字符串，我们可能无法从中发现中文的存在，需要对它进行解码（decode）。而你的print函数帮了你这个忙，所以你可能会
+误以为unicode编码是没有卵用的。
+    OK，今天的问题啊，搞得我excited啊！
