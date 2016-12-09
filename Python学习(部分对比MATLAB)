@@ -1,7 +1,0 @@
-
-isinstance(obj,type) 对应 isa(var,'type') .
-(第一天使用)
-numpy.atleast_1d/numpy.atleast_2d: 转化成最低n维数组
-numpy.unique(A)和MATLAB的unique类似，会把A转化为不重复的一维数组（保持原排序）。
-
-
