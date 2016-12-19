@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Dec 18 17:30:05 2016
-
+ 使用数据集source.csv和词向量模型MODEL2.md/DOC.md进行市场价格分析。
+ source.csv和词向量模型链接见readme文档。
 @author: thaut
 __doc__
 """
