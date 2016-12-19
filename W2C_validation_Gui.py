@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Dec  5 18:22:58 2016
+	
  这个东西是我做的第一个GUI，它也帮我拿到了第一桶金...
  这个程序的作用是验证一个词向量的效果：
 	通过在DBpedia/Ontology里进行在线查询，返回匹配的单词。
 	将存在于Word2Vec模型中的单词转化为词向量。
 	聚类效果，检验outliers,并计算ACC= [ N(all)-N(outliers) ] / N(all)。
+  注：该Word2VecModel文件属于他人财产，此处不放上。要用的话自己训练一个咯。
 @author: thaut
 """
 from sklearn.cross_validation import train_test_split as tts
