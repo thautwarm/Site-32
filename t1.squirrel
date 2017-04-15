@@ -1,0 +1,49 @@
+#this is an anno.#
+#include<-vector# 
+#you can include or import packages using this way#
+$import<=libsquirrel$
+#you can using namespace like this#
+$using<=std$
+#declaration a var#
+a:int [1];
+#define a class#
+Int:=[a:int,b:int]{
+		#no C/C++ pointer in Squirrel because I don't think it suits the functional programming. #
+		this.a=a;
+		this.b=b;
+		#definitely it's a function, it can be define everywhere in Squirrel. #
+		d:=[o:int,p:int=>Int]{
+			Ret:Int [o,p];
+			return Ret;
+};
+};
+#printer is a class which is builted-in in Squirrel Standard Library(I made it and it has just very few items, I'd prefer to add the MapReduce methods very soon.)# 
+printer("\n").print(1,2,3,Int(2,3).a);
+#lets see some high-order function in Squirrel which I think the coolest and magician methods in Squirrel. In fact, all of them are from C++14.#
+highFunc:=[a:int,b:int,c:[int=>int],d:[[int=>int]=>int]=> [int=>int]]{
+	retFunc:=[param:int=>int]{
+				printer("we are using the closure~");
+				return (a+b+d(c))*param;
+	};
+	return retFunc;
+};
+E:Int [2,3]; 
+Func1:=[a:int=>int]{ return a; };
+Func2:=[f:[int=>int]=>int]{return f(1);};
+
+
+
+if 1 or highFunc(1,1,Func1,Func2)(2) is not 0 or (E.a and E.b) is not 3{
+	printer("\n").print("in to goto;");
+	#this is the goto sentence in Squirrel#
+	=>=> SquirrelGoto;
+}
+else{
+
+	&SquirrelGoto;
+	printer("\n").print("here we 'goto'.");
+	;
+};
+
+
+
