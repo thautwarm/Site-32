@@ -1,3 +1,5 @@
+module Year17.Month5.Integer2NaturalLang where
+    
 units, teens, tens:: [String]
 units=["zero","one","two","three","four","five",
        "six","seven","eight","nine"]
