@@ -3,6 +3,7 @@
 ==========
 
 说好了我不喜欢mssql。
+但这个是我想的mysql速转mssql指南...
 
 
 .. code:: lsql
@@ -10,15 +11,15 @@
 
 
     <<Functions>>
-    	round(var : number,N:int) 				                        -> #  retain
-    	<> 															                          -> /=
-    	between	: (front=>var) (a:comparable and b:comparable) 		-> filter (\x-> (x-a)*(x-b) >0 ) var
-    	like 														                          -> # fuzzy matching
-    	in/not in         											                  -> # like "in" in Python.
-    	is (not) null												                      -> # filter (\x : isnull(x))
+    	round(var : number,N:int) -> #  retain
+    	<> -> /=
+    	between	: (front=>var) (a:comparable and b:comparable) -> filter (\x-> (x-a)*(x-b) >0 ) var
+    	like -> # fuzzy matching
+    	in/not in -> # like "in" in Python.
+    	is (not) null -> # filter (\x : isnull(x))
     <<Pattern-Matching>>
-    	%															                            -> *
-    	_															                            -> [\w|\W]{1}
+    	% -> *
+    	_ -> [\w|\W]{1}
 
 
     <<Operations>>
