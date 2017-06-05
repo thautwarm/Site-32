@@ -5,7 +5,7 @@
 说好了我不喜欢mssql。
 
 
-:: code:: lsql
+.. code:: lsql
 
 
 
