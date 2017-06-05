@@ -10,15 +10,15 @@
 
 
     <<Functions>>
-    	round(var : number,N:int) 									-> #  retain
-    	<> 															-> /=
+    	round(var : number,N:int) 				                        -> #  retain
+    	<> 															                          -> /=
     	between	: (front=>var) (a:comparable and b:comparable) 		-> filter (\x-> (x-a)*(x-b) >0 ) var
-    	like 														-> # fuzzy matching
-    	in/not in         											-> # like "in" in Python.
-    	is (not) null												-> # filter (\x : isnull(x))
+    	like 														                          -> # fuzzy matching
+    	in/not in         											                  -> # like "in" in Python.
+    	is (not) null												                      -> # filter (\x : isnull(x))
     <<Pattern-Matching>>
-    	%															-> *
-    	_															-> [\w|\W]{1}
+    	%															                            -> *
+    	_															                            -> [\w|\W]{1}
 
 
     <<Operations>>
@@ -32,7 +32,7 @@
     						maxSize =
     						fileGrowth =
     						)
-    					log on(
+    				  log on(
     						name = <logical - name>
     						filename = <driver - location>
     						size =
