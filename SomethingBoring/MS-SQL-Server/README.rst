@@ -8,9 +8,15 @@
 
 .. code:: lsql
 
+    #tips : support "count","distinct"
+    #
 
 
     <<Functions>>
+      Arg
+      Max
+      Min
+      Sum
     	round(var : number,N:int) -> #  retain
     	<> -> /=
     	between	: (front=>var) (a:comparable and b:comparable) -> filter (\x-> (x-a)*(x-b) >0 ) var
@@ -55,3 +61,8 @@
     <<Data-Structure>>
     	"%4Year-%2Month-%2Day" <=> "%Day/%Month/%Year"
     	""
+    <<someRoutines>>
+      where
+      group by
+      having (filter in group)
+      order by
