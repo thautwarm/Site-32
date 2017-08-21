@@ -5,7 +5,7 @@ Python
 -------
 Codewars-ref:  [The position of a digital string in a infinite digital string](https://www.codewars.com/kata/the-position-of-a-digital-string-in-a-infinite-digital-string/train/python)
 
-Solution: [Here](https://github.com/thautwarm/My-Blog/blob/master/codeswars/The-position-of-a-digital-string-in-a-infinite-digital-string.py)
+Solution: [Here](https://github.com/thautwarm/My-Blog/blob/master/codewars/The-position-of-a-digital-string-in-a-infinite-digital-string.py)
 
 - 有趣之处在于定义一种数据结构。
 
@@ -55,8 +55,8 @@ Solution: [Here](https://github.com/thautwarm/My-Blog/blob/master/codeswars/The-
 Java
 -------
 Codewars-ref: [https://www.codewars.com/kata/binary-genetic-algorithms](https://www.codewars.com/kata/binary-genetic-algorithms)  
-Solution: [Here]((https://github.com/thautwarm/My-Blog/blob/master/codeswars/binary-genetic-algorithms.java)
-)  
+Solution: [Here](https://github.com/thautwarm/My-Blog/blob/master/codewars/binary-genetic-algorithms.java)
+ 
 P.S :   
     
     JAVA 代码绝大部分用于编写函数式支持上，从186行开始才是解题过程。
