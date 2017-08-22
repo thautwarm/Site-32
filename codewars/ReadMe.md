@@ -1,6 +1,11 @@
 
 
 
+[我的codewars页面](https://www.codewars.com/users/thautwarm/completed_solutions)
+
+------------------------
+
+
 Python
 -------
 
@@ -67,7 +72,7 @@ Python
     ```python
 
     autocomplete = lambda n :lambda char: lambda string : string if len(string) == n else  char*(n-len(string))+string
-    autocomplete_to85 = autocomplete(5)('!')
+    autocomplete_to85   = autocomplete(5)('!')
     autocomplete_from85 = autocomplete(4)('\0') 
 
     parser = lambda f: lambda string, parsed, ok=None :  f(string, parsed, ok)
@@ -84,7 +89,7 @@ Python
     zcompress_ok = parser(lambda string, parsed, ok=None:(string[4:], append(parsed, "z"   ),   True)  if string.startswith("\0"*4) else (string, parsed, False))
 
 
-    zdecompress  =   parser(lambda string, parsed, ok: parser_continue(string, parsed) if ok  else zdecompress_ok(string, parsed))  
+    zdecompress    = parser(lambda string, parsed, ok: parser_continue(string, parsed) if ok  else zdecompress_ok(string, parsed))  
     zdecompress_ok = parser(lambda string, parsed, ok=None:(string[1:], append(parsed, "\0"*4), True)  if string.startswith('z')    else (string, parsed, False))  
 
 
