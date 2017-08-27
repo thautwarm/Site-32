@@ -25,8 +25,7 @@ chr stack_to:
             try
                 with options-pop goto tag
             except
-                    END FALSE
-                
+                    END FALSE 
     
 """
 import numpy as np
