@@ -41,12 +41,3 @@ def parse_molecule(string):
     token = tokenize('[A-Z][a-z]*|\d+|[()\[\]{}]')(string)
     token.reverse()
     return parse(token)
-            
-            
-            
-            
-        
-
-
-    
-        

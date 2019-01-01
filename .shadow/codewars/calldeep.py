@@ -33,10 +33,8 @@ class tp(list):
             self.ret[0]+=1
             return super(tp, self).__iter__()
         return super(tp, self).__iter__()
-    
-            
 
-import sys   
+import sys
 sys.setrecursionlimit(1000000)
 def count(func, ret):
     def _f(*args, **kwargs):
