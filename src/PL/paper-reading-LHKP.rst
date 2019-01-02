@@ -180,8 +180,8 @@ Why this Lightweight-Higher-Polymorphism instead of the Haskell approach
 
 
 
-According to the authors' arguments, an awkward scene in Ocaml is, type aliases and actual type signatures cannot be
-distinguished from each other, which makes it impossible to perform direct unification
+According to the authors' arguments, an awkward scene in OCaml is, type aliases and actual type signatures cannot be
+distinguished from each other, which makes it impossible to directly perform unification
 after introducing higher kined types.
 
 .. code-block :: ocaml
