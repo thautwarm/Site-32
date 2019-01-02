@@ -4,6 +4,7 @@ import os
 from dateutil.parser import parse as parse_date
 from datetime import datetime
 from wisepy.talking import Talking
+from Redy.Tools.PathLib import Path
 from io import StringIO
 cmd = Talking()
 
@@ -37,3 +38,13 @@ def build():
             write('\n')
 
     os.system('sphinx-build -b html ./src ./')
+
+
+
+@cmd
+def clean():
+    for each in Path('.').list_dir():
+        filename = each.relative()
+        if filename.startswith('.') or filename not in ('src', 'manage.py'):
+            continue
+        each.delete()
