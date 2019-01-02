@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# RBNF .NET documentation build configuration file, created by
-# sphinx-quickstart on Wed Aug 29 23:07:05 2018.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -104,10 +102,10 @@ html_theme = 'bootstrap'
 html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 html_theme_options = {
     # Navigation bar title. (Default: ``project`` value)
+    'navbar_site_name': f"{project}",
     'navbar_title': f"{project}",
 
     # Tab name for entire site. (Default: "Site")
-    # 'navbar_site_name': "List Items",
 
     # A list of tuples containing pages or urls to link to.
     # Valid tuples should be in the following forms:
