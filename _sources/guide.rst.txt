@@ -11,8 +11,6 @@ Site-32 Resources
 
    Design/index.rst
 
-   Dress/index.rst
-
    DSL/index.rst
 
    Fiction/index.rst
@@ -21,3 +19,9 @@ Site-32 Resources
 
    Innovation/index.rst
 
+
+
+
+.. raw:: html
+
+    <meta http-equiv="refresh" content="0; url=http://thautwarm.github.io/Site-32/index.html"/>

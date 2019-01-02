@@ -6,8 +6,38 @@ from datetime import datetime
 from wisepy.talking import Talking
 from Redy.Tools.PathLib import Path
 from io import StringIO
+from textwrap import indent
 cmd = Talking()
 
+def raw_html(html):
+    html = indent(html, prefix = '    ')
+    return f"""
+.. raw:: html
+
+
+{html}
+"""
+
+panel_styles = ['danger', 'success', 'info', 'warning']
+panel_count = 0
+def card(title: str, link: str, keywords: list, time: datetime):
+    global panel_count
+    time = time.strftime("%d %m %Y: %H")
+    keywords = '&nbsp;,&nbsp;'.join(keywords)
+    return raw_html(f"""
+<br>
+<div class="panel panel-{panel_styles[panel_count % 4]}">
+  <div class="panel-heading">{title}</div>
+  <div class="panel-body">
+    keywords: {keywords}
+  </div>
+
+  <div class="panel-footer">
+    <a href="{link}">Check</a>
+    <span class="pull-right">datetime: {time}</span>
+  </div>
+</div>
+""")
 
 @cmd
 def build():
@@ -18,24 +48,25 @@ def build():
         dy : list = json.load(f)
 
     for each in dy:
-        each['release_data'] = parse_date(each['release_data'])
-    dy = sorted(dy, key=lambda each: each['release_data'], reverse=True)
-    with open(path.join(dir, 'index.rst'), 'w') as w, \
-         open(path.join(dir, 'index.rst.template', 'r')) as r:
+        each['release_date'] = parse_date(each['release_date'])
+    dy = sorted(dy, key=lambda each: each['release_date'], reverse=True)
+    with open(path.join(dir, 'index.rst'), 'w', encoding='utf8') as w, \
+         open(path.join(dir, 'index.rst.template'), 'r', encoding='utf8') as r:
         write = w.write
         write(r.read())
         write('\n')
-
         for each in dy:
             title = each['title']
+            where = each['where']
+            where = "./" + "/".join(where.split('.')) + '.html'
+            time = each['release_date']
             keywords = each['keywords']
-            time = str(each['release_date'])
-            write(title)
             write('\n')
-            write('-' * len(title))
-            write('- keywords: {}'.format(' , '.join(f":code:`{each}`" for each in keywords)))
-            write(f'- datetime: {time}')
-            write('\n')
+            write(card(
+                title=title,
+                link = where,
+                time = time,
+                keywords=keywords))
 
     os.system('sphinx-build -b html ./src ./')
 
