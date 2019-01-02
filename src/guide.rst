@@ -21,6 +21,9 @@ Site-32 Resources
 
 
 
+.. image:: static/bg.jpg
+    :width: 800
+    :align: center
 
 .. raw:: html
 
