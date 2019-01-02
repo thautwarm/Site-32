@@ -24,7 +24,7 @@ Site-32 Index Page
 
       <div class="panel-footer">
         <a href="./PL/paper-reading-LHKP.html">Check</a>
-        <span class="pull-right">datetime: 02/01/2019: 23</span>
+        <span class="pull-right">Wed, January 02, 2019.&nbsp; 23: 32 </span>
       </div>
     </div>
 

@@ -88,11 +88,11 @@ todo_include_todos = True
 #
 
 Topics = [
-    'Compiler',
-    'DSL',
-    'Fiction',
     'PL',
+    'Compiler',
     'Innovation',
+    'Design',
+    'DSL',
     'Fiction'
 ]
 

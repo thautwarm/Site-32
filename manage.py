@@ -22,7 +22,7 @@ panel_styles = ['danger', 'success', 'info', 'warning']
 panel_count = 0
 def card(title: str, link: str, keywords: list, time: datetime):
     global panel_count
-    time = time.strftime("%d/%m/%Y: %H")
+    time = time.strftime("%a, %B %d, %Y.&nbsp; %H: %M ")
     keywords = '&nbsp;,&nbsp;'.join(keywords)
     return raw_html(f"""
 <br>
@@ -34,7 +34,7 @@ def card(title: str, link: str, keywords: list, time: datetime):
 
   <div class="panel-footer">
     <a href="{link}">Check</a>
-    <span class="pull-right">datetime: {time}</span>
+    <span class="pull-right">{time}</span>
   </div>
 </div>
 """)
