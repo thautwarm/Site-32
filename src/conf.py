@@ -94,8 +94,8 @@ Topics = [
     'Dress',
     'DSL',
     'Fiction',
+    'PL',
     'Innovation',
-    'ML',
     'Fiction'
 ]
 
@@ -129,7 +129,7 @@ html_theme_options = {
     'navbar_pagenav': True,
 
     # Tab name for the current pages TOC. (Default: "Page")
-    'navbar_pagenav_name': "Current Page",
+    'navbar_pagenav_name': "Sub-sections",
 
     # Global TOC depth for "site" navbar tab. (Default: 1)
     # Switching to -1 shows all levels.
