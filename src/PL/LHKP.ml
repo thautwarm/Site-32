@@ -63,3 +63,50 @@ let arr_mapped : (int, ArrayApp.t) app = map (module MapArray) (fun x -> x + 1) 
 
 let () =  List.iter print_int (ListApp.prj lst_mapped); print_string "\n"
 let () =  Array.iter print_int (ArrayApp.prj arr_mapped); print_string "\n"
+
+
+type ('a, 'b) either = Left of 'a | Right of 'b
+module EitherApp (Q: sig type t end): App with type 'a s = (Q.t, 'a) either = struct
+  type 'a s = (Q.t, 'a) either
+  include Common
+end
+
+module MapEither (Q: sig type t end): Mappable with type t = EitherApp(Q).t = struct
+  module EitherApp2 = EitherApp(Q)
+  type t = EitherApp2.t
+  let map (f: 'a -> 'b) (ca: ('a, t) app) : ('b, t) app =
+      let ca = EitherApp2.prj ca
+      in let cb =
+        match ca with
+        | Left  l -> Left l
+        | Right r -> Right (f r)
+      in EitherApp2.inj cb
+end
+
+module IntModule = struct
+  type t = int
+end
+
+let either_data1_hkt =
+  let module M = EitherApp(IntModule) in M.inj (Left 1)
+
+let either_data2_hkt =
+  let module M = EitherApp(IntModule) in M.inj (Right 2)
+
+let either_map e =
+  let module Data = EitherApp(IntModule)
+  in let module Map  = MapEither(IntModule)
+  in let res = map (module Map) (fun x -> x + 1) e
+  in Data.prj res
+
+let either_mapped1 = either_map either_data1_hkt
+let either_mapped2 = either_map either_data2_hkt
+
+let show_either_int_int e =
+    match e with
+    | Left l  -> "Left " ^ string_of_int l
+    | Right r -> "Right " ^ string_of_int r
+
+let () = print_string (show_either_int_int either_mapped1 ^ "\n")
+let () = print_string (show_either_int_int either_mapped2 ^ "\n")
+

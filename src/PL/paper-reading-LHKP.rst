@@ -9,15 +9,15 @@ How-To
 
 In fact, this technique(Let's call it **LHKP** ) introduced from this paper works perfectly only when
 the order of types is less than 2(have kind :code:`*` or :code:`* -> *`) and type
-constructor is not a endfunctor.
+constructor is not an endfunctor.
 
-LHKP achieves first order types through a parametric interface type :code:`type ('t, 'a) app` which denotes
+LHKP achieves first order types through a parametric interface type :code:`type ('a, 't) app` which denotes
 :code:`'a 't` in higher kinded ML, where :code:`'a` is applicated to :code:`'t` where :code:`'t` has kind
 :code:`* -> *`.
 
-.. code-block :: ocaml
+.. code-block :: OCaml
 
-    type ('t, 'a) app
+    type ('a, 't) app
     module type App = sig
         type 'a s
         type t
@@ -35,7 +35,7 @@ We can then make intuitive explanations using the implementation of polymorphic 
 
 Firstly, present the common part for all type constructors/applications(:code:`App`) here:
 
-.. code-block :: ocaml
+.. code-block :: OCaml
 
     module Common = struct
         type t
@@ -46,7 +46,7 @@ Firstly, present the common part for all type constructors/applications(:code:`A
 
 Then declare a *typeclass* :
 
-.. code-block :: ocaml
+.. code-block :: OCaml
 
     module type Mappable = sig
         type t
@@ -59,7 +59,7 @@ Interesting, we've just implemented a typeclass tersely just like what is allowe
 
 Next, let's implement :code:`list` type constructor:
 
-.. code-block :: ocaml
+.. code-block :: OCaml
 
     module ListApp : App with type 'a s = 'a list = struct
         type 'a s = 'a list
@@ -69,7 +69,7 @@ Next, let's implement :code:`list` type constructor:
 Now we've almost achieved the final goal, and current task still similar to Haskell for
 we're exactly going to implement typeclass :code:`Mappable` for type constructor :code:`list`:
 
-.. code-block :: ocaml
+.. code-block :: OCaml
 
     module MapList : Mappable with type t = ListApp.t = struct
         type t = ListApp.t
@@ -93,7 +93,7 @@ And finally, the we got a polymorphic :code:`map`:
 
 We can also use the same :code:`map` to work with code:`Array` type constructor:
 
-.. code-block :: ocaml
+.. code-block :: OCaml
 
     module ArrayApp : App with type 'a s = 'a array = struct
         type 'a s = 'a array
@@ -110,7 +110,7 @@ We can also use the same :code:`map` to work with code:`Array` type constructor:
 
 Now, we can show our polymorphic functions:
 
-.. code-block :: ocaml
+.. code-block :: OCaml
 
     let lst_data = [1; 2; 3]
     let arr_data = [|1; 2; 3|]
@@ -173,7 +173,107 @@ which is provided by F# language and enable us to use almost full-featured typec
 
 This technique would be introduced in this artivle: `更高更妙的F# <./HKT-typeclass-FSharp.html>`_.
 
+For OCaml alternatives, check `modular implicits <http://tycon.github.io/modular-implicits.html>`_ .
 
+Limitation1: Much Higher Kinded
+------------------------------------------
+
+When it comes much higher kinded types(like :code:`* -> * -> *`),
+in haskell it's notable trivial:
+
+.. code-block:: Haskell
+
+    data Either a b = Left a | Right b
+
+However, in many polupar ML languages like OCaml and F#, we have to use
+
+.. code-block:: OCaml
+
+    type ('a, 'b) either = Left of 'a | Right of 'b
+
+    module EitherApp (Q: sig type t end): App with type 'a s = (Q.t, 'a) either = struct
+        type 'a s = (Q.t, 'a) either
+        include Common
+    end
+
+Then :code:`Either Int` in haskell can be written in OCaml as
+
+.. code-block:: OCaml
+
+    module IntModule = struct
+        type t = int
+    end
+
+    module EitherInt = EitherApp(IntModule)
+
+Let's implement :code:`Functor` class for :code:`forall a. Either a` :
+
+.. code-block:: OCaml
+
+    module MapEither (Q: sig type t end): Mappable with type t = EitherApp(Q).t = struct
+        module EitherApp2 = EitherApp(Q)
+        type t = EitherApp2.t
+        let map (f: 'a -> 'b) (ca: ('a, t) app) : ('b, t) app =
+            let ca = EitherApp2.prj ca
+            in let cb =
+                match ca with
+                | Left  l -> Left l
+                | Right r -> Right (f r)
+            in EitherApp2.inj cb
+    end
+
+However, using such :code:`Either` could be quite annoying:
+
+.. code-block:: OCaml
+
+  let either_data1_hkt =
+    let module M = EitherApp(IntModule) in M.inj (Left 1)
+
+  let either_data2_hkt =
+    let module M = EitherApp(IntModule) in M.inj (Right 2)
+
+  let either_map e =
+    let module Data = EitherApp(IntModule)
+    in let module Map  = MapEither(IntModule)
+    in let res = map (module Map) (fun x -> x + 1) e
+    in Data.prj res
+
+  let either_mapped1 = either_map either_data1_hkt
+  let either_mapped2 = either_map either_data2_hkt
+
+  let show_either_int_int e =
+      match e with
+      | Left l  -> "Left " ^ string_of_int l
+      | Right r -> "Right " ^ string_of_int r
+
+  let () = print_string (show_either_int_int either_mapped1 ^ "\n")
+  let () = print_string (show_either_int_int either_mapped2 ^ "\n")
+
+That sucks so much for the lack of modular implicits and, it's an internal property that
+expressing much higher kinded types(whose kind ascription is more complex than :code:`* -> *`)
+requires many other verbose codes like :code:`('c, ('b, 'a) app) app`.
+
+Limitation2: Identity
+-------------------------
+
+The second problem could be a little sensitive in the senarios where identity type constructor is in need.
+
+A vivid example is :code:`MonadTrans`, for the consistency between :code:`StateT` and :code:`State`.
+
+.. code-block:: OCaml
+
+
+    newtype StateT s m a = StateT { runStateT :: s -> m (a, s) }
+    type State s a = StateT s Identity a
+    type Identity a = a
+
+The problem occurs at :code:`s -> m (a, s)`, when :code:`m = Identity`, :code:`m (a, s) = (a, s)`.
+
+More concretely, in OCaml, :code:`('a * 's,  identity) app` cannot become :code:`'a * 's` directly, which means that
+an extra :code:`prj` is required here.
+
+Then the implementation of :code:`State s a` cannot be equivalent to
+Haskell, for we have to manually perform :code:`prj` each time after invoking :code:`runState/runStateT`.
 
 Why this Lightweight-Higher-Polymorphism instead of the Haskell approach
 --------------------------------------------------------------------------
@@ -202,7 +302,7 @@ where the implication of :code:`'a cons ~ 'e 't` should be :code:`('a, 'a) ~ 'e`
 
 So I have a question about why not process type aliases firstly and convert them into
 regular types containing no aliases? The paper said "Since OCaml cannot distinguish between data types and aliases...",
-I think it's not true, for Ocaml types are named with lowercase leading character,
+I think it's not true, for OCaml types are named with lowercase leading character,
 while datatype constructor are given through names that start with uppercase character.
 
 .. code-block :: ocaml

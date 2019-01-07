@@ -19,8 +19,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Innovation" href="../Innovation/index.html" />
-    <link rel="prev" title="Compelling Higher Kinded Types, Type Classes in F#" href="HKT-typeclass-FSharp.html" />
+    <link rel="next" title="Compelling Higher Kinded Types, Type Classes in F#" href="HKT-typeclass-FSharp.html" />
+    <link rel="prev" title="Programming Language" href="index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -79,9 +79,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../DSL/index.html">DSL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Fiction/index.html">Fiction</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Innovation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="HKT-typeclass-FSharp.html">Compelling Higher Kinded Types, Type Classes in F#</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programming Language</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HKT-typeclass-FSharp.html">Compelling Higher Kinded Types, Type Classes in F#</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Innovation/index.html">Innovation</a></li>
@@ -101,6 +101,8 @@
 <li><a class="reference internal" href="#">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</a><ul>
 <li><a class="reference internal" href="#how-to">How-To</a></li>
 <li><a class="reference internal" href="#static-resolution-more-polymorphic">Static Resolution: More polymorphic</a></li>
+<li><a class="reference internal" href="#limitation1-much-higher-kinded">Limitation1: Much Higher Kinded</a></li>
+<li><a class="reference internal" href="#limitation2-identity">Limitation2: Identity</a></li>
 <li><a class="reference internal" href="#why-this-lightweight-higher-polymorphism-instead-of-the-haskell-approach">Why this Lightweight-Higher-Polymorphism instead of the Haskell approach</a></li>
 </ul>
 </li>
@@ -140,11 +142,11 @@
       <div class="col-md-3">
         <div id="sidebar" class="bs-sidenav" role="complementary">
   <li>
-    <a href="HKT-typeclass-FSharp.html" title="Previous Chapter: Compelling Higher Kinded Types, Type Classes in F#"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Compelling Hi...</span>
+    <a href="index.html" title="Previous Chapter: Programming Language"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Programming Language</span>
     </a>
   </li>
   <li>
-    <a href="../Innovation/index.html" title="Next Chapter: Innovation"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Innovation &raquo;</span>
+    <a href="HKT-typeclass-FSharp.html" title="Next Chapter: Compelling Higher Kinded Types, Type Classes in F#"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Compelling Hi... &raquo;</span>
     </a>
   </li>
 <form action="../search.html" method="get">
@@ -165,11 +167,11 @@
 <h2>How-To<a class="headerlink" href="#how-to" title="Permalink to this headline">¶</a></h2>
 <p>In fact, this technique(Let’s call it <strong>LHKP</strong> ) introduced from this paper works perfectly only when
 the order of types is less than 2(have kind <code class="code docutils literal notranslate"><span class="pre">*</span></code> or <code class="code docutils literal notranslate"><span class="pre">*</span> <span class="pre">-&gt;</span> <span class="pre">*</span></code>) and type
-constructor is not a endfunctor.</p>
-<p>LHKP achieves first order types through a parametric interface type <code class="code docutils literal notranslate"><span class="pre">type</span> <span class="pre">('t,</span> <span class="pre">'a)</span> <span class="pre">app</span></code> which denotes
+constructor is not an endfunctor.</p>
+<p>LHKP achieves first order types through a parametric interface type <code class="code docutils literal notranslate"><span class="pre">type</span> <span class="pre">('a,</span> <span class="pre">'t)</span> <span class="pre">app</span></code> which denotes
 <code class="code docutils literal notranslate"><span class="pre">'a</span> <span class="pre">'t</span></code> in higher kinded ML, where <code class="code docutils literal notranslate"><span class="pre">'a</span></code> is applicated to <code class="code docutils literal notranslate"><span class="pre">'t</span></code> where <code class="code docutils literal notranslate"><span class="pre">'t</span></code> has kind
 <code class="code docutils literal notranslate"><span class="pre">*</span> <span class="pre">-&gt;</span> <span class="pre">*</span></code>.</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">t</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="n">app</span>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">t</span><span class="o">)</span> <span class="n">app</span>
 <span class="k">module</span> <span class="k">type</span> <span class="nc">App</span> <span class="o">=</span> <span class="k">sig</span>
     <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">s</span>
     <span class="k">type</span> <span class="n">t</span>
@@ -184,7 +186,7 @@ constructor is not a endfunctor.</p>
 </pre></div>
 </div>
 <p>Firstly, present the common part for all type constructors/applications(<code class="code docutils literal notranslate"><span class="pre">App</span></code>) here:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">Common</span> <span class="o">=</span> <span class="k">struct</span>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">Common</span> <span class="o">=</span> <span class="k">struct</span>
     <span class="k">type</span> <span class="n">t</span>
     <span class="k">external</span> <span class="n">inj</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span> <span class="o">=</span> <span class="s2">&quot;%identity&quot;</span>
     <span class="k">external</span> <span class="n">prj</span> <span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span> <span class="o">=</span> <span class="s2">&quot;%identity&quot;</span>
@@ -192,7 +194,7 @@ constructor is not a endfunctor.</p>
 </pre></div>
 </div>
 <p>Then declare a <em>typeclass</em> :</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="k">type</span> <span class="nc">Mappable</span> <span class="o">=</span> <span class="k">sig</span>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="k">type</span> <span class="nc">Mappable</span> <span class="o">=</span> <span class="k">sig</span>
     <span class="k">type</span> <span class="n">t</span>
     <span class="k">val</span> <span class="n">map</span><span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="n">app</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">b</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="n">app</span>
 <span class="k">end</span>
@@ -202,7 +204,7 @@ constructor is not a endfunctor.</p>
 </div>
 <p>Interesting, we’ve just implemented a typeclass tersely just like what is allowed in Haskell.</p>
 <p>Next, let’s implement <code class="code docutils literal notranslate"><span class="pre">list</span></code> type constructor:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">ListApp</span> <span class="o">:</span> <span class="nc">App</span> <span class="k">with</span> <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">s</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span> <span class="o">=</span> <span class="k">struct</span>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">ListApp</span> <span class="o">:</span> <span class="nc">App</span> <span class="k">with</span> <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">s</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span> <span class="o">=</span> <span class="k">struct</span>
     <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">s</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span>
     <span class="k">include</span> <span class="nc">Common</span>
 <span class="k">end</span>
@@ -210,7 +212,7 @@ constructor is not a endfunctor.</p>
 </div>
 <p>Now we’ve almost achieved the final goal, and current task still similar to Haskell for
 we’re exactly going to implement typeclass <code class="code docutils literal notranslate"><span class="pre">Mappable</span></code> for type constructor <code class="code docutils literal notranslate"><span class="pre">list</span></code>:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">MapList</span> <span class="o">:</span> <span class="nc">Mappable</span> <span class="k">with</span> <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="nn">ListApp</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="k">struct</span>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">MapList</span> <span class="o">:</span> <span class="nc">Mappable</span> <span class="k">with</span> <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="nn">ListApp</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="k">struct</span>
     <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="nn">ListApp</span><span class="p">.</span><span class="n">t</span>
     <span class="k">let</span> <span class="n">map</span> <span class="o">(</span><span class="n">f</span><span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">(</span><span class="n">ca</span><span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="n">app</span><span class="o">):</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">b</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="n">app</span> <span class="o">=</span>
     <span class="k">let</span> <span class="n">ca</span> <span class="o">=</span> <span class="nn">ListApp</span><span class="p">.</span><span class="n">prj</span> <span class="n">ca</span>
@@ -230,7 +232,7 @@ we’re exactly going to implement typeclass <code class="code docutils literal 
 </pre></div>
 </div>
 <p>We can also use the same <code class="code docutils literal notranslate"><span class="pre">map</span></code> to work with code:<cite>Array</cite> type constructor:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">ArrayApp</span> <span class="o">:</span> <span class="nc">App</span> <span class="k">with</span> <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">s</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">array</span> <span class="o">=</span> <span class="k">struct</span>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">ArrayApp</span> <span class="o">:</span> <span class="nc">App</span> <span class="k">with</span> <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">s</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">array</span> <span class="o">=</span> <span class="k">struct</span>
     <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">s</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">array</span>
     <span class="k">include</span> <span class="nc">Common</span>
 <span class="k">end</span>
@@ -245,7 +247,7 @@ we’re exactly going to implement typeclass <code class="code docutils literal 
 </pre></div>
 </div>
 <p>Now, we can show our polymorphic functions:</p>
-<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">lst_data</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">]</span>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">lst_data</span> <span class="o">=</span> <span class="o">[</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">]</span>
 <span class="k">let</span> <span class="n">arr_data</span> <span class="o">=</span> <span class="o">[|</span><span class="mi">1</span><span class="o">;</span> <span class="mi">2</span><span class="o">;</span> <span class="mi">3</span><span class="o">|]</span>
 <span class="k">let</span> <span class="n">lst_data_hkt</span> <span class="o">=</span> <span class="nn">ListApp</span><span class="p">.</span><span class="n">inj</span> <span class="n">lst_data</span>
 <span class="k">let</span> <span class="n">arr_data_hkt</span> <span class="o">=</span> <span class="nn">ArrayApp</span><span class="p">.</span><span class="n">inj</span> <span class="n">arr_data</span>
@@ -289,6 +291,89 @@ type constructor might not appear in parameters, return type can also be used to
 <p>This kind of instantiation could be implemented through the static resolution/static duck typing,
 which is provided by F# language and enable us to use almost full-featured typeclasses and higher kinded types.</p>
 <p>This technique would be introduced in this artivle: <a class="reference external" href="./HKT-typeclass-FSharp.html">更高更妙的F#</a>.</p>
+<p>For OCaml alternatives, check <a class="reference external" href="http://tycon.github.io/modular-implicits.html">modular implicits</a> .</p>
+</div>
+<div class="section" id="limitation1-much-higher-kinded">
+<h2>Limitation1: Much Higher Kinded<a class="headerlink" href="#limitation1-much-higher-kinded" title="Permalink to this headline">¶</a></h2>
+<p>When it comes much higher kinded types(like <code class="code docutils literal notranslate"><span class="pre">*</span> <span class="pre">-&gt;</span> <span class="pre">*</span> <span class="pre">-&gt;</span> <span class="pre">*</span></code>),
+in haskell it’s notable trivial:</p>
+<div class="highlight-Haskell notranslate"><div class="highlight"><pre><span></span><span class="kr">data</span> <span class="kt">Either</span> <span class="n">a</span> <span class="n">b</span> <span class="ow">=</span> <span class="kt">Left</span> <span class="n">a</span> <span class="o">|</span> <span class="kt">Right</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>However, in many polupar ML languages like OCaml and F#, we have to use</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="n">either</span> <span class="o">=</span> <span class="nc">Left</span> <span class="k">of</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">|</span> <span class="nc">Right</span> <span class="k">of</span> <span class="k">&#39;</span><span class="n">b</span>
+
+<span class="k">module</span> <span class="nc">EitherApp</span> <span class="o">(</span><span class="nc">Q</span><span class="o">:</span> <span class="k">sig</span> <span class="k">type</span> <span class="n">t</span> <span class="k">end</span><span class="o">):</span> <span class="nc">App</span> <span class="k">with</span> <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">s</span> <span class="o">=</span> <span class="o">(</span><span class="nn">Q</span><span class="p">.</span><span class="n">t</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="n">either</span> <span class="o">=</span> <span class="k">struct</span>
+    <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">s</span> <span class="o">=</span> <span class="o">(</span><span class="nn">Q</span><span class="p">.</span><span class="n">t</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span> <span class="n">either</span>
+    <span class="k">include</span> <span class="nc">Common</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Then <code class="code docutils literal notranslate"><span class="pre">Either</span> <span class="pre">Int</span></code> in haskell can be written in OCaml as</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">IntModule</span> <span class="o">=</span> <span class="k">struct</span>
+    <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="kt">int</span>
+<span class="k">end</span>
+
+<span class="k">module</span> <span class="nc">EitherInt</span> <span class="o">=</span> <span class="nc">EitherApp</span><span class="o">(</span><span class="nc">IntModule</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Let’s implement <code class="code docutils literal notranslate"><span class="pre">Functor</span></code> class for <code class="code docutils literal notranslate"><span class="pre">forall</span> <span class="pre">a.</span> <span class="pre">Either</span> <span class="pre">a</span></code> :</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">MapEither</span> <span class="o">(</span><span class="nc">Q</span><span class="o">:</span> <span class="k">sig</span> <span class="k">type</span> <span class="n">t</span> <span class="k">end</span><span class="o">):</span> <span class="nc">Mappable</span> <span class="k">with</span> <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="nc">EitherApp</span><span class="o">(</span><span class="nc">Q</span><span class="o">).</span><span class="n">t</span> <span class="o">=</span> <span class="k">struct</span>
+    <span class="k">module</span> <span class="nc">EitherApp2</span> <span class="o">=</span> <span class="nc">EitherApp</span><span class="o">(</span><span class="nc">Q</span><span class="o">)</span>
+    <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="nn">EitherApp2</span><span class="p">.</span><span class="n">t</span>
+    <span class="k">let</span> <span class="n">map</span> <span class="o">(</span><span class="n">f</span><span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">(</span><span class="n">ca</span><span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="n">app</span><span class="o">)</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">b</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="n">app</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="n">ca</span> <span class="o">=</span> <span class="nn">EitherApp2</span><span class="p">.</span><span class="n">prj</span> <span class="n">ca</span>
+        <span class="k">in</span> <span class="k">let</span> <span class="n">cb</span> <span class="o">=</span>
+            <span class="k">match</span> <span class="n">ca</span> <span class="k">with</span>
+            <span class="o">|</span> <span class="nc">Left</span>  <span class="n">l</span> <span class="o">-&gt;</span> <span class="nc">Left</span> <span class="n">l</span>
+            <span class="o">|</span> <span class="nc">Right</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="nc">Right</span> <span class="o">(</span><span class="n">f</span> <span class="n">r</span><span class="o">)</span>
+        <span class="k">in</span> <span class="nn">EitherApp2</span><span class="p">.</span><span class="n">inj</span> <span class="n">cb</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>However, using such <code class="code docutils literal notranslate"><span class="pre">Either</span></code> could be quite annoying:</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">either_data1_hkt</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="k">module</span> <span class="nc">M</span> <span class="o">=</span> <span class="nc">EitherApp</span><span class="o">(</span><span class="nc">IntModule</span><span class="o">)</span> <span class="k">in</span> <span class="nn">M</span><span class="p">.</span><span class="n">inj</span> <span class="o">(</span><span class="nc">Left</span> <span class="mi">1</span><span class="o">)</span>
+
+<span class="k">let</span> <span class="n">either_data2_hkt</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="k">module</span> <span class="nc">M</span> <span class="o">=</span> <span class="nc">EitherApp</span><span class="o">(</span><span class="nc">IntModule</span><span class="o">)</span> <span class="k">in</span> <span class="nn">M</span><span class="p">.</span><span class="n">inj</span> <span class="o">(</span><span class="nc">Right</span> <span class="mi">2</span><span class="o">)</span>
+
+<span class="k">let</span> <span class="n">either_map</span> <span class="n">e</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="k">module</span> <span class="nc">Data</span> <span class="o">=</span> <span class="nc">EitherApp</span><span class="o">(</span><span class="nc">IntModule</span><span class="o">)</span>
+  <span class="k">in</span> <span class="k">let</span> <span class="k">module</span> <span class="nc">Map</span>  <span class="o">=</span> <span class="nc">MapEither</span><span class="o">(</span><span class="nc">IntModule</span><span class="o">)</span>
+  <span class="k">in</span> <span class="k">let</span> <span class="n">res</span> <span class="o">=</span> <span class="n">map</span> <span class="o">(</span><span class="k">module</span> <span class="nc">Map</span><span class="o">)</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="n">e</span>
+  <span class="k">in</span> <span class="nn">Data</span><span class="p">.</span><span class="n">prj</span> <span class="n">res</span>
+
+<span class="k">let</span> <span class="n">either_mapped1</span> <span class="o">=</span> <span class="n">either_map</span> <span class="n">either_data1_hkt</span>
+<span class="k">let</span> <span class="n">either_mapped2</span> <span class="o">=</span> <span class="n">either_map</span> <span class="n">either_data2_hkt</span>
+
+<span class="k">let</span> <span class="n">show_either_int_int</span> <span class="n">e</span> <span class="o">=</span>
+    <span class="k">match</span> <span class="n">e</span> <span class="k">with</span>
+    <span class="o">|</span> <span class="nc">Left</span> <span class="n">l</span>  <span class="o">-&gt;</span> <span class="s2">&quot;Left &quot;</span> <span class="o">^</span> <span class="n">string_of_int</span> <span class="n">l</span>
+    <span class="o">|</span> <span class="nc">Right</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="s2">&quot;Right &quot;</span> <span class="o">^</span> <span class="n">string_of_int</span> <span class="n">r</span>
+
+<span class="k">let</span> <span class="bp">()</span> <span class="o">=</span> <span class="n">print_string</span> <span class="o">(</span><span class="n">show_either_int_int</span> <span class="n">either_mapped1</span> <span class="o">^</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">)</span>
+<span class="k">let</span> <span class="bp">()</span> <span class="o">=</span> <span class="n">print_string</span> <span class="o">(</span><span class="n">show_either_int_int</span> <span class="n">either_mapped2</span> <span class="o">^</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>That sucks so much for the lack of modular implicits and, it’s an internal property that
+expressing much higher kinded types(whose kind ascription is more complex than <code class="code docutils literal notranslate"><span class="pre">*</span> <span class="pre">-&gt;</span> <span class="pre">*</span></code>)
+requires many other verbose codes like <code class="code docutils literal notranslate"><span class="pre">('c,</span> <span class="pre">('b,</span> <span class="pre">'a)</span> <span class="pre">app)</span> <span class="pre">app</span></code>.</p>
+</div>
+<div class="section" id="limitation2-identity">
+<h2>Limitation2: Identity<a class="headerlink" href="#limitation2-identity" title="Permalink to this headline">¶</a></h2>
+<p>The second problem could be a little sensitive in the senarios where identity type constructor is in need.</p>
+<p>A vivid example is <code class="code docutils literal notranslate"><span class="pre">MonadTrans</span></code>, for the consistency between <code class="code docutils literal notranslate"><span class="pre">StateT</span></code> and <code class="code docutils literal notranslate"><span class="pre">State</span></code>.</p>
+<div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="n">newtype</span> <span class="nc">StateT</span> <span class="n">s</span> <span class="n">m</span> <span class="n">a</span> <span class="o">=</span> <span class="nc">StateT</span> <span class="o">{</span> <span class="n">runStateT</span> <span class="o">::</span> <span class="n">s</span> <span class="o">-&gt;</span> <span class="n">m</span> <span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">s</span><span class="o">)</span> <span class="o">}</span>
+<span class="k">type</span> <span class="nc">State</span> <span class="n">s</span> <span class="n">a</span> <span class="o">=</span> <span class="nc">StateT</span> <span class="n">s</span> <span class="nc">Identity</span> <span class="n">a</span>
+<span class="k">type</span> <span class="nc">Identity</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
+</pre></div>
+</div>
+<p>The problem occurs at <code class="code docutils literal notranslate"><span class="pre">s</span> <span class="pre">-&gt;</span> <span class="pre">m</span> <span class="pre">(a,</span> <span class="pre">s)</span></code>, when <code class="code docutils literal notranslate"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">Identity</span></code>, <code class="code docutils literal notranslate"><span class="pre">m</span> <span class="pre">(a,</span> <span class="pre">s)</span> <span class="pre">=</span> <span class="pre">(a,</span> <span class="pre">s)</span></code>.</p>
+<p>More concretely, in OCaml, <code class="code docutils literal notranslate"><span class="pre">('a</span> <span class="pre">*</span> <span class="pre">'s,</span>&#160; <span class="pre">identity)</span> <span class="pre">app</span></code> cannot become <code class="code docutils literal notranslate"><span class="pre">'a</span> <span class="pre">*</span> <span class="pre">'s</span></code> directly, which means that
+an extra <code class="code docutils literal notranslate"><span class="pre">prj</span></code> is required here.</p>
+<p>Then the implementation of <code class="code docutils literal notranslate"><span class="pre">State</span> <span class="pre">s</span> <span class="pre">a</span></code> cannot be equivalent to
+Haskell, for we have to manually perform <code class="code docutils literal notranslate"><span class="pre">prj</span></code> each time after invoking <code class="code docutils literal notranslate"><span class="pre">runState/runStateT</span></code>.</p>
 </div>
 <div class="section" id="why-this-lightweight-higher-polymorphism-instead-of-the-haskell-approach">
 <h2>Why this Lightweight-Higher-Polymorphism instead of the Haskell approach<a class="headerlink" href="#why-this-lightweight-higher-polymorphism-instead-of-the-haskell-approach" title="Permalink to this headline">¶</a></h2>
@@ -308,7 +393,7 @@ is a type alias like</p>
 <code class="code docutils literal notranslate"><span class="pre">list</span> <span class="pre">~</span> <span class="pre">'t</span></code>.</p>
 <p>So I have a question about why not process type aliases firstly and convert them into
 regular types containing no aliases? The paper said “Since OCaml cannot distinguish between data types and aliases…”,
-I think it’s not true, for Ocaml types are named with lowercase leading character,
+I think it’s not true, for OCaml types are named with lowercase leading character,
 while datatype constructor are given through names that start with uppercase character.</p>
 <div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="o">&lt;</span><span class="n">datatype</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">|</span> <span class="nc">A</span> <span class="k">of</span> <span class="k">type</span>
 <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">&lt;</span><span class="n">alias1</span><span class="o">&gt;</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span>
