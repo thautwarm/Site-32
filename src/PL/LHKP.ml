@@ -87,26 +87,26 @@ module IntModule = struct
   type t = int
 end
 
-let either_data1_hkt =
-  let module M = EitherApp(IntModule) in M.inj (Left 1)
+  let either_data1_hkt =
+    let module M = EitherApp(IntModule) in M.inj (Left 1)
 
-let either_data2_hkt =
-  let module M = EitherApp(IntModule) in M.inj (Right 2)
+  let either_data2_hkt =
+    let module M = EitherApp(IntModule) in M.inj (Right 2)
 
-let either_map e =
-  let module Data = EitherApp(IntModule)
-  in let module Map  = MapEither(IntModule)
-  in let res = map (module Map) (fun x -> x + 1) e
-  in Data.prj res
+  let either_map e =
+    let module Data = EitherApp(IntModule)
+    in let module Map  = MapEither(IntModule)
+    in let res = map (module Map) (fun x -> x + 1) e
+    in Data.prj res
 
-let either_mapped1 = either_map either_data1_hkt
-let either_mapped2 = either_map either_data2_hkt
+  let either_mapped1 = either_map either_data1_hkt
+  let either_mapped2 = either_map either_data2_hkt
 
-let show_either_int_int e =
-    match e with
-    | Left l  -> "Left " ^ string_of_int l
-    | Right r -> "Right " ^ string_of_int r
+  let show_either_int_int e =
+      match e with
+      | Left l  -> "Left " ^ string_of_int l
+      | Right r -> "Right " ^ string_of_int r
 
-let () = print_string (show_either_int_int either_mapped1 ^ "\n")
-let () = print_string (show_either_int_int either_mapped2 ^ "\n")
+  let () = print_string (show_either_int_int either_mapped1 ^ "\n")
+  let () = print_string (show_either_int_int either_mapped2 ^ "\n")
 
