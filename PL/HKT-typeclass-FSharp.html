@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Compelling Higher Kinded Types, Type Classes in F# &#8212; Site-32  documentation</title>
+    <title>Compelling Higher Kinded Types and Type Classes in F# &#8212; Site-32  documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="../_static/documentation_options.js"></script>
@@ -81,7 +81,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../Fiction/index.html">Fiction</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Programming Language</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="paper-reading-LHKP.html">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Compelling Higher Kinded Types, Type Classes in F#</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Compelling Higher Kinded Types and Type Classes in F#</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../Innovation/index.html">Innovation</a></li>
@@ -98,9 +98,8 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Compelling Higher Kinded Types, Type Classes in F#</a><ul>
+<li><a class="reference internal" href="#">Compelling Higher Kinded Types and Type Classes in F#</a><ul>
 <li><a class="reference internal" href="#active-pattern">Active Pattern</a></li>
-<li><a class="reference internal" href="#f">更高更妙的F#</a></li>
 </ul>
 </li>
 </ul>
@@ -157,11 +156,11 @@
       </div>
     <div class="col-md-9 content">
       
-  <div class="section" id="compelling-higher-kinded-types-type-classes-in-f">
-<h1>Compelling Higher Kinded Types, Type Classes in F#<a class="headerlink" href="#compelling-higher-kinded-types-type-classes-in-f" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="compelling-higher-kinded-types-and-type-classes-in-f">
+<h1>Compelling Higher Kinded Types and Type Classes in F#<a class="headerlink" href="#compelling-higher-kinded-types-and-type-classes-in-f" title="Permalink to this headline">¶</a></h1>
 <p>There is no parameterized module in F#, however, as the result of the existance of
-some other power infrastructures, it’s much easier for F# to express higher abstractions in terser methods.</p>
-<p>The secret of the F#’s conciseness comes from the 2 parts.</p>
+some other power infrastructures, it becomes much easier for F# to express higher abstractions tersely.</p>
+<p>The secret of the F#’s conciseness comes from the following 2 parts.</p>
 <ul>
 <li><dl class="first docutils">
 <dt><a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/active-patterns">Active Patterns</a> help to avoid write <code class="code docutils literal notranslate"><span class="pre">inj</span></code> and <code class="code docutils literal notranslate"><span class="pre">prj</span></code> manually.</dt>
@@ -176,7 +175,7 @@ get some related basic knowledge.</p>
 <li><p class="first"><a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters">Static Resolved Type Parameters</a></p>
 </li>
 </ul>
-<p>The following sections are made in Chinese, and if you cannot read them, <a class="reference external" href="https://github.com/thautwarm/FSTan">this repo</a> is for you to check how to implement
+<p>Some of the following sections are made in Chinese, and if you cannot read them, <a class="reference external" href="https://github.com/thautwarm/FSTan">this repo</a> is for you to check how to implement
 HKT and Type Classes.</p>
 <div class="section" id="active-pattern">
 <h2>Active Pattern<a class="headerlink" href="#active-pattern" title="Permalink to this headline">¶</a></h2>
@@ -225,10 +224,36 @@ HKT and Type Classes.</p>
     <span class="o">|</span> <span class="n">Just</span> <span class="n">x</span>  <span class="o">-&gt;</span> <span class="n">k</span> <span class="n">x</span>
 </pre></div>
 </div>
-<p>模拟datatype的功能看似鸡肋, 但在简化HKT的使用上将会非常重要。</p>
+<p>上面是Active pattern的一些示例, 不完整但足以表达重点:</p>
+<p><strong>允许在解构数据时嵌入额外逻辑</strong></p>
+<p>这将是之后用来实现LHKT的重点。</p>
+<p>Reference Reading</p>
+<p>——————</p>
+<p>[1] Haskell 中有着类似Active Pattern的扩展: <a class="reference external" href="https://ghc.haskell.org/trac/ghc/wiki/ViewPatterns">Haskell ViewPatterns</a>.</p>
+<p>[2] Haskell ViewPatterns vs F# Active Patterns: <a class="reference external" href="https://mail.haskell.org/pipermail/haskell-cafe/2009-January/053643.html">View vs Active Pattern</a></p>
+<p>Statically Resolved Type Parameters</p>
+<hr class="docutils" />
+<p>In the language reference of F#, statically resolved type parameters are not well documented, but you might want to <a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters">check it</a> firstly.</p>
+<p>Here I’m to bring more cases to tell you how to take advantage of it.</p>
+<p>The first case is about structural typing.</p>
+<div class="line-block">
+<div class="line">In structural typing, an element is considered to be compatible with another if,</div>
+<div class="line">for each feature within the second element’s type, a corresponding and identical feature exists in the first element’s type.[3]</div>
 </div>
-<div class="section" id="f">
-<h2>更高更妙的F#<a class="headerlink" href="#f" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="nv">f</span><span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="o">^</span><span class="n">a</span> <span class="k">when</span> <span class="o">^</span><span class="n">a</span><span class="o">:</span> <span class="o">(</span><span class="k">static</span> <span class="k">member</span> <span class="n">behavior</span><span class="o">:</span> <span class="o">^</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="o">^</span><span class="n">b</span><span class="o">))</span> <span class="o">=</span>
+    <span class="o">(^</span><span class="n">a</span> <span class="o">(</span><span class="k">static</span> <span class="k">member</span> <span class="n">behavior</span><span class="o">:</span> <span class="o">^</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="o">^</span><span class="n">b</span><span class="o">)</span> <span class="n">a</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>That is to say, given a generic function <code class="code docutils literal notranslate"><span class="pre">f</span></code> which takes one arugument <code class="code docutils literal notranslate"><span class="pre">a</span></code> typed
+as a fresh type variable <code class="code docutils literal notranslate"><span class="pre">^a`(Note</span> <span class="pre">that</span> <span class="pre">a</span> <span class="pre">statically</span> <span class="pre">resolved</span> <span class="pre">type</span> <span class="pre">parameter</span> <span class="pre">must</span> <span class="pre">starts</span> <span class="pre">with</span> <span class="pre">a</span> <span class="pre">:code:`^</span></code> instead of <code class="code docutils literal notranslate"><span class="pre">'</span></code>),</p>
+<div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="nv">f</span><span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="o">^</span><span class="n">a</span> <span class="k">when</span> <span class="o">^</span><span class="n">a</span> <span class="o">:</span> <span class="o">(</span><span class="k">static</span> <span class="k">member</span> <span class="n">apply</span><span class="o">:</span> <span class="o">^</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="o">(^</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="o">^</span><span class="n">c</span><span class="o">))</span> <span class="o">=</span>
+    <span class="o">(^</span><span class="n">a</span> <span class="o">:</span> <span class="k">when</span> <span class="o">^</span><span class="n">a</span><span class="o">:</span> <span class="o">(</span><span class="k">static</span> <span class="k">member</span> <span class="n">apply</span><span class="o">:</span> <span class="o">^</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="o">(^</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="o">^</span><span class="n">c</span><span class="o">)))</span>
+    <span class="n">dosomething</span>
+</pre></div>
+</div>
+<p>Reference</p>
+<p>——————</p>
+<p>[3] <a class="reference external" href="https://en.wikipedia.org/wiki/Structural_type_system#Description">https://en.wikipedia.org/wiki/Structural_type_system#Description</a></p>
 </div>
 </div>
 

@@ -1,12 +1,12 @@
-Compelling Higher Kinded Types, Type Classes in F#
-====================================================
+Compelling Higher Kinded Types and Type Classes in F#
+===========================================================
 
 
 
 There is no parameterized module in F#, however, as the result of the existance of
-some other power infrastructures, it's much easier for F# to express higher abstractions in terser methods.
+some other power infrastructures, it becomes much easier for F# to express higher abstractions tersely.
 
-The secret of the F#'s conciseness comes from the 2 parts.
+The secret of the F#'s conciseness comes from the following 2 parts.
 
 - `Active Patterns <https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/active-patterns>`_ help to avoid write :code:`inj` and :code:`prj` manually.
     If you've never heard of :code:`inj` and :code:`prj` before, there is `a prerequisite article <./paper-reading-LHKP.html>`_ for you to
@@ -19,13 +19,12 @@ The secret of the F#'s conciseness comes from the 2 parts.
 - `Static Resolved Type Parameters <https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters>`_
 
 
-The following sections are made in Chinese, and if you cannot read them, `this repo <https://github.com/thautwarm/FSTan>`_ is for you to check how to implement
+Some of the following sections are made in Chinese, and if you cannot read them, `this repo <https://github.com/thautwarm/FSTan>`_ is for you to check how to implement
 HKT and Type Classes.
 
 
 Active Pattern
 -------------------------------
-
 
 - "临时的"Enum
 
@@ -52,6 +51,7 @@ Active Pattern
         match 1 with
         | Dec x -> x
 
+
 - 模拟datatype
 
 .. code-block:: FSharp
@@ -72,8 +72,111 @@ Active Pattern
         | Nothing -> Nothing
         | Just x  -> k x
 
-模拟datatype的功能看似鸡肋, 但在简化HKT的使用上将会非常重要。
+
+上面是Active pattern的一些示例, 不完整但足以表达重点:
+
+**允许在解构数据时嵌入额外逻辑**
+
+这将是之后用来实现LHKT的重点。
 
 
-更高更妙的F#
+Reference Reading
+
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+
+
+[1] Haskell 中有着类似Active Pattern的扩展: `Haskell ViewPatterns <https://ghc.haskell.org/trac/ghc/wiki/ViewPatterns>`_.
+
+[2] Haskell ViewPatterns vs F# Active Patterns: `View vs Active Pattern <https://mail.haskell.org/pipermail/haskell-cafe/2009-January/053643.html>`_
+
+
+Statically Resolved Type Parameters
+
 -----------------------------
+
+In the language reference of F#, statically resolved type parameters are not well documented, but you might want to `check it <https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters>`_ firstly.
+
+Here I'm to bring more cases to tell you how to take advantage of it.
+
+The first case is about structural typing.
+
+    | In structural typing, an element is considered to be compatible with another if,
+    | for each feature within the second element's type, a corresponding and identical feature exists in the first element's type.[3]
+
+
+So let's imagine a case that we want to make some functions for all objects/types that have a
+common specific behavior.
+
+Let's think about the sound of animals, which could be taken as the behavior.
+
+Firstly, let's define some sounds.
+
+.. code-block :: FSharp
+
+    type Sound = Ooooh | Uhhh | Ahhh | QAQ | Woke | Wa | Ding | Miao
+
+Then we define some intuitive active patterns to make natural-language-like notations:
+
+.. code-block :: FSharp
+
+    let (|LessThan|_|) param value =
+        if value > param then Some ()
+        else None
+
+    // 1 is less than 20
+    assert (match 1 with LessThan 20 -> true | _ -> false)
+
+.. code-block :: FSharp
+
+    type CatSpecies = ScottishFold | RussianBlue | MeoGirl
+    type Cat = {
+        weight   : int
+        species  : CatSpecies
+    } with
+        static member sound: Cat -> Sound =
+            function
+            | {weight = LessThan 20; species = ScottishFold} -> Miao
+            | {weight = LessThan 40; species = RussianBlue} -> Uhhh
+            | {weight = LessThan 100; species = RussianBlue} -> Wa
+            | {weight = LessThan 100} -> QAQ
+            | {species = MeoGirl} -> Ding
+
+    type Color = Black | Brown | White
+    type Scale = {height : int, thickness : int}
+    type Dog = {
+        color   : Color
+        scale   : Scale
+    } with
+        static member sound : Dog -> Sound =
+            function
+            | {height = LessThan 30; thickness = LessThan 10} -> Wa
+            | {height = LessThan 30} -> Woke
+            | {height = LessThan 50} -> Ooooh
+            | _ -> failwith "a fat wolf detected"
+
+Now I want to a function, which takes an animal as input, and output its sound.
+
+For we didn't use the discriminated union/ADT to represent animals, how can we make
+this polymorphic function?
+
+Here you are:
+
+.. code-block :: FSharp
+
+    let sound(a : ^a when ^a: (static member sound: ^a -> ^b)) =
+        (^a (static member sound: ^a -> ^b) a)
+
+    assert sound {weight = 100; species = MeoGirl} = Ding
+    assert sound {height = 40; thickness = 15} = Ooooh
+
+
+Another case could be more formal and quite related to our topic.
+
+To be continue.
+
+
+Reference
+
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+
+[3] https://en.wikipedia.org/wiki/Structural_type_system#Description
