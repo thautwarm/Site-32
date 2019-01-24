@@ -82,7 +82,7 @@ Active Pattern
 
 Reference Reading
 
-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+-----------------------------
 
 
 [1] Haskell 中有着类似Active Pattern的扩展: `Haskell ViewPatterns <https://ghc.haskell.org/trac/ghc/wiki/ViewPatterns>`_.
@@ -91,7 +91,6 @@ Reference Reading
 
 
 Statically Resolved Type Parameters
-
 -----------------------------
 
 In the language reference of F#, statically resolved type parameters are not well documented, but you might want to `check it <https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters>`_ firstly.
@@ -177,6 +176,6 @@ To be continue.
 
 Reference
 
-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-
+-----------------------------
 
 [3] https://en.wikipedia.org/wiki/Structural_type_system#Description
