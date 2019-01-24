@@ -100,27 +100,79 @@ Here I'm to bring more cases to tell you how to take advantage of it.
 
 The first case is about structural typing.
 
-| In structural typing, an element is considered to be compatible with another if,
-| for each feature within the second element's type, a corresponding and identical feature exists in the first element's type.[3]
+    | In structural typing, an element is considered to be compatible with another if,
+    | for each feature within the second element's type, a corresponding and identical feature exists in the first element's type.[3]
 
 
-.. code-block :: FSharp
+So let's imagine a case that we want to make some functions for all objects/types that have a
+common specific behavior.
 
-    let f(a : ^a when ^a: (static member behavior: ^a -> ^b)) =
-        (^a (static member behavior: ^a -> ^b) a)
+Let's think about the sound of animals, which could be taken as the behavior.
 
-
-That is to say, given a generic function :code:`f` which takes one arugument :code:`a` typed
-as a fresh type variable :code:`^a`(Note that a statically resolved type parameter must starts with a :code:`^` instead of :code:`'`),
-
-
-
+Firstly, let's define some sounds.
 
 .. code-block :: FSharp
 
-    let f(a : ^a when ^a : (static member apply: ^a -> (^b -> ^c)) =
-        (^a : when ^a: (static member apply: ^a -> (^b -> ^c)))
-        dosomething
+    type Sound = Ooooh | Uhhh | Ahhh | QAQ | Woke | Wa | Ding | Miao
+
+Then we define some intuitive active patterns to make natural-language-like notations:
+
+.. code-block :: FSharp
+
+    let (|LessThan|_|) param value =
+        if value > param then Some ()
+        else None
+
+    // 1 is less than 20
+    assert (match 1 with LessThan 20 -> true | _ -> false)
+
+.. code-block :: FSharp
+
+    type CatSpecies = ScottishFold | RussianBlue | MeoGirl
+    type Cat = {
+        weight   : int
+        species  : CatSpecies
+    } with
+        static member sound: Cat -> Sound =
+            function
+            | {weight = LessThan 20; species = ScottishFold} -> Miao
+            | {weight = LessThan 40; species = RussianBlue} -> Uhhh
+            | {weight = LessThan 100; species = RussianBlue} -> Wa
+            | {weight = LessThan 100} -> QAQ
+            | {species = MeoGirl} -> Ding
+
+    type Color = Black | Brown | White
+    type Scale = {height : int, thickness : int}
+    type Dog = {
+        color   : Color
+        scale   : Scale
+    } with
+        static member sound : Dog -> Sound =
+            function
+            | {height = LessThan 30; thickness = LessThan 10} -> Wa
+            | {height = LessThan 30} -> Woke
+            | {height = LessThan 50} -> Ooooh
+            | _ -> failwith "a fat wolf detected"
+
+Now I want to a function, which takes an animal as input, and output its sound.
+
+For we didn't use the discriminated union/ADT to represent animals, how can we make
+this polymorphic function?
+
+Here you are:
+
+.. code-block :: FSharp
+
+    let sound(a : ^a when ^a: (static member sound: ^a -> ^b)) =
+        (^a (static member sound: ^a -> ^b) a)
+
+    assert sound {weight = 100; species = MeoGirl} = Ding
+    assert sound {height = 40; thickness = 15} = Ooooh
+
+
+Another case could be more formal and quite related to our topic.
+
+To be continue.
 
 
 Reference
