@@ -24,6 +24,7 @@ def card(title: str, link: str, keywords: list, time: datetime):
     global panel_count
     time = time.strftime("%a, %B %d, %Y.&nbsp; %H: %M ")
     keywords = '&nbsp;,&nbsp;'.join(keywords)
+    panel_count += 1
     return raw_html(f"""
 <br>
 <div class="panel panel-{panel_styles[panel_count % 4]}">

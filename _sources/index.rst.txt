@@ -18,7 +18,7 @@ Site-32 Index Page
 
 
     <br>
-    <div class="panel panel-danger">
+    <div class="panel panel-success">
       <div class="panel-heading">Higher Kinded Types</div>
       <div class="panel-body">
         keywords: Higher-Kinded-Types&nbsp;,&nbsp;Introduction
@@ -37,7 +37,7 @@ Site-32 Index Page
 
 
     <br>
-    <div class="panel panel-danger">
+    <div class="panel panel-info">
       <div class="panel-heading">Type Classes</div>
       <div class="panel-body">
         keywords: Type Class&nbsp;,&nbsp;Introduction
@@ -56,7 +56,7 @@ Site-32 Index Page
 
 
     <br>
-    <div class="panel panel-danger">
+    <div class="panel panel-warning">
       <div class="panel-heading">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</div>
       <div class="panel-body">
         keywords: Programming language&nbsp;,&nbsp;Higher Kinded Types&nbsp;,&nbsp;Type Class&nbsp;,&nbsp;OCaml
