@@ -44,7 +44,7 @@ Firstly, present the common part for all type constructors/applications(:code:`A
     end
 
 
-Then declare a *typeclass* :
+Then declare a *type class* :
 
 .. code-block :: OCaml
 
@@ -55,7 +55,7 @@ Then declare a *typeclass* :
 
     type 'a mappable_impl = (module Mappable with type t = 'a)
 
-Interesting, we've just implemented a typeclass tersely just like what is allowed in Haskell.
+Interesting, we've just implemented a type class tersely just like what is allowed in Haskell.
 
 Next, let's implement :code:`list` type constructor:
 
@@ -67,7 +67,7 @@ Next, let's implement :code:`list` type constructor:
     end
 
 Now we've almost achieved the final goal, and current task still similar to Haskell for
-we're exactly going to implement typeclass :code:`Mappable` for type constructor :code:`list`:
+we're exactly going to implement type class :code:`Mappable` for type constructor :code:`list`:
 
 .. code-block :: OCaml
 
@@ -124,7 +124,7 @@ Now, we can show our polymorphic functions:
     let () =  Array.iter print_int (ArrayApp.prj arr_mapped); print_string "\n"
 
 
-That's all about the core secrets of implementing typeclasses and HKT with this approach.
+That's all about the core secrets of implementing type classes and HKT with this approach.
 
 
 
@@ -169,9 +169,9 @@ type constructor might not appear in parameters, return type can also be used to
 
 
 This kind of instantiation could be implemented through the static resolution/static duck typing,
-which is provided by F# language and enable us to use almost full-featured typeclasses and higher kinded types.
+which is provided by F# language and enable us to use almost full-featured type classes and higher kinded types.
 
-This technique would be introduced in this artivle: `更高更妙的F# <./HKT-typeclass-FSharp.html>`_.
+This technique would be introduced in this artivle: `更高更妙的F# <./HKT-type class-FSharp.html>`_.
 
 For OCaml alternatives, check `modular implicits <http://tycon.github.io/modular-implicits.html>`_ .
 

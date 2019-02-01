@@ -2,7 +2,6 @@ Compelling Higher Kinded Types and Type Classes in F#
 ===========================================================
 
 
-
 There is no parameterized module in F#, however, as the result of the existance of
 some other power infrastructures, it becomes much easier for F# to express higher abstractions tersely.
 
@@ -91,7 +90,7 @@ Reference Reading
 
 
 Statically Resolved Type Parameters
------------------------------
+----------------------------------------------------------
 
 In the language reference of F#, statically resolved type parameters are not well documented, but you might want to `check it <https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters>`_ firstly.
 
@@ -108,7 +107,7 @@ common specific behavior.
 
 Let's think about the sound of animals, which could be taken as the behavior.
 
-Firstly, let's define some sounds.
+Firstly, let's define the enumerate some sounds:
 
 .. code-block :: FSharp
 
@@ -163,7 +162,7 @@ Here you are:
 .. code-block :: FSharp
 
     let sound(a : ^a when ^a: (static member sound: ^a -> ^b)) =
-        (^a (static member sound: ^a -> ^b) a)
+        (^a : (static member sound: ^a -> ^b) a)
 
     assert sound {weight = 100; species = MeoGirl} = Ding
     assert sound {height = 40; thickness = 15} = Ooooh
@@ -171,7 +170,36 @@ Here you are:
 
 Another case could be more formal and quite related to our topic.
 
-To be continue.
+Firstly, to represent higher kinded types, we use
+
+.. code-block :: FSharp
+    
+    type hkt<'K, 'T> = interface end
+
+
+Here, the :code:`hkt<'K, 'T>` is something that emulates the application of type constructor :code:`'K` on :code:`'T`, and
+the kind ascription of :code:`'K` is(at least) :code:`* -> *` (e.g.,
+a concrete type :code:`List<int>` is the application of type constructor :code:`List` on type :code:`int`, so semantically it could be written as :code:`hkt<List, int>`).
+
+Now, we're to make some type constructors to substitute the type variable :code:`'K`, like :code:`List`, 
+:code:`Array`, :code:`Maybe` / :code:`Option`, etc. These type constructors(also types) can have some
+common features, e.g., could be applied with a :code:`map` function, 
+
+.. code-block :: FSharp
+
+    type 'a Maybe = 'a Option
+    let map_maybe : ('a -> 'b) -> 'a Maybe -> 'b Maybe = ..
+    let map_list  : ('a -> 'b) -> 'a List  -> 'b List  = ..
+    let map_array : ('a -> 'b) -> 'a Array -> 'b Array = ..
+
+
+which could extracted as a useful concept, the functor. The functor is a **Type Class**, 
+which is introduced to make abstractions on types(including the higher kinded types).
+
+So, how can we emulate the functor, in another words, how can we assign the expected features to the corresponding type constructors
+(:code:`List`, :code:`Array`, etc.)?
+
+To be continue...
 
 
 Reference

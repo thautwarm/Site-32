@@ -7,7 +7,7 @@
     <title>Compelling Higher Kinded Types and Type Classes in F# &#8212; Site-32  documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -80,6 +80,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../DSL/index.html">DSL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Fiction/index.html">Fiction</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Programming Language</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="HKT.html">Higher Kinded Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="typeclass.html">Type Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paper-reading-LHKP.html">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Compelling Higher Kinded Types and Type Classes in F#</a></li>
 </ul>
@@ -247,7 +249,7 @@ HKT and Type Classes.</p>
 <p>So let’s imagine a case that we want to make some functions for all objects/types that have a
 common specific behavior.</p>
 <p>Let’s think about the sound of animals, which could be taken as the behavior.</p>
-<p>Firstly, let’s define some sounds.</p>
+<p>Firstly, let’s define the enumerate some sounds:</p>
 <div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="nc">Sound</span> <span class="o">=</span> <span class="n">Ooooh</span> <span class="o">|</span> <span class="n">Uhhh</span> <span class="o">|</span> <span class="n">Ahhh</span> <span class="o">|</span> <span class="n">QAQ</span> <span class="o">|</span> <span class="n">Woke</span> <span class="o">|</span> <span class="n">Wa</span> <span class="o">|</span> <span class="n">Ding</span> <span class="o">|</span> <span class="n">Miao</span>
 </pre></div>
 </div>
@@ -292,14 +294,34 @@ common specific behavior.</p>
 this polymorphic function?</p>
 <p>Here you are:</p>
 <div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="nv">sound</span><span class="o">(</span><span class="n">a</span> <span class="o">:</span> <span class="o">^</span><span class="n">a</span> <span class="k">when</span> <span class="o">^</span><span class="n">a</span><span class="o">:</span> <span class="o">(</span><span class="k">static</span> <span class="k">member</span> <span class="n">sound</span><span class="o">:</span> <span class="o">^</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="o">^</span><span class="n">b</span><span class="o">))</span> <span class="o">=</span>
-    <span class="o">(^</span><span class="n">a</span> <span class="o">(</span><span class="k">static</span> <span class="k">member</span> <span class="n">sound</span><span class="o">:</span> <span class="o">^</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="o">^</span><span class="n">b</span><span class="o">)</span> <span class="n">a</span><span class="o">)</span>
+    <span class="o">(^</span><span class="n">a</span> <span class="o">:</span> <span class="o">(</span><span class="k">static</span> <span class="k">member</span> <span class="n">sound</span><span class="o">:</span> <span class="o">^</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="o">^</span><span class="n">b</span><span class="o">)</span> <span class="n">a</span><span class="o">)</span>
 
 <span class="k">assert</span> <span class="n">sound</span> <span class="o">{</span><span class="n">weight</span> <span class="o">=</span> <span class="mi">100</span><span class="o">;</span> <span class="n">species</span> <span class="o">=</span> <span class="n">MeoGirl</span><span class="o">}</span> <span class="o">=</span> <span class="n">Ding</span>
 <span class="k">assert</span> <span class="n">sound</span> <span class="o">{</span><span class="n">height</span> <span class="o">=</span> <span class="mi">40</span><span class="o">;</span> <span class="n">thickness</span> <span class="o">=</span> <span class="mi">15</span><span class="o">}</span> <span class="o">=</span> <span class="n">Ooooh</span>
 </pre></div>
 </div>
 <p>Another case could be more formal and quite related to our topic.</p>
-<p>To be continue.</p>
+<p>Firstly, to represent higher kinded types, we use</p>
+<div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="nc">hkt</span><span class="o">&lt;</span><span class="k">&#39;</span><span class="n">K</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">T</span><span class="o">&gt;</span> <span class="o">=</span> <span class="k">interface</span> <span class="k">end</span>
+</pre></div>
+</div>
+<p>Here, the <code class="code docutils literal notranslate"><span class="pre">hkt&lt;'K,</span> <span class="pre">'T&gt;</span></code> is something that emulates the application of type constructor <code class="code docutils literal notranslate"><span class="pre">'K</span></code> on <code class="code docutils literal notranslate"><span class="pre">'T</span></code>, and
+the kind ascription of <code class="code docutils literal notranslate"><span class="pre">'K</span></code> is(at least) <code class="code docutils literal notranslate"><span class="pre">*</span> <span class="pre">-&gt;</span> <span class="pre">*</span></code> (e.g.,
+a concrete type <code class="code docutils literal notranslate"><span class="pre">List&lt;int&gt;</span></code> is the application of type constructor <code class="code docutils literal notranslate"><span class="pre">List</span></code> on type <code class="code docutils literal notranslate"><span class="pre">int</span></code>, so semantically it could be written as <code class="code docutils literal notranslate"><span class="pre">hkt&lt;List,</span> <span class="pre">int&gt;</span></code>).</p>
+<p>Now, we’re to make some type constructors to substitute the type variable <code class="code docutils literal notranslate"><span class="pre">'K</span></code>, like <code class="code docutils literal notranslate"><span class="pre">List</span></code>,
+<code class="code docutils literal notranslate"><span class="pre">Array</span></code>, <code class="code docutils literal notranslate"><span class="pre">Maybe</span></code> / <code class="code docutils literal notranslate"><span class="pre">Option</span></code>, etc. These type constructors(also types) can have some
+common features, e.g., could be applied with a <code class="code docutils literal notranslate"><span class="pre">map</span></code> function,</p>
+<div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">Maybe</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">Option</span>
+<span class="k">let</span> <span class="nv">map_maybe</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">Maybe</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span> <span class="n">Maybe</span> <span class="o">=</span> <span class="o">..</span>
+<span class="k">let</span> <span class="nv">map_list</span>  <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">List</span>  <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span> <span class="n">List</span>  <span class="o">=</span> <span class="o">..</span>
+<span class="k">let</span> <span class="nv">map_array</span> <span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">Array</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span> <span class="n">Array</span> <span class="o">=</span> <span class="o">..</span>
+</pre></div>
+</div>
+<p>which could extracted as a useful concept, the functor. The functor is a <strong>Type Class</strong>,
+which is introduced to make abstractions on types(including the higher kinded types).</p>
+<p>So, how can we emulate the functor, in another words, how can we assign the expected features to the corresponding type constructors
+(<code class="code docutils literal notranslate"><span class="pre">List</span></code>, <code class="code docutils literal notranslate"><span class="pre">Array</span></code>, etc.)?</p>
+<p>To be continue…</p>
 <p>Reference</p>
 <hr class="docutils" />
 <p>[3] <a class="reference external" href="https://en.wikipedia.org/wiki/Structural_type_system#Description">https://en.wikipedia.org/wiki/Structural_type_system#Description</a></p>
@@ -319,7 +341,7 @@ this polymorphic function?</p>
     </p>
     <p>
         &copy; Copyright 2019, thautwarm.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.<br/>
     </p>
   </div>
 </footer>

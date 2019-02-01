@@ -19,9 +19,47 @@ Site-32 Index Page
 
     <br>
     <div class="panel panel-danger">
+      <div class="panel-heading">Higher Kinded Types</div>
+      <div class="panel-body">
+        keywords: Higher-Kinded-Types&nbsp;,&nbsp;Introduction
+      </div>
+
+      <div class="panel-footer">
+        <a href="./PL/HKT.html">Check</a>
+        <span class="pull-right">Fri, February 01, 2019.&nbsp; 15: 32 </span>
+      </div>
+    </div>
+
+
+
+.. raw:: html
+
+
+
+    <br>
+    <div class="panel panel-danger">
+      <div class="panel-heading">Type Classes</div>
+      <div class="panel-body">
+        keywords: Type Class&nbsp;,&nbsp;Introduction
+      </div>
+
+      <div class="panel-footer">
+        <a href="./PL/typeclass.html">Check</a>
+        <span class="pull-right">Fri, February 01, 2019.&nbsp; 15: 32 </span>
+      </div>
+    </div>
+
+
+
+.. raw:: html
+
+
+
+    <br>
+    <div class="panel panel-danger">
       <div class="panel-heading">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</div>
       <div class="panel-body">
-        keywords: Programming language&nbsp;,&nbsp;Higher Kinded Types&nbsp;,&nbsp;Typeclass&nbsp;,&nbsp;OCaml
+        keywords: Programming language&nbsp;,&nbsp;Higher Kinded Types&nbsp;,&nbsp;Type Class&nbsp;,&nbsp;OCaml
       </div>
 
       <div class="panel-footer">

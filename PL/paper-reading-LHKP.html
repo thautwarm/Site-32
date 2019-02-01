@@ -7,7 +7,7 @@
     <title>Paper Reading: Lightweight-Higher-Kinded-Polymorphism &#8212; Site-32  documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Compelling Higher Kinded Types and Type Classes in F#" href="HKT-typeclass-FSharp.html" />
-    <link rel="prev" title="Programming Language" href="index.html" />
+    <link rel="prev" title="Type Classes" href="typeclass.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -80,6 +80,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../DSL/index.html">DSL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Fiction/index.html">Fiction</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Programming Language</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="HKT.html">Higher Kinded Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="typeclass.html">Type Classes</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</a></li>
 <li class="toctree-l2"><a class="reference internal" href="HKT-typeclass-FSharp.html">Compelling Higher Kinded Types and Type Classes in F#</a></li>
 </ul>
@@ -142,7 +144,7 @@
       <div class="col-md-3">
         <div id="sidebar" class="bs-sidenav" role="complementary">
   <li>
-    <a href="index.html" title="Previous Chapter: Programming Language"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Programming Language</span>
+    <a href="typeclass.html" title="Previous Chapter: Type Classes"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Type Classes</span>
     </a>
   </li>
   <li>
@@ -193,7 +195,7 @@ constructor is not an endfunctor.</p>
 <span class="k">end</span>
 </pre></div>
 </div>
-<p>Then declare a <em>typeclass</em> :</p>
+<p>Then declare a <em>type class</em> :</p>
 <div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="k">type</span> <span class="nc">Mappable</span> <span class="o">=</span> <span class="k">sig</span>
     <span class="k">type</span> <span class="n">t</span>
     <span class="k">val</span> <span class="n">map</span><span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="n">app</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">b</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="n">app</span>
@@ -202,7 +204,7 @@ constructor is not an endfunctor.</p>
 <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">mappable_impl</span> <span class="o">=</span> <span class="o">(</span><span class="k">module</span> <span class="nc">Mappable</span> <span class="k">with</span> <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">)</span>
 </pre></div>
 </div>
-<p>Interesting, we’ve just implemented a typeclass tersely just like what is allowed in Haskell.</p>
+<p>Interesting, we’ve just implemented a type class tersely just like what is allowed in Haskell.</p>
 <p>Next, let’s implement <code class="code docutils literal notranslate"><span class="pre">list</span></code> type constructor:</p>
 <div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">ListApp</span> <span class="o">:</span> <span class="nc">App</span> <span class="k">with</span> <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">s</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span> <span class="o">=</span> <span class="k">struct</span>
     <span class="k">type</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">s</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">a</span> <span class="kt">list</span>
@@ -211,7 +213,7 @@ constructor is not an endfunctor.</p>
 </pre></div>
 </div>
 <p>Now we’ve almost achieved the final goal, and current task still similar to Haskell for
-we’re exactly going to implement typeclass <code class="code docutils literal notranslate"><span class="pre">Mappable</span></code> for type constructor <code class="code docutils literal notranslate"><span class="pre">list</span></code>:</p>
+we’re exactly going to implement type class <code class="code docutils literal notranslate"><span class="pre">Mappable</span></code> for type constructor <code class="code docutils literal notranslate"><span class="pre">list</span></code>:</p>
 <div class="highlight-OCaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">MapList</span> <span class="o">:</span> <span class="nc">Mappable</span> <span class="k">with</span> <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="nn">ListApp</span><span class="p">.</span><span class="n">t</span> <span class="o">=</span> <span class="k">struct</span>
     <span class="k">type</span> <span class="n">t</span> <span class="o">=</span> <span class="nn">ListApp</span><span class="p">.</span><span class="n">t</span>
     <span class="k">let</span> <span class="n">map</span> <span class="o">(</span><span class="n">f</span><span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">(</span><span class="n">ca</span><span class="o">:</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="n">app</span><span class="o">):</span> <span class="o">(</span><span class="k">&#39;</span><span class="n">b</span><span class="o">,</span> <span class="n">t</span><span class="o">)</span> <span class="n">app</span> <span class="o">=</span>
@@ -259,7 +261,7 @@ we’re exactly going to implement typeclass <code class="code docutils literal 
 <span class="k">let</span> <span class="bp">()</span> <span class="o">=</span>  <span class="nn">Array</span><span class="p">.</span><span class="n">iter</span> <span class="n">print_int</span> <span class="o">(</span><span class="nn">ArrayApp</span><span class="p">.</span><span class="n">prj</span> <span class="n">arr_mapped</span><span class="o">);</span> <span class="n">print_string</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
 </pre></div>
 </div>
-<p>That’s all about the core secrets of implementing typeclasses and HKT with this approach.</p>
+<p>That’s all about the core secrets of implementing type classes and HKT with this approach.</p>
 </div>
 <div class="section" id="static-resolution-more-polymorphic">
 <h2>Static Resolution: More polymorphic<a class="headerlink" href="#static-resolution-more-polymorphic" title="Permalink to this headline">¶</a></h2>
@@ -289,7 +291,7 @@ instantiate the type constructor.</p>
 <p>Another thing might not be explicit enough is, the type variable that decides the instantiation of
 type constructor might not appear in parameters, return type can also be used to do such things.</p>
 <p>This kind of instantiation could be implemented through the static resolution/static duck typing,
-which is provided by F# language and enable us to use almost full-featured typeclasses and higher kinded types.</p>
+which is provided by F# language and enable us to use almost full-featured type classes and higher kinded types.</p>
 <p>This technique would be introduced in this artivle: <a class="reference external" href="./HKT-typeclass-FSharp.html">更高更妙的F#</a>.</p>
 <p>For OCaml alternatives, check <a class="reference external" href="http://tycon.github.io/modular-implicits.html">modular implicits</a> .</p>
 </div>
@@ -416,7 +418,7 @@ while datatype constructor are given through names that start with uppercase cha
     </p>
     <p>
         &copy; Copyright 2019, thautwarm.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.<br/>
     </p>
   </div>
 </footer>
