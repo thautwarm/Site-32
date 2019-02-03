@@ -2,7 +2,7 @@
     {
         "title": "Paper Reading: Lightweight-Higher-Kinded-Polymorphism",
         "where": "PL.paper-reading-LHKP",
-        "keywords": ["Programming language", "Higher Kinded Types", "Type Class", "OCaml"],
+        "keywords": ["Programming language", "Higher Kinded Types", "Type Class", "OCaml", "Ad-hoc Polymorphism"],
         "release_date": "2019-01-02 23:32:19.787714"
     },
     {
@@ -14,7 +14,7 @@
     {
         "title": "Type Classes",
         "where": "PL.typeclass",
-        "keywords": ["Type Class", "Introduction"],
+        "keywords": ["Type Class", "Introduction", "Polymorphism"],
         "release_date": "2019-02-01 15:32"
     }
 ]

@@ -40,7 +40,7 @@ Site-32 Index Page
     <div class="panel panel-info">
       <div class="panel-heading">Type Classes</div>
       <div class="panel-body">
-        keywords: Type Class&nbsp;,&nbsp;Introduction
+        keywords: Type Class&nbsp;,&nbsp;Introduction&nbsp;,&nbsp;Polymorphism
       </div>
 
       <div class="panel-footer">
@@ -59,7 +59,7 @@ Site-32 Index Page
     <div class="panel panel-warning">
       <div class="panel-heading">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</div>
       <div class="panel-body">
-        keywords: Programming language&nbsp;,&nbsp;Higher Kinded Types&nbsp;,&nbsp;Type Class&nbsp;,&nbsp;OCaml
+        keywords: Programming language&nbsp;,&nbsp;Higher Kinded Types&nbsp;,&nbsp;Type Class&nbsp;,&nbsp;OCaml&nbsp;,&nbsp;Ad-hoc Polymorphism
       </div>
 
       <div class="panel-footer">
