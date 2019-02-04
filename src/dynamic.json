@@ -16,5 +16,19 @@
         "where": "PL.typeclass",
         "keywords": ["Type Class", "Introduction", "Polymorphism"],
         "release_date": "2019-02-01 15:32"
+    },
+    {
+        "title": "Compelling Higher Kinded Types and Type Classes in F#",
+        "where": "PL.HKT-typeclass-FSharp",
+        "keywords": [
+            "F#",
+            "Higher Kinded Types",
+            "Type Class",
+            "Ad-hoc Polymorphism",
+            "Active Patterns",
+            "Static Resolved Type Parameters",
+            "Implicits"
+        ],
+        "release_date": "2019-02-04 14:10"
     }
 ]
