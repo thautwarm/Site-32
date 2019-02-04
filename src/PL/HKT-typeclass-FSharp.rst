@@ -15,17 +15,17 @@ The secret of the F#'s conciseness comes from the following 2 parts.
     you might need to try Haskell language to learn about Functor and Monad to
     get some related basic knowledge.
 
-- `Static Resolved Type Parameters <https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters>`_
+- `Static Resolved Type Parameters <https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters>`_ help to support resolution for implicit arguments.
+    That's the way to achieve something similar to modular implicits in OCaml.
 
 
-Some of the following sections are made in Chinese, and if you cannot read them, `this repo <https://github.com/thautwarm/FSTan>`_ is for you to check how to implement
-HKT and Type Classes.
+FYI, `this repo <https://github.com/thautwarm/FSTan>`_ provides an actual implementation.
 
 
 Active Pattern
 -------------------------------
 
-- "临时的"Enum
+- Temporary enumerations
 
 .. code-block:: FSharp
 
@@ -38,7 +38,7 @@ Active Pattern
         | IsWhatIWant -> failwith "fatal!"
         | _ -> ()
 
-- "临时的"构造器
+- Temporary recognizers
 
 .. code-block:: FSharp
 
@@ -51,7 +51,7 @@ Active Pattern
         | Dec x -> x
 
 
-- 模拟datatype
+- Simulating datatypes
 
 .. code-block:: FSharp
 
@@ -72,11 +72,11 @@ Active Pattern
         | Just x  -> k x
 
 
-上面是Active pattern的一些示例, 不完整但足以表达重点:
+Above snippets are about some use cases of Active Patterns, which might not be exhaustive but sufficent for today's topic:
 
-**允许在解构数据时嵌入额外逻辑**
+**Allow to inject extra logics when destructuring data**,
 
-这将是之后用来实现LHKT的重点。
+subsequently, which is the key to implement LHKT in F#.
 
 
 Statically Resolved Type Parameters
@@ -347,9 +347,14 @@ We could find that the explicit argument :code:`m : t mappable_impl` of :code:`m
 inferred through the latter argument :code:`a : ('a, t) app`. If there is a way in OCaml to automatically create an instance
 typed :code:`t mappable_impl` from the given argument :code:`a : ('a, t) app`, then it could reach the presence of F#.
 
-Finally, I'm to present an implementation of :code:`getsig` here:
+Finally, I'd present an implementation of :code:`getsig` here:
 
 .. code-block :: FSharp
+
+    open System
+    open System.Reflection
+
+    let private ts  = Array.zeroCreate<Type> 0
 
     [<GeneralizableValue>]
     let getsig<'a> =

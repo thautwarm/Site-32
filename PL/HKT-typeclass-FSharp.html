@@ -179,15 +179,18 @@ get some related basic knowledge.</p>
 </dd>
 </dl>
 </li>
-<li><p class="first"><a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters">Static Resolved Type Parameters</a></p>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters">Static Resolved Type Parameters</a> help to support resolution for implicit arguments.</dt>
+<dd><p class="first last">That’s the way to achieve something similar to modular implicits in OCaml.</p>
+</dd>
+</dl>
 </li>
 </ul>
-<p>Some of the following sections are made in Chinese, and if you cannot read them, <a class="reference external" href="https://github.com/thautwarm/FSTan">this repo</a> is for you to check how to implement
-HKT and Type Classes.</p>
+<p>FYI, <a class="reference external" href="https://github.com/thautwarm/FSTan">this repo</a> provides an actual implementation.</p>
 <div class="section" id="active-pattern">
 <h2>Active Pattern<a class="headerlink" href="#active-pattern" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>“临时的”Enum</li>
+<li>Temporary enumerations</li>
 </ul>
 <div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="o">(|</span><span class="n">IsWhatIWant</span><span class="o">|</span><span class="n">NotWhatIWant</span><span class="o">|)</span> <span class="n">x</span> <span class="o">=</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="k">then</span> <span class="n">IsWhatIWant</span>
@@ -200,7 +203,7 @@ HKT and Type Classes.</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li>“临时的”构造器</li>
+<li>Temporary recognizers</li>
 </ul>
 <div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="o">(|</span><span class="n">Dec</span><span class="o">|)</span> <span class="n">x</span> <span class="o">=</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="n">Some</span> <span class="o">&lt;|</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
@@ -212,7 +215,7 @@ HKT and Type Classes.</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li>模拟datatype</li>
+<li>Simulating datatypes</li>
 </ul>
 <div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="o">(|</span><span class="n">Just</span><span class="o">|</span><span class="n">Nothing</span><span class="o">|)</span> <span class="o">(</span><span class="n">a</span><span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">option</span><span class="o">)</span> <span class="o">=</span>
     <span class="k">match</span> <span class="n">a</span> <span class="k">with</span>
@@ -231,9 +234,9 @@ HKT and Type Classes.</p>
     <span class="o">|</span> <span class="n">Just</span> <span class="n">x</span>  <span class="o">-&gt;</span> <span class="n">k</span> <span class="n">x</span>
 </pre></div>
 </div>
-<p>上面是Active pattern的一些示例, 不完整但足以表达重点:</p>
-<p><strong>允许在解构数据时嵌入额外逻辑</strong></p>
-<p>这将是之后用来实现LHKT的重点。</p>
+<p>Above snippets are about some use cases of Active Patterns, which might not be exhaustive but sufficent for today’s topic:</p>
+<p><strong>Allow to inject extra logics when destructuring data</strong>,</p>
+<p>subsequently, which is the key to implement LHKT in F#.</p>
 </div>
 <div class="section" id="statically-resolved-type-parameters">
 <h2>Statically Resolved Type Parameters<a class="headerlink" href="#statically-resolved-type-parameters" title="Permalink to this headline">¶</a></h2>
@@ -455,8 +458,13 @@ but there are some problem remained here need to be answered.</p>
 <p>We could find that the explicit argument <code class="code docutils literal notranslate"><span class="pre">m</span> <span class="pre">:</span> <span class="pre">t</span> <span class="pre">mappable_impl</span></code> of <code class="code docutils literal notranslate"><span class="pre">map</span></code> is redundant. In fact, it could be
 inferred through the latter argument <code class="code docutils literal notranslate"><span class="pre">a</span> <span class="pre">:</span> <span class="pre">('a,</span> <span class="pre">t)</span> <span class="pre">app</span></code>. If there is a way in OCaml to automatically create an instance
 typed <code class="code docutils literal notranslate"><span class="pre">t</span> <span class="pre">mappable_impl</span></code> from the given argument <code class="code docutils literal notranslate"><span class="pre">a</span> <span class="pre">:</span> <span class="pre">('a,</span> <span class="pre">t)</span> <span class="pre">app</span></code>, then it could reach the presence of F#.</p>
-<p>Finally, I’m to present an implementation of <code class="code docutils literal notranslate"><span class="pre">getsig</span></code> here:</p>
-<div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="o">[&lt;</span><span class="n">GeneralizableValue</span><span class="o">&gt;]</span>
+<p>Finally, I’d present an implementation of <code class="code docutils literal notranslate"><span class="pre">getsig</span></code> here:</p>
+<div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">open</span> <span class="nn">System</span>
+<span class="k">open</span> <span class="nn">System.Reflection</span>
+
+<span class="k">let</span> <span class="nv">private</span> <span class="n">ts</span>  <span class="o">=</span> <span class="nn">Array</span><span class="p">.</span><span class="n">zeroCreate</span><span class="o">&lt;</span><span class="n">Type</span><span class="o">&gt;</span> <span class="mi">0</span>
+
+<span class="o">[&lt;</span><span class="n">GeneralizableValue</span><span class="o">&gt;]</span>
 <span class="k">let</span> <span class="nv">getsig</span><span class="o">&lt;</span><span class="k">&#39;</span><span class="n">a</span><span class="o">&gt;</span> <span class="o">=</span>
     <span class="k">let</span> <span class="nv">t</span> <span class="o">=</span> <span class="n">typeof</span><span class="o">&lt;</span><span class="k">&#39;</span><span class="n">a</span><span class="o">&gt;</span>
     <span class="k">let</span> <span class="nv">f</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">GetConstructor</span><span class="o">(</span>
