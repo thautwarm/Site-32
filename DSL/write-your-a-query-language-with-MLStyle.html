@@ -561,7 +561,7 @@ can go back and refer to what you want.</p>
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="n">generate_select</span><span class="p">,</span> <span class="n">args</span><span class="p">),</span> <span class="p">(</span><span class="n">generate_where</span><span class="p">,</span> <span class="n">args2</span><span class="p">),</span> <span class="p">(</span><span class="n">generate_select</span><span class="p">,</span> <span class="n">args3</span><span class="p">)]</span>
 </pre></div>
 </div>
-<p>FYI, Some constants and interfaces are defined at
+<p>FYI, some constants and interfaces are defined at
 <a class="reference external" href="https://github.com/thautwarm/MLStyle-Playground/blob/master/MQuery/MQuery.ConstantNames.jl">MQuery.ConstantNames.jl</a>
 and
 <a class="reference external" href="https://github.com/thautwarm/MLStyle-Playground/blob/master/MQuery/MQuery.Interfaces.jl">MQuery.Interfaces.jl</a>,
@@ -894,7 +894,7 @@ pattern matchings on ASTs.</p>
 <span class="k">end</span>
 </pre></div>
 </div>
-<p>Above case is for handling with regular expression which might contains
+<p>Above case is for handling with regular expressions which might contain
 something like <code class="docutils literal notranslate"><span class="pre">_.x</span></code>, <code class="docutils literal notranslate"><span class="pre">_.(1)</span></code> or <code class="docutils literal notranslate"><span class="pre">_.&quot;is</span> <span class="pre">ruby&quot;</span></code>.</p>
 <p>Meanwhile, <code class="docutils literal notranslate"><span class="pre">=&gt;</span></code> allows you to alias the expression with the name you
 prefer. Note that, in terms of <code class="docutils literal notranslate"><span class="pre">&#64;select</span> <span class="pre">(_.foo</span> <span class="pre">=&gt;</span> <span class="pre">:a)</span> <span class="pre">=&gt;</span> <span class="pre">a</span></code>, the first

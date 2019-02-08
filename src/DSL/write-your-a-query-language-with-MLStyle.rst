@@ -481,7 +481,7 @@ Given following codes,
 
     [(generate_select, args), (generate_where, args2), (generate_select, args3)]
 
-FYI, Some constants and interfaces are defined at
+FYI, some constants and interfaces are defined at
 `MQuery.ConstantNames.jl <https://github.com/thautwarm/MLStyle-Playground/blob/master/MQuery/MQuery.ConstantNames.jl>`__
 and
 `MQuery.Interfaces.jl <https://github.com/thautwarm/MLStyle-Playground/blob/master/MQuery/MQuery.Interfaces.jl>`__,
