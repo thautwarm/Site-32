@@ -9,8 +9,8 @@ DataFramesMeta.jl, etc., each of which reaches the partial or full
 features of a query language.
 
 This document is provided for you to create a concise and efficient
-implementation of query langauge, which is a way for me to exhibit the
-power of MLStyle.jl on AST manipulations. Additionally, I think this
+implementation of query language, which is a way for me to exhibit the
+power of `MLStyle.jl <https://github.com/thautwarm/MLStyle.jl>`_ on AST manipulations. Additionally, I think this
 tutorial can be also extremely helpful to those who're developing query
 languages for Julia.
 
