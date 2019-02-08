@@ -109,7 +109,7 @@ Before implementing code generation, we should have a sketch about the
 target. The **target** here means the final shape of the code generated
 from query sentences.
 
-'ll take you to the travel within the inference about the final shape of
+I'll take you to the travel within the inference about the final shape of
 code generation.
 
 Firstly, for we want this:
