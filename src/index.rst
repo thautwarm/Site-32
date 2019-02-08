@@ -19,6 +19,25 @@ Site-32 Index Page
 
     <br>
     <div class="panel panel-success">
+      <div class="panel-heading">Write You A Query Language</div>
+      <div class="panel-body">
+        keywords: EDSL&nbsp;,&nbsp;Julia&nbsp;,&nbsp;Query Language&nbsp;,&nbsp;Pattern Macthing&nbsp;,&nbsp;MLStyle.jl&nbsp;,&nbsp;Tutorial
+      </div>
+
+      <div class="panel-footer">
+        <a href="./DSL/write-your-a-query-language-with-MLStyle.html">Check</a>
+        <span class="pull-right">Fri, February 08, 2019.&nbsp; 11: 04 </span>
+      </div>
+    </div>
+
+
+
+.. raw:: html
+
+
+
+    <br>
+    <div class="panel panel-info">
       <div class="panel-heading">Compelling Higher Kinded Types and Type Classes in F#</div>
       <div class="panel-body">
         keywords: F#&nbsp;,&nbsp;Higher Kinded Types&nbsp;,&nbsp;Type Class&nbsp;,&nbsp;Ad-hoc Polymorphism&nbsp;,&nbsp;Active Patterns&nbsp;,&nbsp;Static Resolved Type Parameters&nbsp;,&nbsp;Implicits
@@ -37,7 +56,7 @@ Site-32 Index Page
 
 
     <br>
-    <div class="panel panel-info">
+    <div class="panel panel-warning">
       <div class="panel-heading">Higher Kinded Types</div>
       <div class="panel-body">
         keywords: Higher-Kinded-Types&nbsp;,&nbsp;Introduction
@@ -56,7 +75,7 @@ Site-32 Index Page
 
 
     <br>
-    <div class="panel panel-warning">
+    <div class="panel panel-danger">
       <div class="panel-heading">Type Classes</div>
       <div class="panel-body">
         keywords: Type Class&nbsp;,&nbsp;Introduction&nbsp;,&nbsp;Polymorphism
@@ -75,7 +94,7 @@ Site-32 Index Page
 
 
     <br>
-    <div class="panel panel-danger">
+    <div class="panel panel-success">
       <div class="panel-heading">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</div>
       <div class="panel-body">
         keywords: Programming language&nbsp;,&nbsp;Higher Kinded Types&nbsp;,&nbsp;Type Class&nbsp;,&nbsp;OCaml&nbsp;,&nbsp;Ad-hoc Polymorphism

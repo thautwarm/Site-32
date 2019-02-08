@@ -2,6 +2,8 @@
 DSL
 ==============
 
-.. code ::
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
-    Emmmm
+   write-your-a-query-language-with-MLStyle.rst
