@@ -7,7 +7,7 @@
     <title>Write You A Query Language &#8212; Site-32  documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -174,7 +174,7 @@ DataFramesMeta.jl, etc., each of which reaches the partial or full
 features of a query language.</p>
 <p>This document is provided for you to create a concise and efficient
 implementation of query language, which is a way for me to exhibit the
-power of <a class="reference external" href="https://github.com/thautwarm/MLStyle.jl">MLStyle.jl</a> on AST manipulations. Additionally, I think this
+power of MLStyle.jl on AST manipulations. Additionally, I think this
 tutorial can be also extremely helpful to those who’re developing query
 languages for Julia.</p>
 <div class="section" id="definition-of-syntaxes">
@@ -192,36 +192,24 @@ Julia.</p>
 </div>
 <p>A <code class="docutils literal notranslate"><span class="pre">selector</span></code> could be one of the following cases.</p>
 <ol class="arabic">
-<li><p class="first">select the field <code class="docutils literal notranslate"><span class="pre">x</span></code> / select the 1-fst field.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="o">.</span><span class="n">x</span>
-<span class="n">_</span><span class="o">.</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
+<li><p class="first">select the field <code class="docutils literal notranslate"><span class="pre">x</span></code> / select the 1-fst field</p>
+<p><code class="docutils literal notranslate"><span class="pre">_.x</span> <span class="pre">/</span> <span class="pre">_.(1)</span></code></p>
 </li>
 <li><p class="first">select the field <code class="docutils literal notranslate"><span class="pre">x</span></code>(to support field name that’re not an
 identifier)</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="o">.</span><span class="s2">&quot;x&quot;</span>
-</pre></div>
-</div>
+<p><code class="docutils literal notranslate"><span class="pre">_.&quot;x&quot;</span></code></p>
 </li>
 <li><p class="first">select an expression binded as <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">_.x</span></code>, where <code class="docutils literal notranslate"><span class="pre">x</span></code> is from
 current scope</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">+</span> <span class="n">_</span><span class="o">.</span><span class="n">x</span>
-</pre></div>
-</div>
+<p><code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">_.x</span></code></p>
 </li>
 <li><p class="first">select something and bind it to symbol <code class="docutils literal notranslate"><span class="pre">a</span></code></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">selector</span> <span class="mi">1</span><span class="o">-</span><span class="mi">3</span><span class="o">&gt;</span> <span class="o">=&gt;</span> <span class="n">a</span>
-<span class="o">&lt;</span><span class="n">selector</span> <span class="mi">1</span><span class="o">-</span><span class="mi">3</span><span class="o">&gt;</span> <span class="o">=&gt;</span> <span class="s2">&quot;a&quot;</span>
-</pre></div>
-</div>
+<p><code class="docutils literal notranslate"><span class="pre">&lt;selector</span> <span class="pre">1-3&gt;</span> <span class="pre">=&gt;</span> <span class="pre">a</span> <span class="pre">/</span> <span class="pre">&lt;selector</span> <span class="pre">1-3&gt;</span> <span class="pre">=&gt;</span> <span class="pre">&quot;a&quot;</span></code></p>
 </li>
 <li><p class="first">select any field <code class="docutils literal notranslate"><span class="pre">col</span></code> that
 <code class="docutils literal notranslate"><span class="pre">predicate1(col,</span> <span class="pre">args1...)</span> <span class="pre">&amp;&amp;</span> <span class="pre">!predicate2(col,</span> <span class="pre">args2...)</span> <span class="pre">&amp;&amp;</span> <span class="pre">...</span></code> is
 true.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>_.(predicate1(args...), !predicate2(args2..., ), ...)
-</pre></div>
-</div>
+<p><code class="docutils literal notranslate"><span class="pre">_.(predicate1(args...),</span> <span class="pre">!predicate2(args2...,</span> <span class="pre">),</span>&#160;&#160; <span class="pre">...)</span></code></p>
 </li>
 </ol>
 <p>With E-BNF notation, we can formalize the synax,</p>
@@ -241,11 +229,10 @@ true.</p>
 </div>
 <p>A <code class="docutils literal notranslate"><span class="pre">predicate</span></code> is a <code class="docutils literal notranslate"><span class="pre">QueryExpr</span></code>, but shouldn’t be evaluated to a
 boolean.</p>
-<p>A <code class="docutils literal notranslate"><span class="pre">mapping</span></code> is ap <code class="docutils literal notranslate"><span class="pre">QueryExpr</span></code>, but shouldn’t be evaluated to a
+<p>A <code class="docutils literal notranslate"><span class="pre">mapping</span></code> is a <code class="docutils literal notranslate"><span class="pre">QueryExpr</span></code>, but shouldn’t be evaluated to a
 nothing.</p>
 <p>FYI, here’re some valid instances about <code class="docutils literal notranslate"><span class="pre">selector</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>_.foo,
-_.(!1),
 _.(startswith(&quot;bar&quot;), !endswith(&quot;foo&quot;)),
 x + _.foo,
 let y = _.foo + y; y + _.(2) end
@@ -256,9 +243,9 @@ let y = _.foo + y; y + _.(2) end
 <h2>Codegen Target<a class="headerlink" href="#codegen-target" title="Permalink to this headline">¶</a></h2>
 <p>Before implementing code generation, we should have a sketch about the
 target. The <strong>target</strong> here means the final shape of the code generated
-from query sentences.</p>
-<p>I’ll take you to the travel within the inference about the final shape of
-code generation.</p>
+from a sequence of query clauses.</p>
+<p>I’ll take you to the travel within the inference about the final shape
+of code generation.</p>
 <p>Firstly, for we want this:</p>
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">|&gt;</span>
 <span class="nd">@select</span> <span class="n">_</span><span class="o">.</span><span class="n">foo</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span> <span class="n">_</span><span class="o">.</span><span class="n">bar</span>
@@ -476,12 +463,12 @@ if not necessary.</p>
 lazy computation of the query. We can resume this tuple to the
 corresponding types, for instance,</p>
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="p">(</span><span class="n">ARG</span> <span class="o">::</span> <span class="n">DataFrame</span><span class="p">)</span>
-    <span class="p">(</span><span class="n">IN_FIELDS</span><span class="p">,</span> <span class="n">SOURCE</span><span class="p">)</span> <span class="o">=</span> <span class="k">let</span> <span class="n">IN_FIELDS</span><span class="p">,</span> <span class="n">SOURCE</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="p">(</span><span class="n">IN_FIELDS</span><span class="p">,</span> <span class="n">IN_SOURCE</span><span class="p">)</span> <span class="o">=</span> <span class="k">let</span> <span class="n">IN_FIELDS</span><span class="p">,</span> <span class="n">IN_SOURCE</span> <span class="o">=</span> <span class="o">...</span>
         <span class="o">...</span>
     <span class="k">end</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="kt">Tuple</span><span class="p">([]</span> <span class="k">for</span> <span class="n">_</span> <span class="kp">in</span> <span class="n">IN_FIELDS</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">each</span> <span class="kp">in</span> <span class="n">SOURCE</span>
+    <span class="k">for</span> <span class="n">each</span> <span class="kp">in</span> <span class="n">IN_SOURCE</span>
         <span class="n">push!</span><span class="o">.</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">each</span><span class="p">)</span>
     <span class="k">end</span>
     <span class="n">DataFrame</span><span class="p">(</span><span class="n">collect</span><span class="p">(</span><span class="n">res</span><span class="p">),</span> <span class="n">IN_FIELDS</span><span class="p">)</span>
@@ -509,8 +496,8 @@ there’re 2 problems if you try this:</p>
 <li>If the column is empty, emmmm…</li>
 <li>Calculating the super type of all elements causes unaffordable cost!</li>
 </ul>
-<p>So, I’ll introduce a new requirement <code class="docutils literal notranslate"><span class="pre">IN_TYPES</span></code> of the query’s code
-generation.</p>
+<p>Yet, I’ll introduce a new requirement <code class="docutils literal notranslate"><span class="pre">IN_TYPES</span></code> of the query’s code
+generation, which perfectly solves problems of column types.</p>
 <p>Let’s have a look at code generation for <code class="docutils literal notranslate"><span class="pre">select</span></code> after introducing
 the <code class="docutils literal notranslate"><span class="pre">IN_TYPES</span></code>.</p>
 <p>Given that</p>
@@ -543,13 +530,19 @@ the <code class="docutils literal notranslate"><span class="pre">IN_TYPES</span>
 </pre></div>
 </div>
 <p>For <code class="docutils literal notranslate"><span class="pre">groupby</span></code>, it could be a bit more complex, but it does nothing new
-towards what <code class="docutils literal notranslate"><span class="pre">select</span></code> does. You can check the repo for codes.</p>
+towards what <code class="docutils literal notranslate"><span class="pre">select</span></code> does. You can check <a class="reference external" href="https://github.com/thautwarm/MLStyle-Playground/tree/master/MQuery">the
+repo</a>
+for codes.</p>
 </div>
 <div class="section" id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
-<p>Firstly, we should define the constants and help functions, you can jump
-over here, and when you have problems with your following reading, you
-can go back and refer to what you want.</p>
+<p>Firstly, we should define something like constants and helper functions.</p>
+<p>FYI, some constants and interfaces are defined at
+<a class="reference external" href="https://github.com/thautwarm/MLStyle-Playground/blob/master/MQuery/MQuery.ConstantNames.jl">MQuery.ConstantNames.jl</a>
+and
+<a class="reference external" href="https://github.com/thautwarm/MLStyle-Playground/blob/master/MQuery/MQuery.Interfaces.jl">MQuery.Interfaces.jl</a>,
+you might want to refer to them if any unknown symbol prevents you from
+understanding this sketch.</p>
 <p>Then we should extract all clauses from a piece of given julia codes.</p>
 <p>Given following codes,</p>
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@select</span> <span class="n">args1</span><span class="p">,</span>
@@ -561,12 +554,6 @@ can go back and refer to what you want.</p>
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="n">generate_select</span><span class="p">,</span> <span class="n">args</span><span class="p">),</span> <span class="p">(</span><span class="n">generate_where</span><span class="p">,</span> <span class="n">args2</span><span class="p">),</span> <span class="p">(</span><span class="n">generate_select</span><span class="p">,</span> <span class="n">args3</span><span class="p">)]</span>
 </pre></div>
 </div>
-<p>FYI, some constants and interfaces are defined at
-<a class="reference external" href="https://github.com/thautwarm/MLStyle-Playground/blob/master/MQuery/MQuery.ConstantNames.jl">MQuery.ConstantNames.jl</a>
-and
-<a class="reference external" href="https://github.com/thautwarm/MLStyle-Playground/blob/master/MQuery/MQuery.Interfaces.jl">MQuery.Interfaces.jl</a>,
-you might want to refer to them if any unknown symbol prevent you from
-understanding this sketch.</p>
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">generate_select</span>
 <span class="k">end</span>
 <span class="k">function</span> <span class="n">generate_where</span>
@@ -611,6 +598,17 @@ understanding this sketch.</p>
     <span class="k">end</span>
     <span class="k">end</span>
 <span class="k">end</span>
+</pre></div>
+</div>
+<p>The core is <code class="docutils literal notranslate"><span class="pre">flatten_macros</span></code>, it destructures <code class="docutils literal notranslate"><span class="pre">macrocall</span></code>
+expressions and then we can simply flatten the <code class="docutils literal notranslate"><span class="pre">macrocall</span></code>s.</p>
+<p>Next, we could have a common behaviour of code generation.</p>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">Field</span>
+    <span class="n">name</span>      <span class="o">::</span> <span class="kt">Any</span>    <span class="c"># an expr to represent the field name from IN_FIELDS.</span>
+    <span class="n">make</span>      <span class="o">::</span> <span class="kt">Any</span>    <span class="c"># an expression to assign the value into `var` like, `RECORD[idx_of_foo]`.</span>
+    <span class="n">var</span>       <span class="o">::</span> <span class="kt">Symbol</span> <span class="c"># a generated symbol via mangling</span>
+    <span class="n">typ</span>       <span class="o">::</span> <span class="kt">Any</span>    <span class="c"># an expression to get the type of the field like, `IN_TYPES[idx_of_foo]`.</span>
+<span class="k">end</span>
 
 <span class="k">function</span> <span class="n">query_routine</span><span class="p">(</span><span class="n">assigns</span>            <span class="o">::</span> <span class="n">OrderedDict</span><span class="p">{</span><span class="kt">Symbol</span><span class="p">,</span> <span class="kt">Any</span><span class="p">},</span>
                        <span class="n">fn_in_fields</span>       <span class="o">::</span> <span class="kt">Vector</span><span class="p">{</span><span class="n">Field</span><span class="p">},</span>
@@ -643,10 +641,20 @@ understanding this sketch.</p>
 <span class="k">end</span>
 </pre></div>
 </div>
+<p>In fact, <code class="docutils literal notranslate"><span class="pre">query_routine</span></code> generates code like</p>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">IN_FIELDS</span><span class="p">,</span> <span class="n">IN_TYPES</span><span class="p">,</span> <span class="n">IN_SOURCE</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">inner</span> <span class="n">query</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="n">idx_of_foo</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="n">idx_of_bar</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+    <span class="nd">@inline</span> <span class="n">FN</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="o">...</span>
+
+    <span class="o">...</span>
+<span class="k">end</span>
+</pre></div>
+</div>
 <p>Then, we should generate the final code from such a sequence given as
 the return of <code class="docutils literal notranslate"><span class="pre">flatten_macros</span></code>.</p>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">get_records</span></code>, <code class="docutils literal notranslate"><span class="pre">get_fields</span></code> and <code class="docutils literal notranslate"><span class="pre">build_result</span></code> should be
-implemented by your own to support the datatypes you want to query on.</p>
+implemented by your own to support datatypes that you want to query on.</p>
 <div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">codegen</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
     <span class="n">ops</span> <span class="o">=</span> <span class="n">flatten_macros</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
     <span class="k">let</span> <span class="n">rec</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span> <span class="o">=</span>
@@ -684,15 +692,9 @@ implemented by your own to support the datatypes you want to query on.</p>
 </pre></div>
 </div>
 <p>Then, we need a visitor to transform the patterns shaped as <code class="docutils literal notranslate"><span class="pre">_.foo</span></code>
-inside an expression to <code class="docutils literal notranslate"><span class="pre">RECORD[idx_of_foo]</span></code>.</p>
-<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">Field</span>
-    <span class="n">name</span>      <span class="o">::</span> <span class="kt">Any</span>    <span class="c"># an expr to represent the field name from IN_FIELDS.</span>
-    <span class="n">make</span>      <span class="o">::</span> <span class="kt">Any</span>    <span class="c"># an expression to assign the value into `var` like, `RECORD[idx_of_foo]`.</span>
-    <span class="n">var</span>       <span class="o">::</span> <span class="kt">Symbol</span> <span class="c"># a generated symbol via mangling</span>
-    <span class="n">typ</span>       <span class="o">::</span> <span class="kt">Any</span>    <span class="c"># an expression to get the type of the field like, `IN_TYPES[idx_of_foo]`.</span>
-<span class="k">end</span>
-
-<span class="c"># visitor to process the pattern `_.x, _,&quot;x&quot;, _.(1)` inside an expression</span>
+inside an expression to a mangled symbol whose value is
+<code class="docutils literal notranslate"><span class="pre">RECORD[idx_of_foo]</span></code>.</p>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="c"># visitor to process the pattern `_.x, _,&quot;x&quot;, _.(1)` inside an expression</span>
 <span class="k">function</span> <span class="n">mk_visit</span><span class="p">(</span><span class="n">fields</span> <span class="o">::</span> <span class="kt">Dict</span><span class="p">{</span><span class="kt">Any</span><span class="p">,</span> <span class="n">Field</span><span class="p">},</span> <span class="n">assigns</span> <span class="o">::</span> <span class="n">OrderedDict</span><span class="p">{</span><span class="kt">Symbol</span><span class="p">,</span> <span class="kt">Any</span><span class="p">})</span>
     <span class="n">visit</span> <span class="o">=</span> <span class="n">expr</span> <span class="o">-&gt;</span>
     <span class="nd">@match</span> <span class="n">expr</span> <span class="k">begin</span>
@@ -735,7 +737,7 @@ inside an expression to <code class="docutils literal notranslate"><span class="
 </pre></div>
 </div>
 <p>You might not be able to understand what the meanings of <code class="docutils literal notranslate"><span class="pre">fields</span></code> and
-<code class="docutils literal notranslate"><span class="pre">assigns</span></code> are, and I’m to explain it for you.</p>
+<code class="docutils literal notranslate"><span class="pre">assigns</span></code> are, don’t worry too much, and I’m to explain it for you.</p>
 <ul>
 <li><p class="first"><code class="docutils literal notranslate"><span class="pre">fields</span> <span class="pre">:</span> <span class="pre">Dict{Any,</span> <span class="pre">Field}</span></code></p>
 <p>Think about you want such a query <code class="docutils literal notranslate"><span class="pre">&#64;select</span> <span class="pre">_.foo</span> <span class="pre">*</span> <span class="pre">2,</span> <span class="pre">_.foo</span> <span class="pre">+</span> <span class="pre">2</span></code>,
@@ -924,10 +926,17 @@ this article, so you might want to check them at
 <span class="p">)</span>
 
 <span class="n">df</span> <span class="o">|&gt;</span>
-<span class="nd">@where</span> <span class="o">!</span><span class="n">startswith</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;Java&quot;</span><span class="p">)</span>
-<span class="nd">@groupby</span> <span class="n">_</span><span class="o">.</span><span class="s">&quot;Type checking&quot;</span> <span class="o">=&gt;</span> <span class="n">TC</span>
-<span class="nd">@where</span> <span class="n">TC</span> <span class="o">===</span> <span class="n">Dynamic</span> <span class="o">||</span> <span class="n">endswith</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;#&quot;</span><span class="p">)</span>
-<span class="nd">@select</span> <span class="n">join</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot; and &quot;</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">result</span>
+<span class="nd">@where</span> <span class="o">!</span><span class="n">startswith</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;Java&quot;</span><span class="p">),</span>
+<span class="nd">@groupby</span> <span class="n">_</span><span class="o">.</span><span class="s">&quot;Type checking&quot;</span> <span class="o">=&gt;</span> <span class="n">TC</span><span class="p">,</span> <span class="n">endswith</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;#&quot;</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">is_sharp</span><span class="p">,</span>
+<span class="nd">@having</span> <span class="n">TC</span> <span class="o">===</span> <span class="n">Dynamic</span> <span class="o">||</span> <span class="n">is_sharp</span><span class="p">,</span>
+<span class="nd">@select</span> <span class="n">join</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot; and &quot;</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">result</span><span class="p">,</span> <span class="n">_</span><span class="o">.</span><span class="n">TC</span> <span class="o">=&gt;</span> <span class="n">TC</span>
+
+<span class="c"># 2×2 DataFrame</span>
+<span class="c"># │ Row │ result                    │ TC        │</span>
+<span class="c"># │     │ String                    │ TypeChec… │</span>
+<span class="c"># ├─────┼───────────────────────────┼───────────┤</span>
+<span class="c"># │ 1   │ Julia and Ruby and Python │ Dynamic   │</span>
+<span class="c"># │ 2   │ C# and F#                 │ Static    │</span>
 </pre></div>
 </div>
 <p>outputs</p>
@@ -954,7 +963,7 @@ this article, so you might want to check them at
     </p>
     <p>
         &copy; Copyright 2019, thautwarm.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.<br/>
     </p>
   </div>
 </footer>
