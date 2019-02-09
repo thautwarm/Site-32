@@ -208,7 +208,7 @@ current scope</p>
 </li>
 <li><p class="first">select any field <code class="docutils literal notranslate"><span class="pre">col</span></code> that
 <code class="docutils literal notranslate"><span class="pre">predicate1(col,</span> <span class="pre">args1...)</span> <span class="pre">&amp;&amp;</span> <span class="pre">!predicate2(col,</span> <span class="pre">args2...)</span> <span class="pre">&amp;&amp;</span> <span class="pre">...</span></code> is
-true.</p>
+true</p>
 <p><code class="docutils literal notranslate"><span class="pre">_.(predicate1(args...),</span> <span class="pre">!predicate2(args2...,</span> <span class="pre">),</span>&#160;&#160; <span class="pre">...)</span></code></p>
 </li>
 </ol>
@@ -233,6 +233,7 @@ boolean.</p>
 nothing.</p>
 <p>FYI, here’re some valid instances about <code class="docutils literal notranslate"><span class="pre">selector</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>_.foo,
+_.(!1),
 _.(startswith(&quot;bar&quot;), !endswith(&quot;foo&quot;)),
 x + _.foo,
 let y = _.foo + y; y + _.(2) end
@@ -930,21 +931,15 @@ this article, so you might want to check them at
 <span class="nd">@groupby</span> <span class="n">_</span><span class="o">.</span><span class="s">&quot;Type checking&quot;</span> <span class="o">=&gt;</span> <span class="n">TC</span><span class="p">,</span> <span class="n">endswith</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;#&quot;</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">is_sharp</span><span class="p">,</span>
 <span class="nd">@having</span> <span class="n">TC</span> <span class="o">===</span> <span class="n">Dynamic</span> <span class="o">||</span> <span class="n">is_sharp</span><span class="p">,</span>
 <span class="nd">@select</span> <span class="n">join</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot; and &quot;</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">result</span><span class="p">,</span> <span class="n">_</span><span class="o">.</span><span class="n">TC</span> <span class="o">=&gt;</span> <span class="n">TC</span>
-
-<span class="c"># 2×2 DataFrame</span>
-<span class="c"># │ Row │ result                    │ TC        │</span>
-<span class="c"># │     │ String                    │ TypeChec… │</span>
-<span class="c"># ├─────┼───────────────────────────┼───────────┤</span>
-<span class="c"># │ 1   │ Julia and Ruby and Python │ Dynamic   │</span>
-<span class="c"># │ 2   │ C# and F#                 │ Static    │</span>
 </pre></div>
 </div>
 <p>outputs</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>1×1 DataFrame
-│ Row │ result                    │
-│     │ String                    │
-├─────┼───────────────────────────┤
-│ 1   │ Julia and Ruby and Python │
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>2×2 DataFrame
+│ Row │ result                    │ TC        │
+│     │ String                    │ TypeChec… │
+├─────┼───────────────────────────┼───────────┤
+│ 1   │ Julia and Ruby and Python │ Dynamic   │
+│ 2   │ C# and F#                 │ Static    │
 </pre></div>
 </div>
 </div>
