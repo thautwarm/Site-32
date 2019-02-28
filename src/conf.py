@@ -90,10 +90,10 @@ todo_include_todos = True
 Topics = [
     'PL',
     'Compiler',
-    'Innovation',
     'Design',
     'DSL',
-    'Fiction'
+    'Fiction',
+    'Others',
 ]
 
 import sphinx_bootstrap_theme

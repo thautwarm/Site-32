@@ -17,7 +17,7 @@ Site-32 Resources
 
    PL/index.rst
 
-   Innovation/index.rst
+   Others/index.rst
 
 
 
