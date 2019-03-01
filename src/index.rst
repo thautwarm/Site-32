@@ -1,16 +1,8 @@
 Site-32 Index Page
 =======================
 
-在人们为一个主题争论时, 应该避免让自己的动机堕落为于此胜出。
+**Driven by the desire of making a difference**.
 
-由于人类自身固有的局限, 不能永恒地保持先进甚至正确也是理所当然的事情。
-
-于是, 能够坦然地和他人交流, 从中学习, 不断改进, 自然比起赢得一场争辩更有价值, 更体现出
-一种极为稀缺且令人向往的精神。
-
-.. image:: static/bg.jpg
-    :width: 800
-    :align: center
 
 
 .. raw:: html
