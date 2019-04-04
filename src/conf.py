@@ -90,7 +90,7 @@ todo_include_todos = True
 Topics = [
     'PL',
     # 'Compiler',
-    # 'Design',
+    'Design',
     'DSL',
     # 'Fiction',
     'Others',

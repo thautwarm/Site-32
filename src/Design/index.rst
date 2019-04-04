@@ -7,4 +7,4 @@ Design
    :maxdepth: 2
    :caption: Contents:
 
-   组合的道理.rst
+   A-Guide-To-Functional-Julia.rst
