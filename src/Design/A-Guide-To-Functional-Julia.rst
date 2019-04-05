@@ -335,39 +335,184 @@ Other Useful Knowledge for Julia Macros
    ``@eval moduleX expr``.
 
 3. Although we already know macros are functions, something need to be stressed is,
-  there're 2 implicit arguments of a macro: ``__module__`` and ``__source__``. ``__module`` is
-  the module you invoke the macro in, ``__source__`` is the line number node that denotes the number of the line
-  you invoke the macro.
+   there're 2 implicit arguments of a macro: ``__module__`` and ``__source__``. ``__module`` is
+   the module you invoke the macro in, ``__source__`` is the line number node that denotes the number of the line
+   you invoke the macro.
 
 
-Limitation of Julia
------------------------------------
+The Unprecented Step of AST Manipulations
+--------------------------------------------
+
+Julia does a lot on ASTs, analysis, substitution, rewriting, and so on.
+
+As we've introduced the laws of AST interpolations, you might know
+that we can generate ASTs like following codes instead of in purely constructive manner.
+
+At here, I'd introduce `MLStyle https://thautwarm.github.io/MLStyle.jl/latest`_'s AST manipulations to you via giving some impressive examples.
+
+Think about a case that you'd like to collect positional arguments and keyword arguments
+from some function callsites.
+
+.. code-block:: Julia
+
+  get_arg_info(:(f(a, b, c = 1; b = 2))) # => ([:a, :b, :(c = 1)], [:(b = 2)])
+  get_arg_info(:(f(args...; kwargs...))) # => ([:(args...)], [:(kwargs...)])
+  get_arg_info(:(f(a, b, c))) # => ([:a, :b, :c], [])
+
+How will you achieve this task?
+
+Attention! No matter how you'll deal with it, think about whether you need to
+get a prerequisite about Julia AST structures? Say, you have to know ``Expr``(a.k.a
+one of the most important Julia AST types) has 2 fields, ``head`` and ``args``,
+or you have to understand the structure of ``a.b`` is
+
+.. code ::
+
+  Expr
+  head: Symbol .
+  args: Array{Any}((2,))
+    1: Symbol a
+    2: QuoteNode
+      value: Symbol b
+
+instead of
+
+.. code ::
+
+  Expr
+  head: Symbol .
+  args: Array{Any}((2,))
+    1: Symbol a
+    2: Symbol b
 
 
-Absence of Function Type
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Limitation: Absence of Function Types
+---------------------------------------
 
 Julia is an ideal language for quite many domains but, not for all.
 
 For people who're used to functional programming languages, especially for
 the groups that tilts the advanced type-based polymorphisms(type classes' instance resolution,
-implicit type variables, higher-kinded-polymorphisms).
+implicit type variables, higher-kinded-polymorphisms), there's an essential necessity of the
+dedicated function type.
 
-In academic areas of programming, types are essential. I've attempted a lot with my friends to emulate
-those advanced type-based polymorphisms in Julia, but finally we noticed that without implicit inferences
-on functions, only dynamic typing and multiple dispatch are far from being sufficient.
+On and off, I've attempted a lot with my friends to emulate those advanced type-based polymorphisms
+in Julia, but finally we noticed that without implicit inferences on functions, only
+dynamic typing and multiple dispatch are far from being sufficient.
 
-In Julia, each function has its own type which is a subtype of ``Function``.
+In Julia, each function has its own type which is a subtype of ``Function``, which prevents
+making abstractions for functions from common behaviours in type level. The worse is, these
+abstractions on functions in type level have been proven pervasive and fairly useful by academic
+world for about 10000 year, and perform a role like arithmetic operation in our educations.
 
-In Haskell, the type signature of a function does help in semantics:
+In Haskell, the type signature of a function does help in semantics side.
+Following Haskell code allows users to automatically generate tests for a given
+type/domain by taking advantage of properties/traits of the type/domain.
 
 .. code-block:: Haskell
 
+  import Control.Arrow
+  import Data.Kind
 
+  newtype MkTest (c :: * -> Constraint) a = MkTest {runTest :: a}
 
+  class TestCase (c :: * -> Constraint) a where
+      samples      :: c a => MkTest c [a]
+      testWith     :: c a => (a -> Bool) -> MkTest c [(a, Bool)]
+      testWith logic =
+          MkTest $ map (id &&& logic) seq
+          where
+              seq :: [a]
+              seq = runTest (samples :: MkTest c [a])
 
+  type TestOn c a = c a => (a -> Bool) -> MkTest c [(a, Bool)]
 
+Now I'm to illustrate how Haskell achieves a perfectly extensible and reasonable test generator, through
+following instances, using function types to achieve polymorphisms that absolutely Julia cannot make so far.
 
+.. code-block:: Haskell
+
+  instance TestCase Enum a where
+      samples = MkTest . enumFrom . toEnum $ 0
+
+  instance TestCase Bounded a where
+      samples = MkTest [maxBound, minBound]
+
+We has now made instances for ``TestCase`` on the constraints ``Enum`` and ``Bounded``.
+
+For the readers who're not that familiar to Haskell, you could take constraints in
+Haskell as traits or loose-coupled interfaces.
+
+Once a type is under constraint ``Enum``, you can enumerate its values, plus
+``Bounded`` is a constraint capable of making sure that the maximum and minimum are
+available(via ``maxBound`` and ``minBound``). ``instance TestCase Enum a``
+denotes for all concrete type ``a``, make the constraint `TestCase` on
+constraint ``Enum`` and type ``a``. Yes, ``TestCase`` is also a constraint,
+a constraint among other constraints and types.
+
+In fact, our test generator has been already finished, a bit too fast, right?
+That's how Haskell matters: pragmatic, productive.
+
+We can then make tests with above codes, taking advantage of properties/traits of our data types:
+
+.. code-block:: Haskell
+
+  onEnumerable :: TestOn Enum a
+  onEnumerable logic = testWith logic
+
+  intTest :: Int -> Int
+  intTest x = x ^ 2 + 4 * x + 4 == (x - 2)^2
+
+  boolTest :: Bool -> Bool
+  boolTest x = True
+
+  main = do
+    putStrLn . show . take 10 . runTest $ onEnumerable intTest
+    putStrLn . show . runTest $ onEnumerable boolTest
+    return ()
+
+which outputs
+
+.. code ::
+
+   [(0,True),(1,True),(2,True),(3,True),(4,True),(5,True),(6,True),(7,True),(8,True),(9,True)]
+   [(False, True), (True, True)]
+
+Take care that the I did nothing to generate test sets. I solely said that I want to test data
+types on its enumerable traits(``onEnumerable``), then passed a function typed ``a -> Bool`` to
+``onEnumerable`` to supplement test logics, all tasks are then finished.
+
+Turn back to Julia side, although Haskell does a lot implcits, multiple dispatch can often emulate
+them successfully(without strongly typed and static checking though). The problem is at the function
+types, as we cannot take advantage of their type information to engage dispatching.
+
+Some tentative but incomplete workaround could be made through following idea:
+
+.. code-block:: Julia
+
+  import Base: convert
+  struct Fn{Arg, Ret, JlFuncType}
+      f :: JlFuncType
+  end
+
+  @inline Fn{Arg, Ret}(f :: JlFuncType) where {Arg, Ret, JlFuncType} = Fn{Arg, Ret, JlFuncType}(f)
+
+  @generated function (f :: Fn{Arg, Ret, JlFuncType})(a :: Arg) :: Ret where {Arg, Ret, JlFuncType}
+    quote
+        $(Expr(:meta, :inline))
+        f.f(a)
+    end
+  end
+
+  convert(Fn{Arg, Ret, JlFuncType}, f :: JlFuncType) where {Arg, Ret, JlFuncType} = Fn{Arg, Ret, JlFuncType}(f)
+
+This is considerably efficient function type implementation according to `FunctionWrappers.jl <https://github.com/yuyichao/FunctionWrappers.jl>`_,
+However, the problem is that its usage is quite unfriendly for peope have to manually annotate disturbingly much.
+
+To address the polymorphism problems, the major methods from current academic world won't work in Julia, and
+you should pave the way for a LISP-flavored "polymorphism", in other words, use macros frequently.
 
 
 

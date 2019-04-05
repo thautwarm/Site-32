@@ -1,5 +1,11 @@
 using MLStyle
 
+rmlines = @λ begin
+    e :: Expr           -> Expr(e.head, filter(x -> x !== nothing, map(rmlines, e.args))...)
+      :: LineNumberNode -> nothing
+    a                   -> a
+end
+
 function setup_dbg(exprs, line, debug_mod)
     quote
         $line
@@ -67,16 +73,19 @@ function debug(expr, line, debug_mod)
 end
 
 macro debug(expr, debug_mod)
-    ex = debug(expr, __source__, eval(debug_mod))
+
+    ex = debug(expr, __source__, debug_mod)
     esc(ex)
 end
 
 
-module Debugger
-end
 
-@debug function f(z)
-        !z
-end Debugger
 
-f(1)
+# module Debugger
+# end
+
+# @debug function f(z)
+#         !z
+# end Debugger
+
+# f(1)
