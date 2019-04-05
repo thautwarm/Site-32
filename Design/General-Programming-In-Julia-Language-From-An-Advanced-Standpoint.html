@@ -180,14 +180,15 @@ features.</p>
 <div><a class="reference internal image-reference" href="../_images/4-langs.png"><img alt="../_images/4-langs.png" class="align-center" src="../_images/4-langs.png" style="width: 500px;" /></a>
 </div></blockquote>
 <p>Although People seldom focus on Julia’s language features other than its high performance(until April 2019), I’d show my point
-of view of the true functional programming in Julia.</p>
+of view of the general programming in Julia.</p>
 <div class="section" id="first-class">
 <h2>First-Class<a class="headerlink" href="#first-class" title="Permalink to this headline">¶</a></h2>
 <p>Almost all language constructs in Julia are <em>first-class</em>, upholding more flexible and advanced program composition.</p>
 <p>There’re quite a lot of people that has a prejudice against Python for the absense of multi-line lambdas. Although
 it’s pretty trivial and straightforward to compile multi-line lambdas into normal Python code objects, the frontend,
-more concretely the mandatory indentation, comfines Python to the expressive power where statements are rigidly separate
-from expressions and then <em>first-class</em> misses.</p>
+more concretely the mandatory indentation, comfines Python to the expressive power as a result of that statements are rigidly separate
+from expressions(statements cannot occur in expressions), and then <em>first-class</em> gets missed. There’re other manners to achieve indentation without lossing
+<em>expression-first</em> like that of ML family and Haskell, but not adopted by Python community yet.</p>
 <p>Julia seems to be over-<em>first-class</em>, for all constructs there are expressions and, syntactically there’s no
 restriction to compose arbitrary constructs. Definitions and computations are distinct from each other in major
 functional languages, but each of both consists of the other.</p>
@@ -212,6 +213,8 @@ functional languages, but each of both consists of the other.</p>
 <span class="k">end</span>
 </pre></div>
 </div>
+<p>The reason why composability is crucial has been discussed often years on, so I won’t make an another about this topic.</p>
+<p>For Julia, first-class also helps when it comes to <strong>processing programs as data</strong>, which will be unfolded latter in this article.</p>
 </div>
 <div class="section" id="polymorphisms-of-multiple-dispatch">
 <h2>Polymorphisms of Multiple Dispatch<a class="headerlink" href="#polymorphisms-of-multiple-dispatch" title="Permalink to this headline">¶</a></h2>
@@ -233,8 +236,8 @@ does stand apart from those pooular industrial languages.</p>
 </pre></div>
 </div>
 <p>However, multiple dispatch is more than what I listed above. In fact, type is exclusively
-a specialized instance of immutable data, while you can make dispatches via immutable data
-no matter whether it is a type or others.</p>
+a specialized instance of immutable data that could be taken advantage of dispatching,
+while you can make dispatches via immutable data no matter whether it is a type or others.</p>
 <div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">Const</span><span class="p">{</span><span class="n">T</span><span class="p">}</span>
 <span class="k">end</span>
 
@@ -257,7 +260,7 @@ no matter whether it is a type or others.</p>
 </div>
 <div class="section" id="full-featured-macros">
 <h2>Full-Featured Macros<a class="headerlink" href="#full-featured-macros" title="Permalink to this headline">¶</a></h2>
-<p>Macro is one of the quite few ways to achieve code reuse, also the reason of why
+<p>Macro is one of the quite few manners to achieve code reuse, also the reason of why
 some programmers can be thousands of times more efficient than others.</p>
 <div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">julia</span><span class="o">&gt;</span> <span class="k">macro</span> <span class="n">gen_var</span><span class="p">(</span><span class="n">n</span> <span class="o">::</span> <span class="kt">Int</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
        <span class="n">defs</span> <span class="o">=</span> <span class="p">[</span><span class="kt">Expr</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="o">=</span><span class="p">),</span> <span class="kt">Symbol</span><span class="p">(</span><span class="s">&quot;var&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">f</span><span class="p">(</span><span class="o">$</span><span class="n">i</span><span class="p">)))</span>  <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">n</span><span class="p">]</span>
@@ -283,7 +286,7 @@ some programmers can be thousands of times more efficient than others.</p>
 </div>
 <div class="section" id="macro-the-function-from-ast-to-ast">
 <h3>Macro, the Function from AST to AST<a class="headerlink" href="#macro-the-function-from-ast-to-ast" title="Permalink to this headline">¶</a></h3>
-<p>Once you know macros are functions from ASTs to ASTs, there’s no mystery to Julia macros.</p>
+<p>Once you know macros are functions from ASTs to ASTs, there’s no mystery in Julia macros.</p>
 <div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">macro</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
   <span class="n">println</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
   <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -294,22 +297,22 @@ some programmers can be thousands of times more efficient than others.</p>
 </div>
 <p>Above snippet shows a vivid example of Julia macros. Firstly <code class="docutils literal notranslate"><span class="pre">macro</span></code> keyword leads a definition of
 macro transformation rule, and <code class="docutils literal notranslate"><span class="pre">&#64;f</span></code> marks a callsite of corresonding macro.</p>
-<p>You might ask why <code class="docutils literal notranslate"><span class="pre">(&#64;f</span> <span class="pre">1)</span> <span class="pre">==</span> <span class="pre">2</span></code>, for the return of macro <code class="docutils literal notranslate"><span class="pre">f</span></code> is supposed to be an AST, it seems
+<p>You might ask why <code class="docutils literal notranslate"><span class="pre">(&#64;f</span> <span class="pre">1)</span> <span class="pre">==</span> <span class="pre">2</span></code>, for the return of macro <code class="docutils literal notranslate"><span class="pre">&#64;f</span></code> is supposed to be an AST, it seems
 a bit magic that it equals to an integer <code class="docutils literal notranslate"><span class="pre">2</span></code>.</p>
 <p>Pay attention to the expression <code class="docutils literal notranslate"><span class="pre">&#64;assert</span> <span class="pre">(&#64;f</span> <span class="pre">1)</span> <span class="pre">==</span> <span class="pre">2</span></code>. As the macro invocations are processed recursively
 from the inside out, we should firstly process <code class="docutils literal notranslate"><span class="pre">&#64;f</span> <span class="pre">1</span></code>.</p>
 <div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">function</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">println</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
    <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>         <span class="o">=&gt;</span>  <span class="o">:</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-<span class="k">end</span><span class="p">)</span> <span class="mi">1</span>
+<span class="k">end</span><span class="p">)(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Above step also writes stdio, when executing the AST to AST function <code class="docutils literal notranslate"><span class="pre">f</span></code>, a.k.a macro <code class="docutils literal notranslate"><span class="pre">&#64;f</span></code>.</p>
 <p>Next, as we has already got the output, an AST <code class="docutils literal notranslate"><span class="pre">:(1</span> <span class="pre">+</span> <span class="pre">1)</span></code>, imagine that we displace <code class="docutils literal notranslate"><span class="pre">&#64;f</span> <span class="pre">1</span></code> by it in the preceding codes,
 which produces <code class="docutils literal notranslate"><span class="pre">&#64;assert</span> <span class="pre">$(:(1</span> <span class="pre">+</span> <span class="pre">1))</span> <span class="pre">==</span> <span class="pre">2</span></code>, simplify it, we’ll get <code class="docutils literal notranslate"><span class="pre">&#64;assert</span> <span class="pre">(1</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">==</span> <span class="pre">2</span></code>.</p>
 <p>You might ask why not <code class="docutils literal notranslate"><span class="pre">&#64;assert</span> <span class="pre">:(1</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">==</span> <span class="pre">2</span></code>, good question, let’s dig into it.</p>
-<p>Think that what you return from a macro invocation is always a runtime AST, it will not
-be transformed into codes to compile, so that the macro becomes useless at all.</p>
+<p>Think that if what you return from a macro invocation is always a runtime AST, it will not
+be transformed into codes to compile, so that such a macro becomes useless at all.</p>
 <p>However, if we “unquote” the macro return</p>
 <table border="1" class="colwidths-given docutils align-left" id="id1">
 <caption><span class="caption-text"><em>Unquote</em> Rule</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
@@ -394,7 +397,7 @@ naturally.</p>
 <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">top</span><span class="o">-</span><span class="n">level</span> <span class="n">scope</span> <span class="n">at</span> <span class="n">none</span><span class="o">:</span><span class="mi">0</span>
 </pre></div>
 </div>
-<p>The reason why for this is, ast interpolations will be always preprocessed to make sure all
+<p>The reason why for this is, AST interpolations will be always preprocessed to make sure all
 bare symbols(not boxed in QuoteNode or deeper quotation) are transformed into <strong>mangled</strong> names(a.k.a, <em>gensym</em>) that looks
 a bit weird like <code class="docutils literal notranslate"><span class="pre">##a#168</span></code>. Also, the reason why Julia does this is, to by default avoid generate new symbols visible
 in current local context.</p>
@@ -408,9 +411,9 @@ in current local context.</p>
 <span class="k">end</span>
 </pre></div>
 </div>
-<p>We don’t transform the symbol <code class="docutils literal notranslate"><span class="pre">a</span></code> into something like <code class="docutils literal notranslate"><span class="pre">##a#167</span></code>,  what if
-you have already define <code class="docutils literal notranslate"><span class="pre">a</span></code> in your codes?</p>
-<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">x5</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<p>We didn’t transform the symbol <code class="docutils literal notranslate"><span class="pre">a</span></code> into something like <code class="docutils literal notranslate"><span class="pre">##a#167</span></code>,  what if
+you had already define <code class="docutils literal notranslate"><span class="pre">a</span></code> in your codes?</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">x5</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c"># take it as multiply 5</span>
     <span class="n">x2</span> <span class="o">=</span> <span class="nd">@with_logging</span> <span class="mi">2</span><span class="n">a</span>
     <span class="n">x3</span> <span class="o">=</span> <span class="nd">@with_logging</span> <span class="mi">3</span><span class="n">a</span>
     <span class="n">x2</span> <span class="o">+</span> <span class="n">x3</span>
@@ -425,8 +428,10 @@ you’ll get <code class="docutils literal notranslate"><span class="pre">x5(1)<
 <p>But there does have some context-sensitive cases for code generation, that you want to
 share the context of multiple generator functions. A impressive example is
 my <a class="reference external" href="https://github.com/thautwarm/MLStyle.jl">MLStyle</a>, which I’m extremely proud of
-for it has reached a high performant pattern matching compilation with the extensibility
-I’ve dreamed about since I started programming.</p>
+for it has reached a high performant pattern matching compilation with the extensibility(customizable)
+I’ve dreamed about since I started programming. In this package, when compiling patterns,
+I’d use manual gensym instead of depend on hygienic macros, for I might access specific symbols
+from separate functions that’ll generate some codes.</p>
 <p>In this case that people want to generate symbols that will contaminate scopes,
 Julia provides an <strong>escape</strong> mechanism to avoid <em>gensym</em>.</p>
 <div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">macro</span> <span class="n">assign_y</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -461,9 +466,18 @@ you invoke the macro.</li>
 <p>Julia does a lot on ASTs, e.g., analysis, substitution, rewriting, and so on.</p>
 <p>As we’ve introduced the laws of AST interpolations, you might know
 that we can generate ASTs like following codes instead of in purely constructive manner.</p>
-<p>At here, I’d introduce <a class="reference external" href="https://thautwarm.github.io/MLStyle.jl/latest">MLStyle’s AST Manipulations</a> to you via giving some impressive examples.
-For sure this package will be displaced by some better alternative one day, but the underlying methodology wouldn’t
-change at all.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">ex0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">ex1</span> <span class="o">=</span> <span class="o">:</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">ex2</span> <span class="o">=</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">ex0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c"># :([1, 2, 3] + 1), [1, 2, 3] here is already evaluated before interpolation.</span>
+
+<span class="n">ex3</span> <span class="o">=</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">ex1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c"># :([1, 2, 3] + 1)</span>
+</pre></div>
+</div>
+<p>That’s not that cool for there’re also other approximate supports in other languages in current stage.</p>
+<p>The advance is at the deconstructing of ASTs, which extremely impacts the way we could analyse ASTs.</p>
 <p>Think about a case that you’d like to collect positional arguments and keyword arguments
 from some function callsites.</p>
 <div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">get_arg_info</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)))</span> <span class="c"># =&gt; ([:a, :b, :(c = 1)], [:(b = 2)])</span>
@@ -563,14 +577,18 @@ or you have to understand the structure of <code class="docutils literal notrans
 </tbody>
 </table>
 <p>To be honest, there’re so many detailed rules about the strcutrue, but
-is it really necessary to know them all if you’re planning to do something
-with Julia ASTs?</p>
+is it really necessary to know them all if you’re planning to work
+with Julia ASTs(including analysis about their strcutrues)?</p>
 <p>No! Absolutely no! Although I know many of you older Julia guys are always
-writing codes in such a constructive way, I’d suggest you sincerely to
-start using MLStyle.jl.</p>
+checking and decomposing ASTs with your vast knowledge about Julia internals , I’d suggest you sincerely to
+start using MLStyle.jl, for the sake of your efficiency.</p>
+<p>At here, I’d introduce <a class="reference external" href="https://thautwarm.github.io/MLStyle.jl/latest">MLStyle’s AST Manipulations</a> to you via giving some impressive examples.
+For sure this package will be displaced by some better alternative one day, but the underlying methodology wouldn’t
+change at all. Don’t open the link immediately now, just follow my introduction now, you don’t need to care much about
+a specific package or framework, but its core idea.</p>
 <p>A tremendous inspiration occurred to me on one day in the last year(2018) that,
 what if we can <strong>deconstruct ASTs just as how they’re constructed</strong>.</p>
-<p>You don’t have to know accurately about all AST structures before you start using
+<p>In fact, You don’t have to know accurately about all AST structures when you start using
 corresonding syntaxes, like you just write</p>
 <div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
@@ -578,14 +596,15 @@ corresonding syntaxes, like you just write</p>
 <span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span>
 </pre></div>
 </div>
+<p>Does you have to know what will the their AST look like? No.</p>
 <p>A classmate of mine who knows only mathematics and has never got an experience
-in programming can still write such codes fluently to complish his linear algebra
+in programming before can still write such codes fluently to complish his linear algebra
 homeworks, but he does feel annoyed when I try to explain the concepts of ASTs and
 how the ASTs he just written would look like.</p>
 <p>You might have notice the importance of using syntactic components, yes, it’ll simply makes
 progress in the history we manipulate programs as data.</p>
 <p><a class="reference external" href="https://en.wikipedia.org/wiki/Pattern_matching">Pattern matching</a> is an essential infrastructure in modern functional languages, which
-reduces the complexity of almost all logics via deconstructing data as how data is constructed.</p>
+reduces the complexity of almost all logics via <strong>deconstructing data as how data is constructed</strong>.</p>
 <p>Okay, this sentence occurred twice now:</p>
 <p><strong>deconstructing data as how data is constructed</strong>.</p>
 <p>Remember it, and it’s our principle in this section.</p>
@@ -595,16 +614,15 @@ reduces the complexity of almost all logics via deconstructing data as how data 
 <span class="n">ex</span> <span class="o">=</span> <span class="o">:</span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Second, there are syntactic AST interpolations. AST interpolations in Julia are super useful, while
-quite many extraordinary languages don’t have such a good-designed macro system.</p>
+<p>Next, there are syntactic AST interpolations.</p>
 <div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">ex</span> <span class="o">=</span> <span class="o">:</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="n">ex</span> <span class="o">=</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">ex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="c"># :([1, 2, 3] + 1)</span>
 </pre></div>
 </div>
 <p>That’s enough. Now, let’s introduce a <code class="docutils literal notranslate"><span class="pre">&#64;match</span></code>. This syntax may be
 deprecated in the better alternative in your time, but you must be able to simply
-make an equivalence via the better one with the new start-of-the-art pattern matching package
-in your time.</p>
+make an equivalence or superior via the better one with the new start-of-the-art pattern matching package
+at the time you’re reading this article.</p>
 <div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@match</span> <span class="n">value</span> <span class="k">begin</span>
   <span class="n">pattern1</span> <span class="o">=&gt;</span> <span class="n">value1</span>
   <span class="n">pattern2</span> <span class="o">=&gt;</span> <span class="n">value2</span>
@@ -612,15 +630,19 @@ in your time.</p>
 </pre></div>
 </div>
 <p>To support match literal ASTs, we must get a <code class="docutils literal notranslate"><span class="pre">true</span></code> with following codes,</p>
-<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@match</span> <span class="o">:</span><span class="p">(</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="k">begin</span>
-  <span class="o">:</span><span class="p">(</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="c"># rmlines is a function that removes all line number nodes in an AST.</span>
+<span class="c"># you can fetch it here : https://github.com/thautwarm/MLStyle.jl#preview</span>
+
+<span class="nd">@match</span> <span class="n">rmlines</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">x</span> <span class="k">end</span><span class="p">))</span> <span class="k">begin</span>
+  <span class="o">:</span><span class="p">(</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">x</span> <span class="k">end</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="kc">true</span>
   <span class="n">_</span> <span class="o">=&gt;</span> <span class="kc">false</span>
 <span class="k">end</span>
 </pre></div>
 </div>
-<p>Think about the principle we’ve presented, okay, I’d stress it again here as I’m a shabby
+<p>Think about the principle we’ve figured out, okay, I’d stress it again here as I’m a shabby
 repeater:</p>
 <p><strong>deconstructing data as how data is constructed</strong>.</p>
+<p>Then</p>
 <div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="o">:</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 <span class="n">ex</span> <span class="o">=</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">v</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 <span class="nd">@match</span> <span class="n">ex</span> <span class="k">begin</span>
@@ -630,9 +652,9 @@ repeater:</p>
 </pre></div>
 </div>
 <p>Oooh! Do you understand it? Does it make sense in your opinion?</p>
-<p>AST interpolation corresonds to constructing, while AST interpolations occur in pattern,
-it’s regarded as deconstructing that we can call it AST extractions.</p>
-<p>Now, let’s turn back to the original question, to implement <code class="docutils literal notranslate"><span class="pre">get_arg_info</span></code> referred previously.</p>
+<p>AST interpolation corresponds to constructing, while AST interpolations occur in pattern
+it’s regarded as deconstructing. We can call it “AST extractions”.</p>
+<p>Now, let’s turn back to the original question, to implement <code class="docutils literal notranslate"><span class="pre">get_arg_info</span></code> mentioned previously.</p>
 <p>We should at first introduce some examples about constructing in the case of <code class="docutils literal notranslate"><span class="pre">get_arg_info</span></code>.</p>
 <p>If we want to pass arguments to <code class="docutils literal notranslate"><span class="pre">f(a,</span> <span class="pre">b;</span> <span class="pre">c,</span> <span class="pre">d)</span></code>, we can use</p>
 <div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span>
@@ -654,8 +676,8 @@ arrays, respectively.</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:(</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Good job, now we use MLStyle’s <code class="docutils literal notranslate"><span class="pre">&#64;match</span></code>, also following the rule
-<strong>deconstructing data as how data is constructed</strong>.</p>
+<p>Good job, now we use MLStyle’s <code class="docutils literal notranslate"><span class="pre">&#64;match</span></code>, following the rule
+<strong>deconstructing data as how data is constructed</strong> as well.</p>
 <div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="o">:</span><span class="n">a</span><span class="p">,</span> <span class="o">:</span><span class="n">b</span><span class="p">]</span>
 <span class="nd">@match</span> <span class="o">:</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="o">$</span><span class="p">(</span><span class="n">args</span><span class="o">...</span><span class="p">)))</span> <span class="k">begin</span>
    <span class="o">:</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="o">$</span><span class="p">(</span><span class="n">args</span><span class="o">...</span><span class="p">)))</span> <span class="o">=&gt;</span> <span class="n">args</span> <span class="o">==</span> <span class="p">[</span><span class="o">:</span><span class="n">a</span><span class="p">,</span> <span class="o">:</span><span class="n">b</span><span class="p">]</span>
@@ -680,7 +702,7 @@ arrays, respectively.</p>
 <p>Julia is an ideal language for quite many domains but, not for all.</p>
 <p>For people who’re used to functional programming languages, especially for
 the groups that tilts the advanced type-based polymorphisms(type classes’ instance resolution,
-implicit type variables, higher-kinded-polymorphisms), there’s an essential necessity of the
+implicit type variables, higher-kinded-polymorphisms, etc.), there’s an essential necessity of the
 dedicated function type.</p>
 <p>On and off, I’ve attempted a lot with my friends to emulate those advanced type-based polymorphisms
 in Julia, but finally we noticed that without implicit inferences on functions, only
@@ -709,8 +731,8 @@ type/domain by taking advantage of properties/traits of the type/domain.</p>
 <span class="kr">type</span> <span class="kt">TestOn</span> <span class="n">c</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">c</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">MkTest</span> <span class="n">c</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">)]</span>
 </pre></div>
 </div>
-<p>Now I’m to illustrate how Haskell achieves a perfectly extensible and reasonable test generator, through
-following instances, using function types to achieve polymorphisms that absolutely Julia cannot make so far.</p>
+<p>Now I’m to illustrate how Haskell achieves a perfectly extensible and reasonable automatic test generator, through
+following instances(terminology in Haskell, other than a synonym of “example”), using function types to achieve polymorphisms that absolutely Julia cannot make so far(Juliav1.1).</p>
 <div class="highlight-Haskell notranslate"><div class="highlight"><pre><span></span><span class="kr">instance</span> <span class="kt">TestCase</span> <span class="kt">Enum</span> <span class="n">a</span> <span class="kr">where</span>
     <span class="n">samples</span> <span class="ow">=</span> <span class="kt">MkTest</span> <span class="o">.</span> <span class="n">enumFrom</span> <span class="o">.</span> <span class="n">toEnum</span> <span class="o">$</span> <span class="mi">0</span>
 
@@ -718,16 +740,16 @@ following instances, using function types to achieve polymorphisms that absolute
     <span class="n">samples</span> <span class="ow">=</span> <span class="kt">MkTest</span> <span class="p">[</span><span class="n">maxBound</span><span class="p">,</span> <span class="n">minBound</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>We has now made instances for <code class="docutils literal notranslate"><span class="pre">TestCase</span></code> on the constraints <code class="docutils literal notranslate"><span class="pre">Enum</span></code> and <code class="docutils literal notranslate"><span class="pre">Bounded</span></code>.</p>
+<p>We has now made instances for <code class="docutils literal notranslate"><span class="pre">TestCase</span></code> on the constraints(a.k.a Type Classes) <code class="docutils literal notranslate"><span class="pre">Enum</span></code> and <code class="docutils literal notranslate"><span class="pre">Bounded</span></code>.</p>
 <p>For the readers who’re not that familiar to Haskell, you could take constraints in
-Haskell as traits or loose-coupled interfaces.</p>
+Haskell as traits(in Rust) or loose-coupled interfaces.</p>
 <p>Once a type is under constraint <code class="docutils literal notranslate"><span class="pre">Enum</span></code>, you can enumerate its values, plus
 <code class="docutils literal notranslate"><span class="pre">Bounded</span></code> is a constraint capable of making sure that the maximum and minimum are
 available(via <code class="docutils literal notranslate"><span class="pre">maxBound</span></code> and <code class="docutils literal notranslate"><span class="pre">minBound</span></code>). <code class="docutils literal notranslate"><span class="pre">instance</span> <span class="pre">TestCase</span> <span class="pre">Enum</span> <span class="pre">a</span></code>
 denotes for all concrete type <code class="docutils literal notranslate"><span class="pre">a</span></code>, make the constraint <cite>TestCase</cite> on
 constraint <code class="docutils literal notranslate"><span class="pre">Enum</span></code> and type <code class="docutils literal notranslate"><span class="pre">a</span></code>. Yes, <code class="docutils literal notranslate"><span class="pre">TestCase</span></code> is also a constraint,
 a constraint among other constraints and types.</p>
-<p>In fact, our test generator has been already finished, a bit too fast, right?
+<p>So far our test generator has been already finished, a bit too fast, right?
 That’s how Haskell matters: pragmatic, productive.</p>
 <p>We can then make tests with above codes, taking advantage of properties/traits of our data types:</p>
 <div class="highlight-Haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">onEnumerable</span> <span class="ow">::</span> <span class="kt">TestOn</span> <span class="kt">Enum</span> <span class="n">a</span>
@@ -750,12 +772,14 @@ That’s how Haskell matters: pragmatic, productive.</p>
 <span class="p">[(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)]</span>
 </pre></div>
 </div>
-<p>Take care that the I did nothing to generate test sets. I solely said that I want to test data
-types on its enumerable traits(<code class="docutils literal notranslate"><span class="pre">onEnumerable</span></code>), then passed a function typed <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">Bool</span></code> to
-<code class="docutils literal notranslate"><span class="pre">onEnumerable</span></code> to supplement test logics, all tasks are then finished.</p>
+<p>Take care that the I did nothing to generate test sets, but passing off the function <cite>intTest</cite>
+and <cite>boolTest</cite> to specify the test logics. I solely said that I want to test data
+types on their enumerable traits(<code class="docutils literal notranslate"><span class="pre">onEnumerable</span></code>), then the polymorphic automatic test generator
+took advantage of functions’ type signatures(<cite>intTest: Int -&gt; Bool</cite>, <cite>boolTest: Bool -&gt; Bool</cite>), and
+all tasks finished.</p>
 <p>Turn back to Julia side, although Haskell does a lot implcits, multiple dispatch can often emulate
-them successfully(without strongly typed and static checking though). The problem is at the function
-types, as we cannot take advantage of their type information to engage dispatching.</p>
+them successfully(without strongly typed and static checking though). The problem is at the absense of
+function types, as we cannot take advantage of their type information to engage dispatching.</p>
 <p>Some tentative but incomplete workaround could be made through following idea:</p>
 <div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">Base</span><span class="o">:</span> <span class="n">convert</span>
 <span class="n">struct</span> <span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}</span>
@@ -774,9 +798,9 @@ types, as we cannot take advantage of their type information to engage dispatchi
 <span class="n">convert</span><span class="p">(</span><span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">},</span> <span class="n">f</span> <span class="o">::</span> <span class="n">JlFuncType</span><span class="p">)</span> <span class="n">where</span> <span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}</span> <span class="o">=</span> <span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}(</span><span class="n">f</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This is considerably efficient function type implementation according to <a class="reference external" href="https://github.com/yuyichao/FunctionWrappers.jl">FunctionWrappers.jl</a>,
+<p>This is a considerably efficient function type implementation according to <a class="reference external" href="https://github.com/yuyichao/FunctionWrappers.jl">FunctionWrappers.jl</a>,
 However, the problem is that its usage is quite unfriendly for peope have to manually annotate disturbingly much.</p>
-<p>To address the polymorphism problems, the major methods from current academic world won’t work in Julia, and
+<p>To address the polymorphism problems, the major methods(type-based) from current academic world won’t work in Julia, and
 you should pave the way for a LISP-flavored “polymorphism”, in other words, use macros frequently.</p>
 </div>
 </div>
