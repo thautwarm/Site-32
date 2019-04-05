@@ -43,5 +43,20 @@
             "Tutorial"
         ],
         "release_date": "2019-02-08 11:04"
+    },
+    {
+        "title": "General Programming In Julia From An Advanced Standpoint",
+        "where": "Design.General-Programming-In-Julia-Language-From-An-Advanced-Standpoint",
+        "keywords":[
+            "Julia",
+            "General Programming",
+            "Pattern Macthing",
+            "Syntactic Macro",
+            "Hygineic Macro",
+            "Programming Language",
+            "Polymorphism",
+            "Haskell"
+        ],
+        "release_date": "2019-04-05 19:19"
     }
 ]

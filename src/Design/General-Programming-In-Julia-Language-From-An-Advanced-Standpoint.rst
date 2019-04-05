@@ -13,7 +13,7 @@ features.
     :align: center
 
 Although People seldom focus on Julia's language features other than its high performance(until April 2019), I'd show my point
-of view of the true functional programming in Julia.
+of view of the general programming in Julia.
 
 
 First-Class
@@ -23,8 +23,9 @@ Almost all language constructs in Julia are *first-class*, upholding more flexib
 
 There're quite a lot of people that has a prejudice against Python for the absense of multi-line lambdas. Although
 it's pretty trivial and straightforward to compile multi-line lambdas into normal Python code objects, the frontend,
-more concretely the mandatory indentation, comfines Python to the expressive power where statements are rigidly separate
-from expressions and then *first-class* misses.
+more concretely the mandatory indentation, comfines Python to the expressive power as a result of that statements are rigidly separate
+from expressions(statements cannot occur in expressions), and then *first-class* gets missed. There're other manners to achieve indentation without lossing
+*expression-first* like that of ML family and Haskell, but not adopted by Python community yet.
 
 Julia seems to be over-*first-class*, for all constructs there are expressions and, syntactically there's no
 restriction to compose arbitrary constructs. Definitions and computations are distinct from each other in major
@@ -51,6 +52,10 @@ functional languages, but each of both consists of the other.
       ...           |> a ->
       ...
   end
+
+The reason why composability is crucial has been discussed often years on, so I won't make an another about this topic.
+
+For Julia, first-class also helps when it comes to **processing programs as data**, which will be unfolded latter in this article.
 
 
 Polymorphisms of Multiple Dispatch
@@ -80,8 +85,8 @@ Overloading is supported as well.
    uzero(  :: Type{Float64}) = 0.0
 
 However, multiple dispatch is more than what I listed above. In fact, type is exclusively
-a specialized instance of immutable data, while you can make dispatches via immutable data
-no matter whether it is a type or others.
+a specialized instance of immutable data that could be taken advantage of dispatching,
+while you can make dispatches via immutable data no matter whether it is a type or others.
 
 .. code-block:: Julia
 
@@ -112,7 +117,7 @@ Note that when multiple dispatch fails at static inferences, it'll behave as dyn
 Full-Featured Macros
 ----------------------
 
-Macro is one of the quite few ways to achieve code reuse, also the reason of why
+Macro is one of the quite few manners to achieve code reuse, also the reason of why
 some programmers can be thousands of times more efficient than others.
 
 .. code-block:: Julia
@@ -142,7 +147,7 @@ some programmers can be thousands of times more efficient than others.
 Macro, the Function from AST to AST
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Once you know macros are functions from ASTs to ASTs, there's no mystery to Julia macros.
+Once you know macros are functions from ASTs to ASTs, there's no mystery in Julia macros.
 
 
 .. code-block:: Julia
@@ -157,7 +162,7 @@ Once you know macros are functions from ASTs to ASTs, there's no mystery to Juli
 Above snippet shows a vivid example of Julia macros. Firstly ``macro`` keyword leads a definition of
 macro transformation rule, and ``@f`` marks a callsite of corresonding macro.
 
-You might ask why ``(@f 1) == 2``, for the return of macro ``f`` is supposed to be an AST, it seems
+You might ask why ``(@f 1) == 2``, for the return of macro ``@f`` is supposed to be an AST, it seems
 a bit magic that it equals to an integer ``2``.
 
 Pay attention to the expression ``@assert (@f 1) == 2``. As the macro invocations are processed recursively
@@ -168,7 +173,7 @@ from the inside out, we should firstly process ``@f 1``.
   (function f(x)
       println(x)
      :($x + 1)         =>  :(1 + 1)
-  end) 1
+  end)(1)
 
 Above step also writes stdio, when executing the AST to AST function ``f``, a.k.a macro ``@f``.
 
@@ -177,8 +182,8 @@ which produces ``@assert $(:(1 + 1)) == 2``, simplify it, we'll get ``@assert (1
 
 You might ask why not ``@assert :(1 + 1) == 2``, good question, let's dig into it.
 
-Think that what you return from a macro invocation is always a runtime AST, it will not
-be transformed into codes to compile, so that the macro becomes useless at all.
+Think that if what you return from a macro invocation is always a runtime AST, it will not
+be transformed into codes to compile, so that such a macro becomes useless at all.
 
 However, if we "unquote" the macro return
 

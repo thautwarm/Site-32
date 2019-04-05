@@ -42,7 +42,7 @@ source_parsers = {
    '.md': 'recommonmark.parser.CommonMarkParser',
 }
 
-source_suffix = ['.md', '.rst']
+source_suffix = ['.rst']
 
 # The master toctree document.
 master_doc = 'guide'
