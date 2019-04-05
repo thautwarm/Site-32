@@ -112,10 +112,8 @@
 <li><a class="reference internal" href="#other-useful-knowledge-for-julia-macros">Other Useful Knowledge for Julia Macros</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#limitation-of-julia">Limitation of Julia</a><ul>
-<li><a class="reference internal" href="#absence-of-function-types">Absence of Function Types</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#the-unprecented-step-of-ast-manipulations">The Unprecented Step of AST Manipulations</a></li>
+<li><a class="reference internal" href="#limitation-absence-of-function-types">Limitation: Absence of Function Types</a></li>
 </ul>
 </li>
 </ul>
@@ -458,10 +456,102 @@ you invoke the macro.</li>
 </ol>
 </div>
 </div>
-<div class="section" id="limitation-of-julia">
-<h2>Limitation of Julia<a class="headerlink" href="#limitation-of-julia" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="absence-of-function-types">
-<h3>Absence of Function Types<a class="headerlink" href="#absence-of-function-types" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="the-unprecented-step-of-ast-manipulations">
+<h2>The Unprecented Step of AST Manipulations<a class="headerlink" href="#the-unprecented-step-of-ast-manipulations" title="Permalink to this headline">¶</a></h2>
+<p>Julia does a lot on ASTs, analysis, substitution, rewriting, and so on.</p>
+<p>As we’ve introduced the laws of AST interpolations, you might know
+that we can generate ASTs like following codes instead of in purely constructive manner.</p>
+<p>At here, I’d introduce <a class="reference external" href="https://thautwarm.github.io/MLStyle.jl/latest">MLStyle’s AST Manipulations</a> to you via giving some impressive examples.</p>
+<p>Think about a case that you’d like to collect positional arguments and keyword arguments
+from some function callsites.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">get_arg_info</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)))</span> <span class="c"># =&gt; ([:a, :b, :(c = 1)], [:(b = 2)])</span>
+<span class="n">get_arg_info</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">args</span><span class="o">...</span><span class="p">;</span> <span class="n">kwargs</span><span class="o">...</span><span class="p">)))</span> <span class="c"># =&gt; ([:(args...)], [:(kwargs...)])</span>
+<span class="n">get_arg_info</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)))</span> <span class="c"># =&gt; ([:a, :b, :c], [])</span>
+</pre></div>
+</div>
+<p>How will you achieve this task?</p>
+<p>Attention! No matter how you’ll deal with it, think about whether you need to
+get a prerequisite about Julia AST structures? Say, you have to know <code class="docutils literal notranslate"><span class="pre">Expr</span></code> (a.k.a
+one of the most important Julia AST types) has 2 fields, <code class="docutils literal notranslate"><span class="pre">head</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code>,
+or you have to understand the structure of <code class="docutils literal notranslate"><span class="pre">a.b</span></code> is</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expr</span>
+<span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="o">.</span>
+<span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">2</span><span class="p">,))</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">a</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="n">QuoteNode</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>instead of</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expr</span>
+<span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="o">.</span>
+<span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">2</span><span class="p">,))</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">a</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>, or you have to make it clear that in vector literals, there’re</p>
+<table border="1" class="colwidths-given docutils align-left" id="id2">
+<caption><span class="caption-text">Vector/Matrix Literals</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Julia code</th>
+<th class="head">AST structure</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">[1</span> <span class="pre">2</span> <span class="pre">3]</span></code></td>
+<td><div class="code first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expr</span>
+<span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">hcat</span>
+<span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">3</span><span class="p">,))</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">1</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">2</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code></td>
+<td><div class="code first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expr</span>
+<span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">vect</span>
+<span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">3</span><span class="p">,))</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">1</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">2</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="code first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span>
+               <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</td>
+<td><div class="code first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expr</span>
+  <span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">vcat</span>
+  <span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">2</span><span class="p">,))</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="n">Expr</span>
+      <span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">row</span>
+      <span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">2</span><span class="p">,))</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">1</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">2</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="n">Expr</span>
+      <span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">row</span>
+      <span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">2</span><span class="p">,))</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">3</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">4</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="limitation-absence-of-function-types">
+<h2>Limitation: Absence of Function Types<a class="headerlink" href="#limitation-absence-of-function-types" title="Permalink to this headline">¶</a></h2>
 <p>Julia is an ideal language for quite many domains but, not for all.</p>
 <p>For people who’re used to functional programming languages, especially for
 the groups that tilts the advanced type-based polymorphisms(type classes’ instance resolution,
@@ -495,7 +585,7 @@ type/domain by taking advantage of properties/traits of the type/domain.</p>
 </pre></div>
 </div>
 <p>Now I’m to illustrate how Haskell achieves a perfectly extensible and reasonable test generator, through
-following instances.</p>
+following instances, using function types to achieve polymorphisms that absolutely Julia cannot make so far.</p>
 <div class="highlight-Haskell notranslate"><div class="highlight"><pre><span></span><span class="kr">instance</span> <span class="kt">TestCase</span> <span class="kt">Enum</span> <span class="n">a</span> <span class="kr">where</span>
     <span class="n">samples</span> <span class="ow">=</span> <span class="kt">MkTest</span> <span class="o">.</span> <span class="n">enumFrom</span> <span class="o">.</span> <span class="n">toEnum</span> <span class="o">$</span> <span class="mi">0</span>
 
@@ -530,7 +620,7 @@ That’s how Haskell matters: pragmatic, productive.</p>
   <span class="n">return</span> <span class="nb">()</span>
 </pre></div>
 </div>
-<p>Which outputs</p>
+<p>which outputs</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">4</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">6</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">7</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">8</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">9</span><span class="p">,</span><span class="kc">True</span><span class="p">)]</span>
 <span class="p">[(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)]</span>
 </pre></div>
@@ -538,7 +628,31 @@ That’s how Haskell matters: pragmatic, productive.</p>
 <p>Take care that the I did nothing to generate test sets. I solely said that I want to test data
 types on its enumerable traits(<code class="docutils literal notranslate"><span class="pre">onEnumerable</span></code>), then passed a function typed <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">Bool</span></code> to
 <code class="docutils literal notranslate"><span class="pre">onEnumerable</span></code> to supplement test logics, all tasks are then finished.</p>
+<p>Turn back to Julia side, although Haskell does a lot implcits, multiple dispatch can often emulate
+them successfully(without strongly typed and static checking though). The problem is at the function
+types, as we cannot take advantage of their type information to engage dispatching.</p>
+<p>Some tentative but incomplete workaround could be made through following idea:</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">Base</span><span class="o">:</span> <span class="n">convert</span>
+<span class="n">struct</span> <span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}</span>
+    <span class="n">f</span> <span class="o">::</span> <span class="n">JlFuncType</span>
+<span class="k">end</span>
+
+<span class="nd">@inline</span> <span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">}(</span><span class="n">f</span> <span class="o">::</span> <span class="n">JlFuncType</span><span class="p">)</span> <span class="n">where</span> <span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}</span> <span class="o">=</span> <span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="nd">@generated</span> <span class="k">function</span> <span class="p">(</span><span class="n">f</span> <span class="o">::</span> <span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">})(</span><span class="n">a</span> <span class="o">::</span> <span class="n">Arg</span><span class="p">)</span> <span class="o">::</span> <span class="n">Ret</span> <span class="n">where</span> <span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}</span>
+  <span class="k">quote</span>
+      <span class="o">$</span><span class="p">(</span><span class="kt">Expr</span><span class="p">(</span><span class="o">:</span><span class="n">meta</span><span class="p">,</span> <span class="o">:</span><span class="n">inline</span><span class="p">))</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">convert</span><span class="p">(</span><span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">},</span> <span class="n">f</span> <span class="o">::</span> <span class="n">JlFuncType</span><span class="p">)</span> <span class="n">where</span> <span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}</span> <span class="o">=</span> <span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
 </div>
+<p>This is considerably efficient function type implementation according to <a class="reference external" href="https://github.com/yuyichao/FunctionWrappers.jl">FunctionWrappers.jl</a>,
+However, the problem is that its usage is quite unfriendly for peope have to manually annotate disturbingly much.</p>
+<p>To address the polymorphism problems, the major methods from current academic world won’t work in Julia, and
+you should pave the way for a LISP-flavored “polymorphism”, in other words, use macros frequently.</p>
 </div>
 </div>
 

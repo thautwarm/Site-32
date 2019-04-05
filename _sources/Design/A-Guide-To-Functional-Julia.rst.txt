@@ -340,12 +340,106 @@ Other Useful Knowledge for Julia Macros
    you invoke the macro.
 
 
-Limitation of Julia
------------------------------------
+The Unprecented Step of AST Manipulations
+--------------------------------------------
+
+Julia does a lot on ASTs, analysis, substitution, rewriting, and so on.
+
+As we've introduced the laws of AST interpolations, you might know
+that we can generate ASTs like following codes instead of in purely constructive manner.
+
+At here, I'd introduce `MLStyle's AST Manipulations <https://thautwarm.github.io/MLStyle.jl/latest>`_ to you via giving some impressive examples.
+
+Think about a case that you'd like to collect positional arguments and keyword arguments
+from some function callsites.
+
+.. code-block:: Julia
+
+  get_arg_info(:(f(a, b, c = 1; b = 2))) # => ([:a, :b, :(c = 1)], [:(b = 2)])
+  get_arg_info(:(f(args...; kwargs...))) # => ([:(args...)], [:(kwargs...)])
+  get_arg_info(:(f(a, b, c))) # => ([:a, :b, :c], [])
+
+How will you achieve this task?
+
+Attention! No matter how you'll deal with it, think about whether you need to
+get a prerequisite about Julia AST structures? Say, you have to know ``Expr`` (a.k.a
+one of the most important Julia AST types) has 2 fields, ``head`` and ``args``,
+or you have to understand the structure of ``a.b`` is
+
+.. code ::
+
+  Expr
+  head: Symbol .
+  args: Array{Any}((2,))
+    1: Symbol a
+    2: QuoteNode
+      value: Symbol b
+
+instead of
+
+.. code ::
+
+  Expr
+  head: Symbol .
+  args: Array{Any}((2,))
+    1: Symbol a
+    2: Symbol b
+
+, or you have to make it clear that in vector literals, there're
+
+.. list-table:: Vector/Matrix Literals
+   :widths: 6, 6
+   :header-rows: 1
+   :align: left
+
+   * - Julia code
+     - AST structure
+
+   * - ``[1 2 3]``
+     -  .. code::
+
+          Expr
+          head: Symbol hcat
+          args: Array{Any}((3,))
+            1: Int64 1
+            2: Int64 2
+            3: Int64 3
+
+   * - ``[1, 2, 3]``
+     -  .. code::
+
+          Expr
+          head: Symbol vect
+          args: Array{Any}((3,))
+            1: Int64 1
+            2: Int64 2
+            3: Int64 3
+
+   * - .. code::
+
+         [1 2; 3 4] or [1 2
+                        3 4]
+
+     -  .. code::
+
+          Expr
+            head: Symbol vcat
+            args: Array{Any}((2,))
+              1: Expr
+                head: Symbol row
+                args: Array{Any}((2,))
+                  1: Int64 1
+                  2: Int64 2
+              2: Expr
+                head: Symbol row
+                args: Array{Any}((2,))
+                  1: Int64 3
+                  2: Int64 4
 
 
-Absence of Function Types
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Limitation: Absence of Function Types
+---------------------------------------
 
 Julia is an ideal language for quite many domains but, not for all.
 
@@ -386,7 +480,7 @@ type/domain by taking advantage of properties/traits of the type/domain.
   type TestOn c a = c a => (a -> Bool) -> MkTest c [(a, Bool)]
 
 Now I'm to illustrate how Haskell achieves a perfectly extensible and reasonable test generator, through
-following instances.
+following instances, using function types to achieve polymorphisms that absolutely Julia cannot make so far.
 
 .. code-block:: Haskell
 
@@ -429,7 +523,7 @@ We can then make tests with above codes, taking advantage of properties/traits o
     putStrLn . show . runTest $ onEnumerable boolTest
     return ()
 
-Which outputs
+which outputs
 
 .. code ::
 
@@ -440,30 +534,35 @@ Take care that the I did nothing to generate test sets. I solely said that I wan
 types on its enumerable traits(``onEnumerable``), then passed a function typed ``a -> Bool`` to
 ``onEnumerable`` to supplement test logics, all tasks are then finished.
 
+Turn back to Julia side, although Haskell does a lot implcits, multiple dispatch can often emulate
+them successfully(without strongly typed and static checking though). The problem is at the function
+types, as we cannot take advantage of their type information to engage dispatching.
 
+Some tentative but incomplete workaround could be made through following idea:
 
+.. code-block:: Julia
 
+  import Base: convert
+  struct Fn{Arg, Ret, JlFuncType}
+      f :: JlFuncType
+  end
 
+  @inline Fn{Arg, Ret}(f :: JlFuncType) where {Arg, Ret, JlFuncType} = Fn{Arg, Ret, JlFuncType}(f)
 
+  @generated function (f :: Fn{Arg, Ret, JlFuncType})(a :: Arg) :: Ret where {Arg, Ret, JlFuncType}
+    quote
+        $(Expr(:meta, :inline))
+        f.f(a)
+    end
+  end
 
+  convert(Fn{Arg, Ret, JlFuncType}, f :: JlFuncType) where {Arg, Ret, JlFuncType} = Fn{Arg, Ret, JlFuncType}(f)
 
+This is considerably efficient function type implementation according to `FunctionWrappers.jl <https://github.com/yuyichao/FunctionWrappers.jl>`_,
+However, the problem is that its usage is quite unfriendly for peope have to manually annotate disturbingly much.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+To address the polymorphism problems, the major methods from current academic world won't work in Julia, and
+you should pave the way for a LISP-flavored "polymorphism", in other words, use macros frequently.
 
 
 

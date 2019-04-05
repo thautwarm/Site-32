@@ -348,7 +348,9 @@ Julia does a lot on ASTs, analysis, substitution, rewriting, and so on.
 As we've introduced the laws of AST interpolations, you might know
 that we can generate ASTs like following codes instead of in purely constructive manner.
 
-At here, I'd introduce `MLStyle https://thautwarm.github.io/MLStyle.jl/latest`_'s AST manipulations to you via giving some impressive examples.
+At here, I'd introduce `MLStyle's AST Manipulations <https://thautwarm.github.io/MLStyle.jl/latest>`_ to you via giving some impressive examples.
+For sure this package will be displaced by some better alternative one day, but the underlying methodology wouldn't
+change at all.
 
 Think about a case that you'd like to collect positional arguments and keyword arguments
 from some function callsites.
@@ -362,7 +364,7 @@ from some function callsites.
 How will you achieve this task?
 
 Attention! No matter how you'll deal with it, think about whether you need to
-get a prerequisite about Julia AST structures? Say, you have to know ``Expr``(a.k.a
+get a prerequisite about Julia AST structures? Say, you have to know ``Expr`` (a.k.a
 one of the most important Julia AST types) has 2 fields, ``head`` and ``args``,
 or you have to understand the structure of ``a.b`` is
 
@@ -385,7 +387,165 @@ instead of
     1: Symbol a
     2: Symbol b
 
+, or you have to make it clear that in vector literals, there're
 
+.. list-table:: Vector/Matrix Literals
+   :widths: 6, 6
+   :header-rows: 1
+   :align: left
+
+   * - Julia code
+     - AST structure
+
+   * - ``[1 2 3]``
+     -  .. code::
+
+          Expr
+          head: Symbol hcat
+          args: Array{Any}((3,))
+            1: Int64 1
+            2: Int64 2
+            3: Int64 3
+
+   * - ``[1, 2, 3]``
+     -  .. code::
+
+          Expr
+          head: Symbol vect
+          args: Array{Any}((3,))
+            1: Int64 1
+            2: Int64 2
+            3: Int64 3
+
+  * - ``[1; 2; 3]``
+    -  .. code::
+
+          Expr
+          head: Symbol vcat
+          args: Array{Any}((3,))
+            1: Int64 1
+            2: Int64 2
+            3: Int64 3
+
+
+
+   * - .. code::
+
+         [1 2; 3 4] or [1 2
+                        3 4]
+
+     -  .. code::
+
+          Expr
+            head: Symbol vcat
+            args: Array{Any}((2,))
+              1: Expr
+                head: Symbol row
+                args: Array{Any}((2,))
+                  1: Int64 1
+                  2: Int64 2
+              2: Expr
+                head: Symbol row
+                args: Array{Any}((2,))
+                  1: Int64 3
+                  2: Int64 4
+
+To be honest, there're so many detailed rules about the strcutrue, but
+is it really necessary to know them all if you're planning to do something
+with Julia ASTs?
+
+No! Absolutely no! Although I know many of you older Julia guys are always
+writing codes in such a constructive way, I'd suggest you sincerely to
+start using MLStyle.jl.
+
+A tremendous inspiration occurred to me on one day in the last year(2018) that,
+what if we can **deconstruct ASTs just as how they're constructed**.
+
+You don't have to know accurately about all AST structures before you start using
+corresonding syntaxes, like you just write
+
+.. code-block:: Julia
+
+  a = [1, 2, 3]
+  b = [1 2 3]
+  c = [1; 2; 3]
+  d = [1 2; 3 4]
+
+A classmate of mine who knows only mathematics and has never got an experience
+in programming can still write such codes fluently to complish his linear algebra
+homeworks, but he does feel annoyed when I try to explain the concepts of ASTs and
+how the ASTs he just written would look like.
+
+You might have notice the importance of using syntactic components, yes, it'll simply makes
+progress in the history we manipulate programs as data.
+
+`Pattern matching<https://en.wikipedia.org/wiki/Pattern_matching>`_ is an essential infrastructure in modern functional languages, which
+reduces the complexity of almost all logics via deconstructing data as how data is constructed.
+
+Okay, this sentence occurred twice now:
+
+**deconstructing data as how data is constructed**.
+
+Remember it, and it's our principle in this section.
+
+Let's think about how ASTs are constructed?
+
+Firstly, we can write raw ASTs, write them literally.
+
+.. code-block:: Julia
+
+    ex = :(a + 1)
+    ex = :[1 2 3]
+
+Second, there are syntactic AST interpolations. AST interpolations in Julia are super useful, while
+quite many extraordinary languages don't have such a good-designed macro system.
+
+    ex = :[1, 2, 3]
+    ex = :($ex + 1) # :([1, 2, 3] + 1)
+
+That's enough. Now, let's introduce a ``@match``. This syntax may be
+deprecated in the better alternative in your time, but you must be able to simply
+make an equivalence via the better one with the new start-of-the-art pattern matching package
+in your time.
+
+.. code-block:: Julia
+
+  @match value begin
+    pattern1 => value1
+    pattern2 => value2
+  end
+
+To support match literal ASTs, we must get a ``true`` with following codes,
+
+.. code-block:: Julia
+
+  @match :(let x = 1) begin
+    :(let x = 1) => true
+    _ => false
+  end
+
+Think about the principle we've presented, okay, I'd stress it again here as I'm a shabby
+repeater:
+
+**deconstructing data as how data is constructed**.
+
+
+.. code-block:: Julia
+  v = :[1, 2, 3]
+  ex = :($v + 1)
+  @match ex begin
+    :($v + 1) => v == :[1, 2, 3]
+    _ => false
+  end
+
+Oooh! Do you understand it? Does it make sense? Am I a genius?
+
+
+
+AST interpolations indicate constructing, so how to deconstruct AST?
+That is, reverse the operations,  **change AST interpolations to AST extractions**.
+
+.. code
 
 
 Limitation: Absence of Function Types
