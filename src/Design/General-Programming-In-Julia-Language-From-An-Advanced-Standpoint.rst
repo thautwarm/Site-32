@@ -1,6 +1,6 @@
-=============================
- A Guide To Functional Julia
-=============================
+=================================================================
+General Programming In Julia Language From An Advanced Standpoint
+=================================================================
 
 `Julia <https://julialang.org/>`_ is a multi-paradigm language which is purely dynamic but supports optional typing.
 
@@ -9,6 +9,8 @@ those of Python, R or MATLAB, Julia becomes simple and concise, and allows you t
 features.
 
   .. image:: ./assets-April-3/4-langs.png
+    :width: 500px
+    :align: center
 
 Although People seldom focus on Julia's language features other than its high performance(until April 2019), I'd show my point
 of view of the true functional programming in Julia.
@@ -111,7 +113,7 @@ Full-Featured Macros
 ----------------------
 
 Macro is one of the quite few ways to achieve code reuse, also the reason of why
-some programmer can be thousands of times more efficient than others.
+some programmers can be thousands of times more efficient than others.
 
 .. code-block:: Julia
 
@@ -168,7 +170,7 @@ from the inside out, we should firstly process ``@f 1``.
      :($x + 1)         =>  :(1 + 1)
   end) 1
 
-Above step also write to stdio, when executing the AST to AST function ``f``, a.k.a macro ``@f``.
+Above step also writes stdio, when executing the AST to AST function ``f``, a.k.a macro ``@f``.
 
 Next, as we has already got the output, an AST ``:(1 + 1)``, imagine that we displace ``@f 1`` by it in the preceding codes,
 which produces ``@assert $(:(1 + 1)) == 2``, simplify it, we'll get ``@assert (1 + 1) == 2``.
@@ -340,15 +342,17 @@ Other Useful Knowledge for Julia Macros
    you invoke the macro.
 
 
-The Unprecented Step of AST Manipulations
+A Big Step Forward in AST Manipulations
 --------------------------------------------
 
-Julia does a lot on ASTs, analysis, substitution, rewriting, and so on.
+Julia does a lot on ASTs, e.g., analysis, substitution, rewriting, and so on.
 
 As we've introduced the laws of AST interpolations, you might know
 that we can generate ASTs like following codes instead of in purely constructive manner.
 
 At here, I'd introduce `MLStyle's AST Manipulations <https://thautwarm.github.io/MLStyle.jl/latest>`_ to you via giving some impressive examples.
+For sure this package will be displaced by some better alternative one day, but the underlying methodology wouldn't
+change at all.
 
 Think about a case that you'd like to collect positional arguments and keyword arguments
 from some function callsites.
@@ -357,7 +361,7 @@ from some function callsites.
 
   get_arg_info(:(f(a, b, c = 1; b = 2))) # => ([:a, :b, :(c = 1)], [:(b = 2)])
   get_arg_info(:(f(args...; kwargs...))) # => ([:(args...)], [:(kwargs...)])
-  get_arg_info(:(f(a, b, c))) # => ([:a, :b, :c], [])
+  get_arg_info(:(f(a, b, c)))            # => ([:a, :b, :c], [])
 
 How will you achieve this task?
 
@@ -415,11 +419,22 @@ instead of
             2: Int64 2
             3: Int64 3
 
-   * - .. code::
+   * - ``[1; 2; 3]``
+     -  .. code::
+
+          Expr
+          head: Symbol vcat
+          args: Array{Any}((3,))
+            1: Int64 1
+            2: Int64 2
+            3: Int64 3
+
+
+
+   * -  .. code::
 
          [1 2; 3 4] or [1 2
                         3 4]
-
      -  .. code::
 
           Expr
@@ -436,6 +451,158 @@ instead of
                   1: Int64 3
                   2: Int64 4
 
+To be honest, there're so many detailed rules about the strcutrue, but
+is it really necessary to know them all if you're planning to do something
+with Julia ASTs?
+
+No! Absolutely no! Although I know many of you older Julia guys are always
+writing codes in such a constructive way, I'd suggest you sincerely to
+start using MLStyle.jl.
+
+A tremendous inspiration occurred to me on one day in the last year(2018) that,
+what if we can **deconstruct ASTs just as how they're constructed**.
+
+You don't have to know accurately about all AST structures before you start using
+corresonding syntaxes, like you just write
+
+.. code-block:: Julia
+
+  a = [1, 2, 3]
+  b = [1 2 3]
+  c = [1; 2; 3]
+  d = [1 2; 3 4]
+
+A classmate of mine who knows only mathematics and has never got an experience
+in programming can still write such codes fluently to complish his linear algebra
+homeworks, but he does feel annoyed when I try to explain the concepts of ASTs and
+how the ASTs he just written would look like.
+
+You might have notice the importance of using syntactic components, yes, it'll simply makes
+progress in the history we manipulate programs as data.
+
+`Pattern matching <https://en.wikipedia.org/wiki/Pattern_matching>`_ is an essential infrastructure in modern functional languages, which
+reduces the complexity of almost all logics via deconstructing data as how data is constructed.
+
+Okay, this sentence occurred twice now:
+
+**deconstructing data as how data is constructed**.
+
+Remember it, and it's our principle in this section.
+
+Let's think about how ASTs are constructed?
+
+Firstly, we can write raw ASTs, write them literally.
+
+.. code-block:: Julia
+
+    ex = :(a + 1)
+    ex = :[1 2 3]
+
+Second, there are syntactic AST interpolations. AST interpolations in Julia are super useful, while
+quite many extraordinary languages don't have such a good-designed macro system.
+
+.. code-block:: Julia
+
+    ex = :[1, 2, 3]
+    ex = :($ex + 1) # :([1, 2, 3] + 1)
+
+That's enough. Now, let's introduce a ``@match``. This syntax may be
+deprecated in the better alternative in your time, but you must be able to simply
+make an equivalence via the better one with the new start-of-the-art pattern matching package
+in your time.
+
+.. code-block:: Julia
+
+  @match value begin
+    pattern1 => value1
+    pattern2 => value2
+  end
+
+To support match literal ASTs, we must get a ``true`` with following codes,
+
+.. code-block:: Julia
+
+  @match :(let x = 1) begin
+    :(let x = 1) => true
+    _ => false
+  end
+
+Think about the principle we've presented, okay, I'd stress it again here as I'm a shabby
+repeater:
+
+**deconstructing data as how data is constructed**.
+
+.. code-block:: Julia
+
+  v = :[1, 2, 3]
+  ex = :($v + 1)
+  @match ex begin
+    :($v + 1) => v == :[1, 2, 3]
+    _ => false
+  end
+
+Oooh! Do you understand it? Does it make sense in your opinion?
+
+AST interpolation corresonds to constructing, while AST interpolations occur in pattern,
+it's regarded as deconstructing that we can call it AST extractions.
+
+Now, let's turn back to the original question, to implement ``get_arg_info`` referred previously.
+
+We should at first introduce some examples about constructing in the case of ``get_arg_info``.
+
+If we want to pass arguments to ``f(a, b; c, d)``, we can use
+
+.. code-block:: Julia
+
+  f(a, b; c, d) = a + b + c + d
+  args = [1, 2]
+  kwargs = Dict(:c => 1, :d => 2)
+  f(args... ; kwargs...)
+
+, which produces a result ``6``.
+
+Notice about the form ``f(args...; kwargs...)``, it might indicates that
+in AST level, positional arguments and keyword arguments are stored in
+arrays, respectively.
+
+Let's have a try:
+
+.. code-block:: Julia
+
+  args = [:a, :b]
+  :(f($(args...)))
+
+And you'll get an output exactly as
+
+.. code::
+
+  :(f(a, b))
+
+Good job, now we use MLStyle's ``@match``, also following the rule
+**deconstructing data as how data is constructed**.
+
+.. code-block:: Julia
+
+  args = [:a, :b]
+  @match :(f($(args...))) begin
+     :(f($(args...))) => args == [:a, :b]
+     _ => false
+  end
+
+Then you get a ``true``  as output.
+
+Think a while, and check the final implementation of ``get_arg_info``:
+
+.. code-block:: Julia
+
+    get_arg_info(ex) = @match ex begin
+         :($name($(args...); $(kwargs...))) ||
+         :($name($(args...))) && Do(kwargs = []) => (args, kwargs)
+
+         _ => throw("invalid input")
+    end
+
+``||`` denotes the so-called Or-Pattern.
 
 
 Limitation: Absence of Function Types
@@ -563,7 +730,3 @@ However, the problem is that its usage is quite unfriendly for peope have to man
 
 To address the polymorphism problems, the major methods from current academic world won't work in Julia, and
 you should pave the way for a LISP-flavored "polymorphism", in other words, use macros frequently.
-
-
-
-

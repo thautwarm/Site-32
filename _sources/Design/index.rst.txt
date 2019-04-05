@@ -7,4 +7,4 @@ Design
    :maxdepth: 2
    :caption: Contents:
 
-   A-Guide-To-Functional-Julia.rst
+   General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.rst
