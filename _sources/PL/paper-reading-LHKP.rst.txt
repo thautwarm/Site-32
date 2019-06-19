@@ -9,7 +9,7 @@ How-To
 
 In fact, this technique(Let's call it **LHKP** ) introduced from this paper works perfectly only when
 the order of types is less than 2(have kind :code:`*` or :code:`* -> *`) and type
-constructor is not an endfunctor.
+constructor is not an endofunctor.
 
 LHKP achieves first order types through a parametric interface type :code:`type ('a, 't) app` which denotes
 :code:`'a 't` in higher kinded ML, where :code:`'a` is applicated to :code:`'t` where :code:`'t` has kind
