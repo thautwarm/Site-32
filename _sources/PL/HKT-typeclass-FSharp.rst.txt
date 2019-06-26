@@ -443,7 +443,7 @@ Therefore, we should use :code:`functor<'F>`.
 References and Further Reading
 -----------------------------------------------------------
 
-[1] Haskell ViewPatterns: <https://ghc.haskell.org/trac/ghc/wiki/ViewPatterns
+[1] Haskell ViewPatterns: https://ghc.haskell.org/trac/ghc/wiki/ViewPatterns
 
 [2] Haskell ViewPatterns vs F# Active Patterns: https://mail.haskell.org/pipermail/haskell-cafe/2009-January/053643.html
 
