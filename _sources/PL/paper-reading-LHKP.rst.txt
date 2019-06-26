@@ -7,11 +7,11 @@ Paper Reading: Lightweight-Higher-Kinded-Polymorphism
 How-To
 ----------------------
 
-In fact, this technique(Let's call it **LHKP** ) introduced from this paper works perfectly only when
-the order of types is less than 2(have kind :code:`*` or :code:`* -> *`) and type
-constructor is not an endfunctor.
+In fact, the technique (hereafter as **LHKP** ) introduced in this paper works perfectly only when
+the order of types is less than 2 (have kind :code:`*` or :code:`* -> *`) and type
+constructor is not an endofunctor.
 
-LHKP achieves first order types through a parametric interface type :code:`type ('a, 't) app` which denotes
+LHKP achieves first order types through a parametric interface type :code:`type ('a, 't) app`, denoted as
 :code:`'a 't` in higher kinded ML, where :code:`'a` is applicated to :code:`'t` where :code:`'t` has kind
 :code:`* -> *`.
 
@@ -25,7 +25,8 @@ LHKP achieves first order types through a parametric interface type :code:`type 
         external prj: ('a, t) app -> 'a s  = "%identity"
     end
 
-Any problem with :code:`%identity`, check `%identity in OCaml <https://stackoverflow.com/questions/8482624/ocaml-identity-function>`_.
+For any problem with :code:`%identity`,
+check `%identity in OCaml <https://stackoverflow.com/questions/8482624/ocaml-identity-function>`_.
 
 We can then make intuitive explanations using the implementation of polymorphic :code:`map`.
 
@@ -33,7 +34,7 @@ We can then make intuitive explanations using the implementation of polymorphic 
 
     val map: forall t a b {t <: mappable} .(a -> b) -> t a -> t a
 
-Firstly, present the common part for all type constructors/applications(:code:`App`) here:
+Firstly, present the common part for all type constructors/applications (:code:`App`) here:
 
 .. code-block :: OCaml
 
@@ -55,9 +56,9 @@ Then declare a *type class* :
 
     type 'a mappable_impl = (module Mappable with type t = 'a)
 
-Interesting, we've just implemented a type class tersely just like what is allowed in Haskell.
+Interesting, we've just implemented a type class tersely just like in Haskell.
 
-Next, let's implement :code:`list` type constructor:
+Next, let's implement the :code:`list` type constructor:
 
 .. code-block :: OCaml
 
@@ -66,7 +67,7 @@ Next, let's implement :code:`list` type constructor:
         include Common
     end
 
-Now we've almost achieved the final goal, and current task still similar to Haskell for
+Now we've almost achieved the final goal, and what's left to do is still similar to Haskell for
 we're exactly going to implement type class :code:`Mappable` for type constructor :code:`list`:
 
 .. code-block :: OCaml
@@ -79,7 +80,7 @@ we're exactly going to implement type class :code:`Mappable` for type constructo
         in ListApp.inj cb
     end
 
-And finally, the we got a polymorphic :code:`map`:
+And finally, we got a polymorphic :code:`map`:
 
 .. code-block :: ocaml
 
@@ -91,7 +92,7 @@ And finally, the we got a polymorphic :code:`map`:
         let lst = ListApp.prj(map (module MapList) (fun x -> x + 1) (ListApp.inj [1; 2; 3]))
         in List.iter print_int lst
 
-We can also use the same :code:`map` to work with code:`Array` type constructor:
+We can also use the same :code:`map` to work with :code:`Array` type constructor:
 
 .. code-block :: OCaml
 
@@ -140,17 +141,18 @@ Take care that, in last section, the so-called **LHKP** is also kind of disgusti
      map (module MapArray) ...
 
 
-It's not difficult to observe that, the type constructor like :code:`MapList` and :`MapArray` has been
-already given in other arguments:
+It's obvious that, type constructors like :code:`MapList` and :code:`MapArray` had already been
+given in other arguments:
 
 .. code::
 
     val map: type t. (t mappable_impl) ('a -> 'b) -> ('a, t) app -> ('b, t) app
 
-In fact, the argument typed :code:`t mappable_impl` is unique for a given :code:`t`.
-So how about create an instance typed :code:`t mappable_impl` automatically from the type :code:`t` ?
+In fact, the argument typed :code:`t mappable_impl` is unique given a unique :code:`t`
+(in other words, :code:`mappable_impl` is injective).
+So how about create an instance of type :code:`t mappable_impl` automatically from the type :code:`t` ?
 
-If we can do this, we then have a better polymorphism which is no worse than that from Haskell.
+If we can do this, we then have a better polymorphism no worse than Haskell's.
 
 .. code ::
 
@@ -164,14 +166,14 @@ If we can do this, we then have a better polymorphism which is no worse than tha
 Yes, that's possible, actually we could use type variable inside a generic function/value to
 instantiate the type constructor.
 
-Another thing might not be explicit enough is, the type variable that decides the instantiation of
+Another obscure thing is that, type variable deciding the instantiation of
 type constructor might not appear in parameters, return type can also be used to do such things.
 
 
 This kind of instantiation could be implemented through the static resolution/static duck typing,
-which is provided by F# language and enable us to use almost full-featured type classes and higher kinded types.
+which is provided by F# language, empowering us to use almost full-featured type classes and higher kinded types.
 
-This technique would be introduced in this artivle: `更高更妙的F# <./HKT-type class-FSharp.html>`_.
+This technique would be introduced in this article: `更高更妙的F# <./HKT-type class-FSharp.html>`_.
 
 For OCaml alternatives, check `modular implicits <http://tycon.github.io/modular-implicits.html>`_ .
 
@@ -250,8 +252,8 @@ However, using such :code:`Either` could be quite annoying:
   let () = print_string (show_either_int_int either_mapped2 ^ "\n")
 
 That sucks so much for the lack of modular implicits and, it's an internal property that
-expressing much higher kinded types(whose kind ascription is more complex than :code:`* -> *`)
-requires many other verbose codes like :code:`('c, ('b, 'a) app) app`.
+expressing much higher kinded types (whose kind ascription is more complex than :code:`* -> *`)
+requires many other boilerplate codes like :code:`('c, ('b, 'a) app) app`.
 
 Limitation2: Identity
 -------------------------
@@ -288,20 +290,21 @@ after introducing higher kined types.
 
     'a cons ~ 'e 't
 
-Now we don't known if :code:`cons` is a type constructor or simply an alias,
-so we cannot imply that :code:`'a ~ 'e` and :code:`cons ~ 't`, for if :code:`'cons`
+Now we don't know if :code:`cons` is a type constructor or simply an alias,
+so we cannot say :code:`'a ~ 'e` and :code:`cons ~ 't`, in case :code:`'cons`
 is a type alias like
 
 .. code-block :: ocaml
 
     type 'a cons = ('a * 'a) list
 
-where the implication of :code:`'a cons ~ 'e 't` should be :code:`('a, 'a) ~ 'e` and
+where :code:`'a cons ~ 'e 't` should imply :code:`('a, 'a) ~ 'e` and
 :code:`list ~ 't`.
 
 
-So I have a question about why not process type aliases firstly and convert them into
-regular types containing no aliases? The paper said "Since OCaml cannot distinguish between data types and aliases...",
+So why not process type aliases firstly and convert them into
+regular types containing no aliases?
+The paper said "Since OCaml cannot distinguish between data types and aliases...",
 I think it's not true, for OCaml types are named with lowercase leading character,
 while datatype constructor are given through names that start with uppercase character.
 
