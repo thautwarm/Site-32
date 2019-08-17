@@ -77,7 +77,9 @@ def build():
 def clean():
     for each in Path('.').list_dir():
         filename = each.relative()
-        if filename.startswith('.') or filename in ('src', 'manage.py', '_config.yml', 'favicon.ico'):
+        if (filename.startswith('.')
+            or filename.endswith('.py')
+            or filename in ('src', 'manage.py', '_config.yml', 'favicon.ico')):
             continue
         each.delete()
 
