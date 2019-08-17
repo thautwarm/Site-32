@@ -58,5 +58,21 @@
             "Haskell"
         ],
         "release_date": "2019-04-05 19:19"
+    },
+    {
+        "title": "高观点下的Julia泛用编程",
+        "where": "Backup.高观点下的Julia泛用编程",
+        "keywords":[
+            "Chinese-Translation",
+            "Julia",
+            "General Programming",
+            "Pattern Macthing",
+            "Syntactic Macro",
+            "Hygineic Macro",
+            "Programming Language",
+            "Polymorphism",
+            "Haskell"
+        ],
+        "release_date": "2019-08-18 02:16"
     }
 ]

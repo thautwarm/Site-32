@@ -39,7 +39,7 @@ def proceed_url(url):
     subs = netlocs_to_local.get(o.netloc)
     if subs:
         localpath = subs + o.path
-        download_as(url, op.join(cur_path, localpath))
+        download_as(url, op.join("./src/BackupStatic", localpath))
         return True, op.join('.', localpath)
     else:
         return False, url

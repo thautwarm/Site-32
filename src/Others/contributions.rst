@@ -6,7 +6,7 @@
     - cpython
         - PR
             - https://github.com/python/cpython/pull/9891
-    
+
     - typeshed
         - PR
             - https://github.com/python/typeshed/pull/2517
@@ -24,4 +24,4 @@
 - JuliaLang/Julia
     - Some constructive issues
         - https://github.com/JuliaLang/julia/issues/30772
-        - https://github.com/JuliaLang/julia/issues/29836            
+        - https://github.com/JuliaLang/julia/issues/29836

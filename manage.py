@@ -70,6 +70,8 @@ def build():
                 keywords=keywords))
 
     os.system('sphinx-build -b html ./src ./')
+    for each_static in Path("./src/BackupStatic").list_dir():
+      each_static.move_to("./Backup/")
 
 
 preserved = [
@@ -78,6 +80,7 @@ preserved = [
   'manage.py',
   'localize.py',
   'favicon.ico',
+  '.nojekyll',
   '.',
   '.git',
 ]
