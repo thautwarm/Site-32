@@ -72,15 +72,22 @@ def build():
     os.system('sphinx-build -b html ./src ./')
 
 
+preserved = [
+  'src',
+  '.gitignore',
+  'manage.py',
+  'localize.py',
+  'favicon.ico',
+  '.',
+  '.git',
+]
 
 @cmd
 def clean():
     for each in Path('.').list_dir():
         filename = each.relative()
-        if (filename.startswith('.')
-            or filename.endswith('.py')
-            or filename in ('src', 'manage.py', '_config.yml', 'favicon.ico')):
-            continue
+        if filename in preserved:
+          continue
         each.delete()
 
 if __name__ == '__main__':

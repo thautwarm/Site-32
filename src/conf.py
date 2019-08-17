@@ -39,7 +39,7 @@ templates_path = ['_templates']
 #
 # source_suffix = ['.rst', '.md']
 
-source_suffix = ['.rst']
+source_suffix = ['.rst', '.html']
 
 # The master toctree document.
 master_doc = 'guide'
