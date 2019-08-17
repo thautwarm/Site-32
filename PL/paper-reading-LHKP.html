@@ -2,8 +2,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>Paper Reading: Lightweight-Higher-Kinded-Polymorphism &#8212; Site-32  documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -11,7 +10,8 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
@@ -49,6 +49,7 @@
                 <li><a href="index.html">PL</a></li>
                 <li><a href="../Design/index.html">Design</a></li>
                 <li><a href="../DSL/index.html">DSL</a></li>
+                <li><a href="../Backup/index.html">Backup</a></li>
                 <li><a href="../Others/index.html">Others</a></li>
             
             
@@ -188,7 +189,7 @@ constructor is not an endofunctor.</p>
 <p>For any problem with <code class="code docutils literal notranslate"><span class="pre">%identity</span></code>,
 check <a class="reference external" href="https://stackoverflow.com/questions/8482624/ocaml-identity-function">%identity in OCaml</a>.</p>
 <p>We can then make intuitive explanations using the implementation of polymorphic <code class="code docutils literal notranslate"><span class="pre">map</span></code>.</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">val</span> <span class="nb">map</span><span class="p">:</span> <span class="n">forall</span> <span class="n">t</span> <span class="n">a</span> <span class="n">b</span> <span class="p">{</span><span class="n">t</span> <span class="o">&lt;</span><span class="p">:</span> <span class="n">mappable</span><span class="p">}</span> <span class="o">.</span><span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">t</span> <span class="n">a</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">val</span> <span class="nb">map</span><span class="p">:</span> <span class="n">forall</span> <span class="n">t</span> <span class="n">a</span> <span class="n">b</span> <span class="p">{</span><span class="n">t</span> <span class="o">&lt;</span><span class="p">:</span> <span class="n">mappable</span><span class="p">}</span> <span class="o">.</span><span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">t</span> <span class="n">a</span>
 </pre></div>
 </div>
 <p>Firstly, present the common part for all type constructors/applications (<code class="code docutils literal notranslate"><span class="pre">App</span></code>) here:</p>
@@ -270,20 +271,20 @@ we’re exactly going to implement type class <code class="code docutils literal
 <div class="section" id="static-resolution-more-polymorphic">
 <h2>Static Resolution: More polymorphic<a class="headerlink" href="#static-resolution-more-polymorphic" title="Permalink to this headline">¶</a></h2>
 <p>Take care that, in last section, the so-called <strong>LHKP</strong> is also kind of disgusting because we have to give the type constructor manually.</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="p">(</span><span class="n">module</span> <span class="n">MapList</span><span class="p">)</span> <span class="o">...</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="p">(</span><span class="n">module</span> <span class="n">MapList</span><span class="p">)</span> <span class="o">...</span>
 <span class="nb">map</span> <span class="p">(</span><span class="n">module</span> <span class="n">MapArray</span><span class="p">)</span> <span class="o">...</span>
 </pre></div>
 </div>
 <p>It’s obvious that, type constructors like <code class="code docutils literal notranslate"><span class="pre">MapList</span></code> and <code class="code docutils literal notranslate"><span class="pre">MapArray</span></code> had already been
 given in other arguments:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">val</span> <span class="nb">map</span><span class="p">:</span> <span class="nb">type</span> <span class="n">t</span><span class="o">.</span> <span class="p">(</span><span class="n">t</span> <span class="n">mappable_impl</span><span class="p">)</span> <span class="p">(</span><span class="s1">&#39;a -&gt; &#39;</span><span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="s1">&#39;a, t) app -&gt; (&#39;</span><span class="n">b</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="n">app</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">val</span> <span class="nb">map</span><span class="p">:</span> <span class="nb">type</span> <span class="n">t</span><span class="o">.</span> <span class="p">(</span><span class="n">t</span> <span class="n">mappable_impl</span><span class="p">)</span> <span class="p">(</span><span class="s1">&#39;a -&gt; &#39;</span><span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="s1">&#39;a, t) app -&gt; (&#39;</span><span class="n">b</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="n">app</span>
 </pre></div>
 </div>
 <p>In fact, the argument typed <code class="code docutils literal notranslate"><span class="pre">t</span> <span class="pre">mappable_impl</span></code> is unique given a unique <code class="code docutils literal notranslate"><span class="pre">t</span></code>
 (in other words, <code class="code docutils literal notranslate"><span class="pre">mappable_impl</span></code> is injective).
 So how about create an instance of type <code class="code docutils literal notranslate"><span class="pre">t</span> <span class="pre">mappable_impl</span></code> automatically from the type <code class="code docutils literal notranslate"><span class="pre">t</span></code> ?</p>
 <p>If we can do this, we then have a better polymorphism no worse than Haskell’s.</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">val</span> <span class="n">arr_data</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;a, ArrayApp.t) app</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">val</span> <span class="n">arr_data</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;a, ArrayApp.t) app</span>
 <span class="n">val</span> <span class="n">lst_data</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;a, ListApp.t) app</span>
 <span class="n">val</span> <span class="n">f</span><span class="p">:</span> <span class="s1">&#39;a -&gt; &#39;</span><span class="n">b</span>
 
@@ -424,7 +425,7 @@ while datatype constructor are given through names that start with uppercase cha
     </p>
     <p>
         &copy; Copyright 2019, thautwarm.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
     </p>
   </div>
 </footer>

@@ -1,3 +1,4 @@
 {
-    "restructuredtext.confPath": "${workspaceFolder}\\src"
+    "restructuredtext.confPath": "${workspaceFolder}\\src",
+    "python.pythonPath": "/home/redbq/Software/Anaconda/bin/python"
 }

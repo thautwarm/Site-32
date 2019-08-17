@@ -2,8 +2,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>Higher Kinded Types &#8212; Site-32  documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -11,7 +10,8 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
@@ -49,6 +49,7 @@
                 <li><a href="index.html">PL</a></li>
                 <li><a href="../Design/index.html">Design</a></li>
                 <li><a href="../DSL/index.html">DSL</a></li>
+                <li><a href="../Backup/index.html">Backup</a></li>
                 <li><a href="../Others/index.html">Others</a></li>
             
             
@@ -160,7 +161,7 @@
       
   <div class="section" id="higher-kinded-types">
 <h1>Higher Kinded Types<a class="headerlink" href="#higher-kinded-types" title="Permalink to this headline">¶</a></h1>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Identity</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Identity</span> <span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
 <span class="n">List</span> <span class="n">Int</span>
 <span class="n">Array</span> <span class="n">Int</span>
 <span class="n">Either</span> <span class="n">String</span> <span class="n">Int</span>
@@ -173,7 +174,7 @@ constructors. Furthermore, <code class="code docutils literal notranslate"><span
 the other 3 could only be applied once.</p>
 <p>To describe this internal property of types, a concept called <strong>Kind</strong> has been built and, you can regard a kind as the type of a type.</p>
 <p>Each type has a kind ascription:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">the</span> <span class="n">star</span> <span class="o">*</span> <span class="n">means</span> <span class="n">it</span><span class="s1">&#39;s the concrete type)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">the</span> <span class="n">star</span> <span class="o">*</span> <span class="n">means</span> <span class="n">it</span><span class="s1">&#39;s the concrete type)</span>
 
 <span class="n">Int</span> <span class="p">:</span> <span class="o">*</span>
 
@@ -197,7 +198,7 @@ the other 3 could only be applied once.</p>
     </p>
     <p>
         &copy; Copyright 2019, thautwarm.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
     </p>
   </div>
 </footer>

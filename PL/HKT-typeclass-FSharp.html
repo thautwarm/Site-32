@@ -2,8 +2,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>Compelling Higher Kinded Types and Type Classes in F# &#8212; Site-32  documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -11,7 +10,8 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
@@ -49,6 +49,7 @@
                 <li><a href="index.html">PL</a></li>
                 <li><a href="../Design/index.html">Design</a></li>
                 <li><a href="../DSL/index.html">DSL</a></li>
+                <li><a href="../Backup/index.html">Backup</a></li>
                 <li><a href="../Others/index.html">Others</a></li>
             
             
@@ -172,19 +173,17 @@
 some other power infrastructures, it becomes much easier for F# to express higher abstractions tersely.</p>
 <p>The secret of the F#’s conciseness comes from the following 2 parts.</p>
 <ul>
-<li><dl class="first docutils">
-<dt><a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/active-patterns">Active Patterns</a> help to avoid write <code class="code docutils literal notranslate"><span class="pre">inj</span></code> and <code class="code docutils literal notranslate"><span class="pre">prj</span></code> manually.</dt>
-<dd><p class="first">If you’ve never heard of <code class="code docutils literal notranslate"><span class="pre">inj</span></code> and <code class="code docutils literal notranslate"><span class="pre">prj</span></code> before, there is <a class="reference external" href="./paper-reading-LHKP.html">a prerequisite article</a> for you to
+<li><dl>
+<dt><a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/active-patterns">Active Patterns</a> help to avoid write <code class="code docutils literal notranslate"><span class="pre">inj</span></code> and <code class="code docutils literal notranslate"><span class="pre">prj</span></code> manually.</dt><dd><p>If you’ve never heard of <code class="code docutils literal notranslate"><span class="pre">inj</span></code> and <code class="code docutils literal notranslate"><span class="pre">prj</span></code> before, there is <a class="reference external" href="./paper-reading-LHKP.html">a prerequisite article</a> for you to
 figure out what they are and some necessary knowledge about Higher Kined Types and Type Classes.</p>
-<p class="last">If you cannot get along with that prerequisite article,
+<p>If you cannot get along with that prerequisite article,
 you might need to try Haskell language to learn about Functor and Monad to
 get some related basic knowledge.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters">Static Resolved Type Parameters</a> help to support resolution for implicit arguments.</dt>
-<dd><p class="first last">That’s the way to achieve something similar to modular implicits in OCaml.</p>
+<li><dl class="simple">
+<dt><a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters">Static Resolved Type Parameters</a> help to support resolution for implicit arguments.</dt><dd><p>That’s the way to achieve something similar to modular implicits in OCaml.</p>
 </dd>
 </dl>
 </li>
@@ -193,7 +192,7 @@ get some related basic knowledge.</p>
 <div class="section" id="active-pattern">
 <h2>Active Pattern<a class="headerlink" href="#active-pattern" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Temporary enumerations</li>
+<li><p>Temporary enumerations</p></li>
 </ul>
 <div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="o">(|</span><span class="n">IsWhatIWant</span><span class="o">|</span><span class="n">NotWhatIWant</span><span class="o">|)</span> <span class="n">x</span> <span class="o">=</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="k">then</span> <span class="n">IsWhatIWant</span>
@@ -206,7 +205,7 @@ get some related basic knowledge.</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li>Temporary recognizers</li>
+<li><p>Temporary recognizers</p></li>
 </ul>
 <div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="o">(|</span><span class="n">Dec</span><span class="o">|)</span> <span class="n">x</span> <span class="o">=</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="n">Some</span> <span class="o">&lt;|</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
@@ -218,7 +217,7 @@ get some related basic knowledge.</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li>Simulating datatypes</li>
+<li><p>Simulating datatypes</p></li>
 </ul>
 <div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="o">(|</span><span class="n">Just</span><span class="o">|</span><span class="n">Nothing</span><span class="o">|)</span> <span class="o">(</span><span class="n">a</span><span class="o">:</span> <span class="k">&#39;</span><span class="n">a</span> <span class="n">option</span><span class="o">)</span> <span class="o">=</span>
     <span class="k">match</span> <span class="n">a</span> <span class="k">with</span>
@@ -337,9 +336,9 @@ which is introduced to make abstractions on types(including the higher kinded ty
 </div>
 <p>Now you might have lots of questions about above codes,</p>
 <ol class="arabic simple">
-<li>How can it help with implementing type classes?</li>
-<li>Why we have to use <code class="code docutils literal notranslate"><span class="pre">AbstractClass</span></code> instead of ML Style records, or interfaces that’re more lightweighted?</li>
-<li>Why we should use such a shape <code class="code docutils literal notranslate"><span class="pre">functor&lt;'F&gt;</span></code> instead of straightforward <code class="code docutils literal notranslate"><span class="pre">functor</span></code> ?</li>
+<li><p>How can it help with implementing type classes?</p></li>
+<li><p>Why we have to use <code class="code docutils literal notranslate"><span class="pre">AbstractClass</span></code> instead of ML Style records, or interfaces that’re more lightweighted?</p></li>
+<li><p>Why we should use such a shape <code class="code docutils literal notranslate"><span class="pre">functor&lt;'F&gt;</span></code> instead of straightforward <code class="code docutils literal notranslate"><span class="pre">functor</span></code> ?</p></li>
 </ol>
 <p>I’ll answer above questions in the following sections, but in terms of this section’s topic, I should answer the first one here.</p>
 <p>Firstly we need some infrastructures:</p>
@@ -378,15 +377,15 @@ which is introduced to make abstractions on types(including the higher kinded ty
 </pre></div>
 </div>
 <p>Now we can use <code class="code docutils literal notranslate"><span class="pre">fmap</span></code> on instances of <code class="code docutils literal notranslate"><span class="pre">hkt&lt;mkList&lt;'L&gt;,</span> <span class="pre">'a&gt;</span></code> where <code class="code docutils literal notranslate"><span class="pre">'L</span> <span class="pre">&lt;:</span> <span class="pre">mkList&lt;'L&gt;</span></code>.</p>
-<div class="code FSharp highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span> <span class="n">MyList</span><span class="p">()</span> <span class="o">=</span>
-    <span class="n">inherit</span> <span class="n">mkList</span><span class="o">&lt;</span><span class="n">MyList</span><span class="o">&gt;</span><span class="p">()</span>
-    <span class="o">//</span> <span class="n">you</span> <span class="n">can</span> <span class="n">interface</span> <span class="n">other</span> <span class="nb">type</span> <span class="n">classes</span> <span class="n">here</span><span class="o">.</span>
-<span class="nb">type</span> <span class="n">MyList</span> <span class="o">=</span> <span class="n">mkList</span><span class="o">&lt;</span><span class="n">MyList</span><span class="o">&gt;</span>
+<div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="nc">MyList</span><span class="bp">()</span> <span class="o">=</span>
+    <span class="k">inherit</span> <span class="n">mkList</span><span class="o">&lt;</span><span class="n">MyList</span><span class="o">&gt;</span><span class="bp">()</span>
+    <span class="c1">// you can interface other type classes here.</span>
+<span class="k">type</span> <span class="nc">MyList</span> <span class="o">=</span> <span class="n">mkList</span><span class="o">&lt;</span><span class="n">MyList</span><span class="o">&gt;</span>
 
-<span class="k">assert</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">let</span> <span class="n">lst</span> <span class="p">:</span> <span class="n">hkt</span><span class="o">&lt;</span><span class="n">MyList</span><span class="p">,</span> <span class="n">_</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">wrap</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-        <span class="ow">in</span> <span class="n">unwrap</span> <span class="o">&lt;|</span> <span class="n">fmap</span> <span class="p">(</span><span class="n">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="n">lst</span>
-<span class="p">)</span>
+<span class="k">assert</span> <span class="o">[</span><span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">]</span> <span class="o">=</span> <span class="o">(</span>
+        <span class="k">let</span> <span class="nv">lst</span> <span class="o">:</span> <span class="n">hkt</span><span class="o">&lt;</span><span class="n">MyList</span><span class="o">,</span> <span class="o">_&gt;</span> <span class="o">=</span> <span class="n">wrap</span> <span class="o">[</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">]</span>
+        <span class="k">in</span> <span class="n">unwrap</span> <span class="o">&lt;|</span> <span class="n">fmap</span> <span class="o">(</span><span class="k">fun</span> <span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="n">lst</span>
+<span class="o">)</span>
 </pre></div>
 </div>
 <p>Also the <code class="code docutils literal notranslate"><span class="pre">Maybe</span></code> functor:</p>
@@ -485,8 +484,8 @@ typed <code class="code docutils literal notranslate"><span class="pre">t</span>
 <h2>Why AbstractClass?<a class="headerlink" href="#why-abstractclass" title="Permalink to this headline">¶</a></h2>
 <p>This is required for we need</p>
 <ol class="arabic simple">
-<li>Default implementations of type classes</li>
-<li>Inheritances among type classes(such as <code class="code docutils literal notranslate"><span class="pre">Monad</span> <span class="pre">&lt;:</span> <span class="pre">Applicative</span> <span class="pre">&lt;:</span> <span class="pre">Functor</span></code>)</li>
+<li><p>Default implementations of type classes</p></li>
+<li><p>Inheritances among type classes(such as <code class="code docutils literal notranslate"><span class="pre">Monad</span> <span class="pre">&lt;:</span> <span class="pre">Applicative</span> <span class="pre">&lt;:</span> <span class="pre">Functor</span></code>)</p></li>
 </ol>
 <p>These two features are necessary, if you have any problem about this point, please check <a class="reference external" href="https://github.com/thautwarm/FSTan/tree/master/FSTan/Functor.fs">Functor.fs</a>,
 <a class="reference external" href="https://github.com/thautwarm/FSTan/tree/master/FSTan">Applicative.fs</a>, and <a class="reference external" href="https://github.com/thautwarm/FSTan/tree/master/FSTan">Monad.fs</a>.</p>
@@ -512,13 +511,13 @@ Type classes could be implemented more smoothly via interfaces with default meth
 <p>If we have <code class="code docutils literal notranslate"><span class="pre">List</span> <span class="pre">&lt;:</span> <span class="pre">functor</span></code>, and <code class="code docutils literal notranslate"><span class="pre">Applicative</span> <span class="pre">&lt;:</span> <span class="pre">functor</span></code>, isn’t it saying <code class="code docutils literal notranslate"><span class="pre">Applicative</span></code> is in the same
 category as the <code class="code docutils literal notranslate"><span class="pre">List</span></code>?</p>
 <p>Furthermore, static resolved type parameters cannot tell you which interface/abstract class your type has extended with:</p>
-<div class="code FSharp highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span> <span class="n">mkList</span><span class="p">()</span> <span class="o">=</span>
-    <span class="n">inherit</span> <span class="n">Functor</span><span class="p">()</span>
-    <span class="o">//</span> <span class="o">...</span>
+<div class="highlight-FSharp notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="nc">mkList</span><span class="bp">()</span> <span class="o">=</span>
+    <span class="k">inherit</span> <span class="n">Functor</span><span class="bp">()</span>
+    <span class="c1">// ...</span>
 
-<span class="n">let</span> <span class="n">fmap</span><span class="o">&lt;</span><span class="s1">&#39;a, &#39;</span><span class="n">b</span><span class="p">,</span> <span class="s1">&#39;F when &#39;</span><span class="n">F</span> <span class="p">:</span><span class="o">&gt;</span> <span class="n">functor</span><span class="o">&gt;</span> <span class="p">:</span>
-    <span class="p">(</span><span class="s1">&#39;a -&gt; &#39;</span><span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">hkt</span><span class="o">&lt;</span><span class="s1">&#39;F, &#39;</span><span class="n">a</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="n">hkt</span><span class="o">&lt;</span><span class="s1">&#39;F, &#39;</span><span class="n">b</span><span class="o">&gt;</span> <span class="o">=</span>
-    <span class="n">getsig</span><span class="o">&lt;</span><span class="s1">&#39;F&gt;.fmap</span>
+<span class="k">let</span> <span class="nv">fmap</span><span class="o">&lt;</span><span class="k">&#39;</span><span class="n">a</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">F</span> <span class="k">when</span> <span class="k">&#39;</span><span class="n">F</span> <span class="o">:&gt;</span> <span class="k">functor</span><span class="o">&gt;</span> <span class="o">:</span>
+    <span class="o">(</span><span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">hkt</span><span class="o">&lt;</span><span class="k">&#39;</span><span class="n">F</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">a</span><span class="o">&gt;</span> <span class="o">-&gt;</span> <span class="n">hkt</span><span class="o">&lt;</span><span class="k">&#39;</span><span class="n">F</span><span class="o">,</span> <span class="k">&#39;</span><span class="n">b</span><span class="o">&gt;</span> <span class="o">=</span>
+    <span class="n">getsig</span><span class="o">&lt;</span><span class="k">&#39;</span><span class="n">F</span><span class="o">&gt;.</span><span class="n">fmap</span>
 </pre></div>
 </div>
 <p>The <code class="code docutils literal notranslate"><span class="pre">getsig</span></code> used above is impossible to implement in F#.</p>
@@ -549,7 +548,7 @@ category as the <code class="code docutils literal notranslate"><span class="pre
     </p>
     <p>
         &copy; Copyright 2019, thautwarm.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.9.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.2.<br/>
     </p>
   </div>
 </footer>
