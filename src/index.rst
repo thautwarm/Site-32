@@ -11,9 +11,28 @@ Site-32 Index Page
 
     <br>
     <div class="panel panel-success">
+      <div class="panel-heading">Staging和Julia生成函数</div>
+      <div class="panel-body">
+        keywords: Chinese-中文&nbsp;,&nbsp;Julia&nbsp;,&nbsp;Staging技术&nbsp;,&nbsp;Julia生成函数&nbsp;,&nbsp;Julia的World Age问题
+      </div>
+
+      <div class="panel-footer">
+        <a href="./Design/Staging和Julia生成函数.html">Check</a>
+        <span class="pull-right">Mon, August 19, 2019.&nbsp; 20: 43 </span>
+      </div>
+    </div>
+
+
+
+.. raw:: html
+
+
+
+    <br>
+    <div class="panel panel-info">
       <div class="panel-heading">高观点下的Julia泛用编程</div>
       <div class="panel-body">
-        keywords: Chinese-Translation&nbsp;,&nbsp;Julia&nbsp;,&nbsp;General Programming&nbsp;,&nbsp;Pattern Macthing&nbsp;,&nbsp;Syntactic Macro&nbsp;,&nbsp;Hygineic Macro&nbsp;,&nbsp;Programming Language&nbsp;,&nbsp;Polymorphism&nbsp;,&nbsp;Haskell
+        keywords: Chinese-中文&nbsp;,&nbsp;Julia&nbsp;,&nbsp;泛用编程&nbsp;,&nbsp;模式匹配&nbsp;,&nbsp;语法宏&nbsp;,&nbsp;卫生宏&nbsp;,&nbsp;程序语言&nbsp;,&nbsp;多态&nbsp;,&nbsp;Haskell
       </div>
 
       <div class="panel-footer">
@@ -29,7 +48,7 @@ Site-32 Index Page
 
 
     <br>
-    <div class="panel panel-info">
+    <div class="panel panel-warning">
       <div class="panel-heading">General Programming In Julia From An Advanced Standpoint</div>
       <div class="panel-body">
         keywords: Julia&nbsp;,&nbsp;General Programming&nbsp;,&nbsp;Pattern Macthing&nbsp;,&nbsp;Syntactic Macro&nbsp;,&nbsp;Hygineic Macro&nbsp;,&nbsp;Programming Language&nbsp;,&nbsp;Polymorphism&nbsp;,&nbsp;Haskell
@@ -48,7 +67,7 @@ Site-32 Index Page
 
 
     <br>
-    <div class="panel panel-warning">
+    <div class="panel panel-danger">
       <div class="panel-heading">Write You A Query Language</div>
       <div class="panel-body">
         keywords: EDSL&nbsp;,&nbsp;Julia&nbsp;,&nbsp;Query Language&nbsp;,&nbsp;Pattern Macthing&nbsp;,&nbsp;MLStyle.jl&nbsp;,&nbsp;Tutorial
@@ -67,7 +86,7 @@ Site-32 Index Page
 
 
     <br>
-    <div class="panel panel-danger">
+    <div class="panel panel-success">
       <div class="panel-heading">Compelling Higher Kinded Types and Type Classes in F#</div>
       <div class="panel-body">
         keywords: F#&nbsp;,&nbsp;Higher Kinded Types&nbsp;,&nbsp;Type Class&nbsp;,&nbsp;Ad-hoc Polymorphism&nbsp;,&nbsp;Active Patterns&nbsp;,&nbsp;Static Resolved Type Parameters&nbsp;,&nbsp;Implicits
@@ -86,7 +105,7 @@ Site-32 Index Page
 
 
     <br>
-    <div class="panel panel-success">
+    <div class="panel panel-info">
       <div class="panel-heading">Higher Kinded Types</div>
       <div class="panel-body">
         keywords: Higher-Kinded-Types&nbsp;,&nbsp;Introduction
@@ -105,7 +124,7 @@ Site-32 Index Page
 
 
     <br>
-    <div class="panel panel-info">
+    <div class="panel panel-warning">
       <div class="panel-heading">Type Classes</div>
       <div class="panel-body">
         keywords: Type Class&nbsp;,&nbsp;Introduction&nbsp;,&nbsp;Polymorphism
@@ -124,7 +143,7 @@ Site-32 Index Page
 
 
     <br>
-    <div class="panel panel-warning">
+    <div class="panel panel-danger">
       <div class="panel-heading">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</div>
       <div class="panel-body">
         keywords: Programming language&nbsp;,&nbsp;Higher Kinded Types&nbsp;,&nbsp;Type Class&nbsp;,&nbsp;OCaml&nbsp;,&nbsp;Ad-hoc Polymorphism

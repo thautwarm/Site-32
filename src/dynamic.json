@@ -63,16 +63,28 @@
         "title": "高观点下的Julia泛用编程",
         "where": "Backup.高观点下的Julia泛用编程",
         "keywords":[
-            "Chinese-Translation",
+            "Chinese-中文",
             "Julia",
-            "General Programming",
-            "Pattern Macthing",
-            "Syntactic Macro",
-            "Hygineic Macro",
-            "Programming Language",
-            "Polymorphism",
+            "泛用编程",
+            "模式匹配",
+            "语法宏",
+            "卫生宏",
+            "程序语言",
+            "多态",
             "Haskell"
         ],
         "release_date": "2019-08-18 02:16"
+    },
+    {
+        "title": "Staging和Julia生成函数",
+        "where": "Design.Staging和Julia生成函数",
+        "keywords":[
+            "Chinese-中文",
+            "Julia",
+            "Staging技术",
+            "Julia生成函数",
+            "Julia的World Age问题"
+        ],
+        "release_date": "2019-08-19 20:43"
     }
 ]
