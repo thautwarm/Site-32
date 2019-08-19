@@ -11,7 +11,7 @@ Staging是什么
 所有的Staging优化都不可能完成, 因此带着native code编译器的动态语言,
 例如Julia, 很多时候很容易在性能上远胜静态语言.
 
-一个经典的案例来源于 `Oleg Kiselyov的这篇"博客" <okmij.org/ftp/meta-programming/calculi.html>`_ :
+一个经典的案例来源于 `Oleg Kiselyov的这篇"博客" <http://okmij.org/ftp/meta-programming/calculi.html>`_ :
 
 给定 :math:`Fibonacci` 数列的
 
