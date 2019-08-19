@@ -18,7 +18,7 @@ Staging是什么
 * 前两项 :math:`a_1, a_2` ,
 * 以及递推关系的运算 :math:`f` , 其中 :math:`f(a_{k}, a_{k+1}) = a_{k+2}`
 
-求解的第 :math:`n` 项.
+求解第 :math:`n` 项.
 
 问题解的直观定义如下
 
@@ -279,7 +279,7 @@ Staging是什么
     │    The applicable method may be too new: running in world age 25581, while current world is 25582.
 
 
-"世界纪元"问题可以用 `invokelatest <https://discourse.julialang.org/t/world-age-problem-explanation/9714/4?u=thautwarm>`_,
+"世界纪元"问题可以用 `invokelatest <https://discourse.julialang.org/t/world-age-problem-explanation/9714/4?u=thautwarm>`_ 解决,
 
 但 `代价是失去性能, 永远和快沾不上边 <https://docs.julialang.org/en/v1/base/base/index.html#Base.invokelatest>`_ :
 
