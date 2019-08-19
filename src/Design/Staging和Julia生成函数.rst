@@ -213,7 +213,7 @@ Staging是什么
 而 ``fibnr_with_n_and_memo(10)`` 的结果则一目了然.
 
 
-Runtime Function Construction: Julia Generated Function
+运行时函数构造: Julia生成函数
 ------------------------------------------------------------
 
 
