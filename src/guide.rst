@@ -17,6 +17,8 @@ Site-32 Resources
 
    PL/index.rst
 
+   Backup/index.rst
+
    Others/index.rst
 
 
