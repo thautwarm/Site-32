@@ -280,9 +280,12 @@ Staging是什么
 
 
 "世界纪元"问题可以用 `invokelatest <https://discourse.julialang.org/t/world-age-problem-explanation/9714/4?u=thautwarm>`_,
-代价是失去性能, 永远和快沾不上边.
 
-那么回到之前 :math:`Fibonacci` 数列的例子.
+但 `代价是失去性能, 永远和快沾不上边 <https://docs.julialang.org/en/v1/base/base/index.html#Base.invokelatest>`_ :
+
+            (The drawback is that invokelatest is somewhat slower than calling f directly, and the type of the result cannot be inferred by the compiler.)
+
+现在我们回到之前 :math:`Fibonacci` 数列的例子.
 
 
 从Fibonacci数列到Julia生成函数
