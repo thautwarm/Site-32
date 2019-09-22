@@ -60,31 +60,14 @@
         "release_date": "2019-04-05 19:19"
     },
     {
-        "title": "高观点下的Julia泛用编程",
-        "where": "Backup.高观点下的Julia泛用编程",
+        "title": "Some Thoughts About The Restrain JIT",
+        "where": "Design.Some-Thoughts-About-The-RestrainJIT",
         "keywords":[
-            "Chinese-中文",
+            "Python",
+            "Python JIT",
             "Julia",
-            "泛用编程",
-            "模式匹配",
-            "语法宏",
-            "卫生宏",
-            "程序语言",
-            "多态",
-            "Haskell"
+            "Julia Generated Functions"
         ],
-        "release_date": "2019-08-18 02:16"
-    },
-    {
-        "title": "Staging和Julia生成函数",
-        "where": "Design.Staging和Julia生成函数",
-        "keywords":[
-            "Chinese-中文",
-            "Julia",
-            "Staging技术",
-            "Julia生成函数",
-            "Julia的World Age问题"
-        ],
-        "release_date": "2019-08-19 20:43"
+        "release_date": "2019-04-05 19:19"
     }
 ]
