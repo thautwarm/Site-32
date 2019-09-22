@@ -59,6 +59,18 @@
         ],
         "release_date": "2019-04-05 19:19"
     },
+      {
+        "title": "Staging和Julia生成函数",
+        "where": "Design.Staging和Julia生成函数",
+        "keywords":[
+            "Chinese-中文",
+            "Julia",
+            "Staging技术",
+            "Julia生成函数",
+            "Julia的World Age问题"
+        ],
+        "release_date": "2019-08-19 20:43"
+    },
     {
         "title": "Some Thoughts About The Restrain JIT",
         "where": "Design.Some-Thoughts-About-The-RestrainJIT",
