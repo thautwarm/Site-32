@@ -1,6 +1,6 @@
 
 =================================================================
-Some Thoughts The Restrain JIT
+Some Thoughts About The Restrain JIT
 =================================================================
 
 Yesterday is the PyConChina 2019, and I made a talk about the JIT stuffs. Actually,
