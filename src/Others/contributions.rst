@@ -1,11 +1,12 @@
+===========================================
 Thautwarm's Open Source Contributions
-==========================================
+===========================================
 
 This is a collection of thautwarm(Taine Zhao/Wanghongxuan Zhao)'s open source contributions,
 but might not be that new.
 
 Projects Owned By Other Individuals/Organizations
-======================================================
+------------------------------------------------------
 
 - `Python/cpython <https://github.com/python/cpython>`_
     - better representation for :code:`mmap` : https://github.com/python/cpython/pull/9891
@@ -54,7 +55,8 @@ Projects Owned By Other Individuals/Organizations
     - fix unrunnable codes of README: https://github.com/alexandrebarachant/muse-lsl/pull/85
 
 Personal Projects Used Widely
-================================
+------------------------------------------------------
+
 
 - GeneralizedGenerated.jl: A library greatly enhances staged programming of Julia
     - https://github.com/thautwarm/GeneralizedGenerated.jl
@@ -67,7 +69,7 @@ Personal Projects Used Widely
 
 
 Other Personal Projects With Great Personal Efforts Prospective Values
-=============================================================================
+------------------------------------------------------------------------------------------------------------
 
 - `RBNF.hs <https://github.com/thautwarm/RBNF.hs>`_
     A language-independent parser generator.
