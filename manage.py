@@ -18,7 +18,8 @@ def raw_html(html):
 {html}
 """
 
-panel_styles = ['danger', 'success', 'info', 'warning']
+panel_styles = ['success', 'primary', 'warning']
+n_panel_styles = len(panel_styles)
 panel_count = 0
 def card(title: str, link: str, keywords: list, time: datetime):
     global panel_count
@@ -27,7 +28,7 @@ def card(title: str, link: str, keywords: list, time: datetime):
     panel_count += 1
     return raw_html(f"""
 <br>
-<div class="panel panel-{panel_styles[panel_count % 4]}">
+<div class="panel panel-{panel_styles[panel_count % n_panel_styles]}">
   <div class="panel-heading">{title}</div>
   <div class="panel-body">
     keywords: {keywords}
@@ -79,6 +80,7 @@ preserved = [
   '.gitignore',
   'manage.py',
   'vocab.py',
+  '.vscode',
   'localize.py',
   'favicon.ico',
   '.nojekyll',
