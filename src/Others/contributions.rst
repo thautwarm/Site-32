@@ -68,7 +68,7 @@ Personal Projects Used Widely
     -  https://github.com/thautwarm/graphviz-artist
 
 
-Other Personal Projects With Great Personal Efforts Prospective Values
+Other Personal Projects With Great Personal Efforts & Prospective Values
 ------------------------------------------------------------------------------------------------------------
 
 - `RBNF.hs <https://github.com/thautwarm/RBNF.hs>`_
