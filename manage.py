@@ -78,6 +78,7 @@ preserved = [
   'src',
   '.gitignore',
   'manage.py',
+  'vocab.py',
   'localize.py',
   'favicon.ico',
   '.nojekyll',
