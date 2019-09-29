@@ -1,7 +1,8 @@
-About
-===================
+Thautwarm's Open Source Contributions
+==========================================
 
-This is a collection of thautwarm(Taine Zhao/Wanghongxuan Zhao)'s open source contributions.
+This is a collection of thautwarm(Taine Zhao/Wanghongxuan Zhao)'s open source contributions,
+but might not be that new.
 
 Projects Owned By Other Individuals/Organizations
 ======================================================
@@ -52,7 +53,7 @@ Projects Owned By Other Individuals/Organizations
 - alexandrebarachant/muse-lsl
     - fix unrunnable codes of README: https://github.com/alexandrebarachant/muse-lsl/pull/85
 
-My Projects Used Widely
+Personal Projects Used Widely
 ================================
 
 - GeneralizedGenerated.jl: A library greatly enhances staged programming of Julia
@@ -65,7 +66,7 @@ My Projects Used Widely
     -  https://github.com/thautwarm/graphviz-artist
 
 
-My Other Projects With Great Personal Efforts Prospective Values
+Other Personal Projects With Great Personal Efforts Prospective Values
 =============================================================================
 
 - `RBNF.hs <https://github.com/thautwarm/RBNF.hs>`_

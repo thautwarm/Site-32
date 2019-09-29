@@ -3,6 +3,10 @@ Site-32 Index Page
 
 **Driven by the desire of making a difference**.
 
+Quick links:
+
+- `thautwarm's open source contributions <./Others/contributions.html>`_
+- `thautwarm's diaries and fictions(我的日志和小说) <./Fiction/index.html>`_
 
 
 .. raw:: html
