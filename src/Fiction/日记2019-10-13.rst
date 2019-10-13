@@ -151,3 +151,36 @@ overlapping的情形, 实际上是两个备选instance的类型 :code:`a, b` 满
     let show = fn show_inst value = show_inst.show value
 
     show 1
+
+该算法和相应语言设计的好处
+---------------------------------------------
+
+1. 简单轻量: 不需要引入term unification, 且对于HM的扩展非常小.
+2. 语法上方便初学者理解type class实现的本质, 使用上依然承诺简洁, 不像OCaml和F#一样需要大量boilerplate.
+3. 不引入Haskell那样的 :code:`class` 和 :code:`instance` 语言构造, 使得core lang体积减小.
+4. 自动的消除了orphan instance的问题; 毕竟, instance就是作用域内可访问的变量.
+
+
+不足之处
+-------------------------------
+
+
+Haskell里多个class的约束 :code:`(ClsA a, ClsB a) => ...` , 其顺序是insignificant的.
+
+这个问题我没有解决, 但打算用row polymorphisms来搞:
+
+也就是把
+
+.. code-block:: OCaml
+
+    val adhoc_func : {a clsA, a clsB} -> ...
+
+转成
+
+.. code-block:: OCaml
+
+    type a bothClses = a clsA with a clsB
+    val multicls : {a clsA} -> {a clsB} -> a bothClses
+    let multicls = fn instA instB -> instA with instB
+
+    val adhoc_func : {a bothClses} -> ...
