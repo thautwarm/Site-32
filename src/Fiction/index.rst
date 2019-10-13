@@ -26,7 +26,8 @@ Restrain-JIT开发暂停, 先搞一个基于CPython字节码的静态语言(Remu
 会搞一个Logo Generator, 期待达到 `BrandCrowd <https://www.brandcrowd.com>`_ 的效果.
 
 会在B站搞几个跨语言的程序设计启蒙教程, 看能不能吸引一些小朋友走我的方向, 然后这样也有人陪我一起玩;
-偶尔觉得很糟心, 迄今为止真正了解了我代码精妙之处且表达apprecation的, mostly除了Julia社区的朋友们就我的导师们.
+
+偶尔觉得很糟心, 迄今为止真正了解了我代码精妙之处且表达apprecation的, roughly除了Julia社区的朋友们就我的导师们.
 
 
 目录
