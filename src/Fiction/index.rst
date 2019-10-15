@@ -41,3 +41,4 @@ Restrain-JIT开发暂停, 先搞一个基于CPython字节码的静态语言(Remu
 
 
 - `日记2019-10-13: Smarter Witnesses for Type Classes <日记2019-10-13.html>`_
+- `日记2019-10-15: 我和Python的故事 <日记2019-10-15.html>`_
