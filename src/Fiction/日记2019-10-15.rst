@@ -325,7 +325,7 @@ Flowpython最终是不实用的, 除开技术深度和设计的问题, 原因还
 玩着FSN和其他galgame, 一个人在家里(父母在另一个地方工作)快乐地点着外卖, 学着CPython源代码, 在千里冰封的QQ群里吹着水,
 设计和实现着flowpython的那个暑假.
 
-第4节: BNF, Parser Generator和造语言
+第4节: BNF, Parser Generator和语言制造机器
 ---------------------------------------------------
 
 
@@ -336,7 +336,9 @@ CPython项目中的 `Grammar <https://github.com/python/cpython/blob/master/Gram
 
 我意识到*BNF可以清楚地表示源代码和其结构化表示的对应关系.
 
-而一个朋友开始实现新语言并需要parser的时候, 经过些许探索, 我发觉, 从BNF到一个parser是如此的简单!
+我的一个朋友, 在我17年秋季学期开始后, 开始实现一个 `新语言 <https://github.com/Cm-lang/>`_ .
+
+她当时需要parser, 为了帮助她, 我经过了些许探索, 便发觉从BNF到一个parser是如此的简单!
 
 我发现, 在Python的一些对象上可以实现正则表达式一般的东西, 并且写了一个 `粗陋的实现 <https://github.com/thautwarm/Stardust/blob/master/PM.py>`_ .
 
@@ -371,7 +373,18 @@ CPython项目中的 `Grammar <https://github.com/python/cpython/blob/master/Gram
 
 于是, 我写出了一个 `naive的parser generator框架 <https://github.com/thautwarm/EBNFParser>`_ .
 
-当然, 虽然给出了链接, 我并不建议任何人阅读该项目, 因为它实在是过于落后... 曾经有一位朋友在知乎评论区下给出了如此的评价,
-尽管他不太可能再收到我的回复, 我现在对他表示十分的感谢.
+当然, 虽然给出了链接, 我并不建议任何人阅读该项目, 因为它实在是过于落后...
 
+曾经有一位朋友在知乎评论区下给出了如此的评价, 尽管他不太可能再收到我的回复, 我现在对他表示十分的感谢.
 
+在后来, 我逐步迭代了我的parser框架, `RBNF <https://github.com/thautwarm/RBNF>`_ 完成了我上下文相关parsing的追求,
+而由于18年国庆的一个项目的缘故, 我开始同时追求parser的表达力和性能, 并在很远的未来(19年下半年),
+有了 `RBNF.hs <https://github.com/thautwarm/RBNF.hs/>`_ 和 `rbnf-rts <https://github.com/thautwarm/rbnf-rts/>`_ .
+
+后来我已经读了海量的相关论文, 而我的parser generator项目, 也从片刻灵感里迸发出的幼稚火花, 成长为巨人肩上发出的流星一条.
+
+利用这些parser, 我能够很快地在Python里造出解释性语言, 例子有
+
+- https://github.com/thautwarm/rmalt
+- https://github.com/thautwarm/Rem
+- https://github.com/thautwarm/reley
