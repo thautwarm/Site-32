@@ -1,4 +1,4 @@
-日记 2019-10-13 我和Python的故事(未完)
+日记 2019-10-15至10-26 我和Python的故事(未完)
 
 我和Python的故事
 ======================================
@@ -256,3 +256,122 @@ Python的网课.
 
 对于Python的爱和对高级语言构造和思想的向往, 我产生了文首所说的那份理想, **为Python添加高级的语言构造** ;
 同时, 文首所说的那个故事, 也就此开始.
+
+第4节: Flowpython
+------------------------------
+
+在17年的暑假之前, 我的时间变得相当充裕.
+
+那可以说是我大学最轻松的一段时间, 不仅学习上轻松无比, 拿到了极好的成绩,
+还能够花大量时间参与社团的活动, 结识了好多有趣的朋友, 依然能有大把时间花在学习Scala语言上.
+
+学习Scala也是网上朋友们(例如前面提到的魔理沙)推荐的, 说是可以掌握函数式思维.
+
+但是呢, 说来惭愧, 我现在经常喜欢抨击的, 把"写法精妙"当作"写法函数式"的行为或认识, 正是我在那个时期喜欢干的.
+
+那个时候真正驱动我继续写Scala的, 是把SciPy工作栈移植到Scala里.
+
+正因如此, 我开了一个叫 `NumScala <https://github.com/thautwarm/NumScala>`_ 的项目, 听名字就知道是想做"NumPy in Scala".
+
+也正因如此, 这个项目并没有持续多久, 因为我发现, 我居然不能在最新release的Scala上使用Spark(实际上不到一年, 就能在那个版本的Scala上轻松安装Spark),
+而我认为Spark是我期待的工作栈中不可或缺的一部分.
+
+在大概1个半月对Scala的学习和实践中, 我的"函数式思维"其实没有半分提高(解决问题的思考模型依然不是基于约归的),
+倒是学会了怎么解析xlsx文件; 知乎上的"R大"在评论区发了如何正确解析xlsx的帖子, 我想我的思路大体上没有问题.
+
+于是, 我觉得我还是应该回去用python, 但是呢, "曾经沧海难为水".
+
+当时Scala里的语言特性让我产生长期且强烈的享受感, 给我一种写码如同写诗的沉醉体验.
+
+这种享受和体验, 使得我无法接受Python在代码上的复杂和冗余, 促使了我开始研究CPython的codebase,
+并试图给Python添加一些语言特性.
+
+这也是我培养编译器技能的开始(之前的"松鼠语"算不得编译器).
+
+终于来到了暑假, 那是一个印象极其深刻的暑假.
+
+天知道我怎么搜出来Python编译器是如何工作的:
+
+CPython的codebase很大, 我并不能一下找到我想要的全部文件(比如ast.c, symtable.c, Python-asdl, Grammar).
+
+所以, 中途经过了比较漫长的过程.
+
+最终, 经过数日的努力, 在这个issue里, 我post了相关手段的链接: https://github.com/thautwarm/flowpython/issues/2 .
+
+随后, 我立刻沉迷于在CPython codebase上的modification, 沉迷于trial and error, 沉迷于引入我觉得合适的语法.
+
+我在 `Python/ast.c <https://github.com/python/cpython/blob/master/Python/ast.c>`_ 里学会了visitor模式, 在 `Grammar <https://github.com/python/cpython/blob/master/Grammar/Grammar>`_ 里学会了BNF, 知道了parser generator的存在, 清楚了Python源码到字节码的大致流程.
+
+不过, 那个时候我并没有了解到Python字节码相关知识, 也没有意识到符号表的处理, 当然也更不清楚字节码的编译和解释执行过程.
+
+关于visitor模式有件非常尴尬的事是: 直到很久之后, 我都并不知道这个东西叫visitor; 直到我非常熟练后, 才从 `恺鸽鸽 <https://github.com/lfkdsk>`_ 那里了解到了它的名字.
+
+虽然学了很多, 做了很多, 但flowpython只实现了一些相当简单的特性, 且那个"模式匹配"可以说是佶屈聱牙, 还没有tree pattern matching.
+
+在实现了flowpython之后, 我把项目post到了Python idea上: https://mail.python.org/pipermail/python-ideas/2017-August/046770.html , 有一些反响, 但社区也反映了很多设计问题.
+
+Flowpython最终是不实用的, 除开技术深度和设计的问题, 原因还有, 它过于"重", 也不是portable的.
+
+它通过修改CPython的源代码来实现的, 而C codebase的变更, 使得用户需要使用特别编译的Python发行版, 而不能简单地通过pip进行安装;
+
+换句话说, 它和CPython是不兼容的.
+
+目前看来, flowpython是"早期黑历史", 展示了我探索学习的过程.
+
+诚然, 虽然flowpython有这样那样的问题, 但和之前的"松鼠语言"一样, 在设计和实现它的过程中,
+我的确在那持之以恒的努力下熟悉了一部分CPython的源码, 并且是极其熟悉的程度.
+
+我极其怀念那个暑假, 用着Deepin Linux, 开虚拟机装着可能带毒的win7 Re0雷姆主题,
+玩着FSN和其他galgame, 一个人在家里(父母在另一个地方工作)快乐地点着外卖, 学着CPython源代码, 在千里冰封的QQ群里吹着水,
+设计和实现着flowpython的那个暑假.
+
+第4节: BNF, Parser Generator和造语言
+---------------------------------------------------
+
+
+BNF和后续的很多故事都有关.
+
+CPython项目中的 `Grammar <https://github.com/python/cpython/blob/master/Grammar/Grammar>`_ ,
+我是秒懂的, 没有任何学习的过程. 我只是浏览了一遍文件, 就了解了EBNF的各种语言构造.
+
+我意识到*BNF可以清楚地表示源代码和其结构化表示的对应关系.
+
+而一个朋友开始实现新语言并需要parser的时候, 经过些许探索, 我发觉, 从BNF到一个parser是如此的简单!
+
+我发现, 在Python的一些对象上可以实现正则表达式一般的东西, 并且写了一个 `粗陋的实现 <https://github.com/thautwarm/Stardust/blob/master/PM.py>`_ .
+
+::
+
+    [Int, *String, Float]
+    [1, "2", "2", 3.0]
+
+
+像上面这个例子, :code:`Int` 和 :code:`1` 之间的对应关系, 同样也是 :code:`*String` 和 :code:`["2", "2"]` 之间的对应关系,
+
+更是 :code:`Float` 和 :code:`3.0` 之间的对应关系.
+
+这种对应关系, 可以叫parse, 也可以叫match.
+
+而实现方法也很简单, 把问题简化, 我们只需要实现
+
+- 一组基本的pattern: :code:`match(Int, 1) == True, match(Float, 3.0)`
+- pattern之间的组合方式: :code:`match([A, B, C], [a, b, c]) == True`, 当 :code:`match(A, a) == match(B, b) == match(C, c) == True`
+
+那么, 我们就自然的得到了一切对象上的"正则表达式", 即"模式匹配".
+
+当我们要match的对象是一个字符串/字符串列表/字符串的结构体的序列(tokens)时, 上述过程, 就是parser.
+
+于是, 在这里, 我又自动地理解了parser combinator(parser组合子)的概念.
+
+于是我开始实现parser generator, 从BNF文法编译到上面的parser组合子, 例如,
+
+从BNF式子 :code:`lambda ::= "lambda" arglist ":" expr` 到parser组合子 :code:`Lambda = [Text("Lambda"), ArgList, Text(":"), Expr]` .
+
+其中, :code:`Lambda, Expr` 是在其他地方定义的parser组合子, 分别可以匹配*参数列表*的语法和*表达式*的语法.
+
+于是, 我写出了一个 `naive的parser generator框架 <https://github.com/thautwarm/EBNFParser>`_ .
+
+当然, 虽然给出了链接, 我并不建议任何人阅读该项目, 因为它实在是过于落后... 曾经有一位朋友在知乎评论区下给出了如此的评价,
+尽管他不太可能再收到我的回复, 我现在对他表示十分的感谢.
+
+
