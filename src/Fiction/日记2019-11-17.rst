@@ -5,7 +5,7 @@
 
 Made progress.
 
-现在Julia scope analyzer的写法如下, 还是很工整漂亮的
+现在Julia scope analyzer的部分核心代码如下, 还是很工整漂亮的:
 
 .. code-block:: Julia
 
