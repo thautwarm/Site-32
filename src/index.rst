@@ -15,6 +15,25 @@ Quick links:
 
     <br>
     <div class="panel panel-primary">
+      <div class="panel-heading">FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations</div>
+      <div class="panel-body">
+        keywords: Tagless Final&nbsp;,&nbsp;Compiler&nbsp;,&nbsp;Decoupling&nbsp;,&nbsp;OCaml&nbsp;,&nbsp;Functional Programming&nbsp;,&nbsp;Interpretation
+      </div>
+
+      <div class="panel-footer">
+        <a href="./PL/plfp-20191212.html">Check</a>
+        <span class="pull-right">Thu, December 12, 2019.&nbsp; 15: 19 </span>
+      </div>
+    </div>
+
+
+
+.. raw:: html
+
+
+
+    <br>
+    <div class="panel panel-warning">
       <div class="panel-heading">Some Thoughts About The Restrain JIT</div>
       <div class="panel-body">
         keywords: Python&nbsp;,&nbsp;Python JIT&nbsp;,&nbsp;Julia&nbsp;,&nbsp;Julia Generated Functions
@@ -33,7 +52,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-warning">
+    <div class="panel panel-success">
       <div class="panel-heading">Staging和Julia生成函数</div>
       <div class="panel-body">
         keywords: Chinese-中文&nbsp;,&nbsp;Julia&nbsp;,&nbsp;Staging技术&nbsp;,&nbsp;Julia生成函数&nbsp;,&nbsp;Julia的World Age问题
@@ -52,7 +71,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">General Programming In Julia From An Advanced Standpoint</div>
       <div class="panel-body">
         keywords: Julia&nbsp;,&nbsp;General Programming&nbsp;,&nbsp;Pattern Macthing&nbsp;,&nbsp;Syntactic Macro&nbsp;,&nbsp;Hygineic Macro&nbsp;,&nbsp;Programming Language&nbsp;,&nbsp;Polymorphism&nbsp;,&nbsp;Haskell
@@ -71,7 +90,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-primary">
+    <div class="panel panel-warning">
       <div class="panel-heading">Write You A Query Language</div>
       <div class="panel-body">
         keywords: EDSL&nbsp;,&nbsp;Julia&nbsp;,&nbsp;Query Language&nbsp;,&nbsp;Pattern Macthing&nbsp;,&nbsp;MLStyle.jl&nbsp;,&nbsp;Tutorial
@@ -90,7 +109,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-warning">
+    <div class="panel panel-success">
       <div class="panel-heading">Compelling Higher Kinded Types and Type Classes in F#</div>
       <div class="panel-body">
         keywords: F#&nbsp;,&nbsp;Higher Kinded Types&nbsp;,&nbsp;Type Class&nbsp;,&nbsp;Ad-hoc Polymorphism&nbsp;,&nbsp;Active Patterns&nbsp;,&nbsp;Static Resolved Type Parameters&nbsp;,&nbsp;Implicits
@@ -109,7 +128,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">Higher Kinded Types</div>
       <div class="panel-body">
         keywords: Higher-Kinded-Types&nbsp;,&nbsp;Introduction
@@ -128,7 +147,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-primary">
+    <div class="panel panel-warning">
       <div class="panel-heading">Type Classes</div>
       <div class="panel-body">
         keywords: Type Class&nbsp;,&nbsp;Introduction&nbsp;,&nbsp;Polymorphism
@@ -147,7 +166,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-warning">
+    <div class="panel panel-success">
       <div class="panel-heading">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</div>
       <div class="panel-body">
         keywords: Programming language&nbsp;,&nbsp;Higher Kinded Types&nbsp;,&nbsp;Type Class&nbsp;,&nbsp;OCaml&nbsp;,&nbsp;Ad-hoc Polymorphism
