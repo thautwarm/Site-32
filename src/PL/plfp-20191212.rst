@@ -3,7 +3,7 @@ NOTE: If you’d install ``remu_ts`` and ``remu_scope``, clone them from
 to install them locally.
 
 FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations
---------------------------------------------------------------------------------------------------
+=========================================================================================================================
 
 ``Lamu0`` is a very simple and basic programming language, but the
 implementation in
