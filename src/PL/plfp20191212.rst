@@ -142,10 +142,10 @@ implementation, I didn’t actually use module functor.
        val var  : o -> string  -> c
    end
 
-In ``SYM``, an operator of type ``a -> b -> ... -> r``, will be the type
-``o -> a -> b -> ... -> c``, where ``o`` is the original ``repr`` of an
-algebra, ``r`` is the ``repr`` of the result algebra transformed by
-``fun m -> grow(m, (module FSYM))``, ``c`` is the delta of the change
+In ``FSYM``, an operator of type ``a -> b -> ... -> r``, will be the
+type ``o -> a -> b -> ... -> c``, where ``o`` is the original ``repr``
+of an algebra, ``r`` is the ``repr`` of the result algebra transformed
+by ``fun m -> grow(m, (module FSYM))``, ``c`` is the delta of the change
 from ``o`` to ``r``.
 
 So then type of ``grow`` is
