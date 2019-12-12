@@ -81,5 +81,18 @@
             "Julia Generated Functions"
         ],
         "release_date": "2019-09-23 12:19"
+    },
+    {
+        "title": "FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations",
+        "where": "PL.plfp-20191212",
+        "keywords":[
+            "Tagless Final",
+            "Compiler",
+            "Decoupling",
+            "OCaml",
+            "Functional Programming",
+            "Interpretation"
+        ],
+        "release_date": "2019-12-12 15:19"
     }
 ]

@@ -10,3 +10,4 @@ Programming Language
    typeclass.rst
    paper-reading-LHKP.rst
    HKT-typeclass-FSharp.rst
+   plfp-20191212.rst
