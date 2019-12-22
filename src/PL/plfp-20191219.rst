@@ -386,11 +386,10 @@ Example
 -------
 
 A cleaner implementation of Tagless Final compiler is
-```Lamu1`` <https://github.com/thautwarm/plfp/blob/master/lamu1>`__
+`Lamu1 <https://github.com/thautwarm/plfp/blob/master/lamu1>`__
 instead of ``Lamu0``.
 
 ``Lamu1`` extends ``lamu0`` with principal types.
 
 You can try type inference of ``Lamu1`` in a REPL, by following the
-simple guideline at
-`here <https://github.com/thautwarm/plfp/blob/master/view-point-from-research-side/Lamu1.md#playground>`__.
+simple guideline at `here <https://github.com/thautwarm/plfp/blob/master/view-point-from-research-side/Lamu1.md#playground>`__.
