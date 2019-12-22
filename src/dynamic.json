@@ -94,5 +94,16 @@
             "Interpretation"
         ],
         "release_date": "2019-12-12 15:19"
+    },
+    {
+        "title": "Tagless Final For Writing Compilers",
+        "where": "PL.plfp-20191219",
+        "keywords":[
+            "Tagless Final",
+            "Compiler",
+            "OCaml",
+            "Interpretation"
+        ],
+        "release_date": "2019-12-22 21:41"
     }
 ]
