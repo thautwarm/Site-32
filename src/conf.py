@@ -45,7 +45,7 @@ master_doc = 'guide'
 
 # General information about the project.
 project = 'Site-32'
-copyright = '2019, thautwarm'
+copyright = '2020, thautwarm'
 author = 'thautwarm'
 
 # The version info for the project you're documenting, acts as replacement for
