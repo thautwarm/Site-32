@@ -83,11 +83,11 @@ Tagless Final in F#
 
 produces
 
-```
-zero by nat: 
-0
-succ zero by show: 
-0 + 1
-succ zero by show: 
-1
-```
+.. code-block::
+
+    zero by nat: 
+    0
+    succ zero by show: 
+    0 + 1
+    succ zero by show: 
+    1
