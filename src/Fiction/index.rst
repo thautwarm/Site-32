@@ -45,8 +45,8 @@ Restrain-JIT开发暂停, 先搞一个基于CPython字节码的静态语言(Remu
    日记2019-11-17
    日记2020-01-07
    日记2020-02-02
+   日记2020-02-07
 
-    
 
 - `日记2019-10-13: Smarter Witnesses for Type Classes <日记2019-10-13.html>`_
 - `日记2019-10-15: 我和Python的故事 <日记2019-10-15.html>`_
@@ -56,3 +56,4 @@ Restrain-JIT开发暂停, 先搞一个基于CPython字节码的静态语言(Remu
 - `日记2019-11-14: 我太懂了 <日记2019-11-17.html>`_
 - `日记2020-01-07: 打通 <日记2020-01-07.html>`_
 - `日记2020-02-02: Tagless Final in F# <日记2020-02-02.html>`_
+- `日记2020-02-07: Encoding Typeclass Default Methods in Purescript`_

@@ -1,0 +1,78 @@
+Encoding Typeclass Default Methods in Purescript
+=======================================
+
+The cons is, always in need of annotations.
+
+.. code:: Haskell
+
+    module Main where
+
+    import Prelude
+
+    import Effect (Effect)
+    import Effect.Console (log)
+    import Data.Array
+
+    newtype F f = F {fmap :: forall a b. (a -> b) -> f a -> f b}
+
+    newtype MBase m = MBase {
+        return :: forall a. a -> m a
+        , join :: forall a. m (m a) -> m a
+    }
+
+    newtype M m = M {
+        mcomp :: forall a b c. (a -> m b) -> (b -> m c) -> (a -> m c)
+    , return :: forall a. a -> m a
+    , join :: forall a. m (m a) -> m a
+    }
+
+    class Implicit label i | label -> i where
+    inst :: label -> i
+
+    data MD = MD
+    data MBaseD = MBaseD
+    data FD = FD
+
+    mkM :: forall m.
+        F m ->
+        MBase m ->
+        M m
+
+    mkM (F functor) (MBase mbase) =
+    M {
+        return: \x -> mbase.return x
+    , join: \x -> mbase.join x
+    , mcomp: \k1 k2 a -> mbase.join $ functor.fmap k2 (k1 a)
+    }
+
+    instance implicitFDM ::
+        ( Implicit FD (F m)
+        , Implicit MBaseD (MBase m)
+        )  => Implicit MD (M m) where
+        inst _ = mkM functor mbase
+        
+        where functor = inst FD
+                mbase   = inst MBaseD
+
+    instance functorList :: Implicit FD (F Array) where
+    inst _ = F {fmap: map}
+
+    instance monadList :: Implicit MBaseD (MBase Array) where
+    inst _
+        = MBase {
+        return: singleton
+        , join: concat
+        }
+
+    bind :: forall m a b. Implicit MD (M m) => m a -> (a -> m b) -> m b
+    bind m k = 
+    let (M r) = inst MD in
+    (r.mcomp (\unit -> m) k) unit
+
+    l :: Implicit MD (M Array) => Array Int
+    l = bind (r.return 1) $ \x -> [x, x]
+    where M r = inst MD
+
+    main :: Effect Unit
+    main =
+    log $ show l -- [1, 1]
