@@ -5,20 +5,47 @@ from sphinx.highlighting import lexers
 from pygments.style import Style
 from re import escape
 
-project = 'Site-32'
-copyright = '2020, thautwarm'
-author = 'thautwarm'
+project = "Site-32"
+copyright = "2020, thautwarm"
+author = "thautwarm"
 
 language = None
-exclude_patterns = ['_build', '_sources', '.shadow' , 'Thumbs.db', '.DS_Store']
+exclude_patterns = ["_build", "_sources", ".shadow", "Thumbs.db", ".DS_Store"]
 
 sijuiacion_keywords = [
-    'runtime', 'load', 'store', 'deref', 'deref!', 'const', 'print', 'pop',
-    'prj', 'prj!', 'indir', 'rot', 'dup', 'goto', 'goto-if', 'goto-if-not',
-    'label', 'blockaddr', 'call', 'list', 'tuple', 'return', 'line', 'defun',
-    'switch', 'document', 'filename', 'free', 'name', 'args', 'firstlineno'
+    "runtime",
+    "load",
+    "store",
+    "deref",
+    "deref!",
+    "const",
+    "print",
+    "pop",
+    "prj",
+    "prj!",
+    "indir",
+    "rot",
+    "dup",
+    "goto",
+    "goto-if",
+    "goto-if-not",
+    "label",
+    "blockaddr",
+    "call",
+    "list",
+    "tuple",
+    "return",
+    "line",
+    "defun",
+    "switch",
+    "document",
+    "filename",
+    "free",
+    "name",
+    "args",
+    "firstlineno",
 ]
-common_operators = ['{', '}', '|', '=>', '_', '[', ']']
+common_operators = ["{", "}", "|", "=>", "_", "[", "]"]
 
 
 class WurusaiStyle(Style):
@@ -30,84 +57,91 @@ class WurusaiStyle(Style):
         token.Operator: "#246C60",
         token.Number: "#779D34",
         token.Comment: "#AA6F39",
-        token.Punctuation: '#DE369D',
-        token.Literal: "#4671D5"
+        token.Punctuation: "#DE369D",
+        token.Literal: "#4671D5",
     }
+
 
 def pygments_monkeypatch_style(mod_name, cls):
     import sys
     import pygments.styles
+
     cls_name = cls.__name__
     mod = type(__import__("os"))(mod_name)
     setattr(mod, cls_name, cls)
     setattr(pygments.styles, mod_name, mod)
     sys.modules["pygments.styles." + mod_name] = mod
     from pygments.styles import STYLE_MAP
+
     STYLE_MAP[mod_name] = mod_name + "::" + cls_name
 
 
 pygments_monkeypatch_style("wurusai", WurusaiStyle)
 pygments_style = "wurusai"
 
+
 class SijLexer(RegexLexer):
-    name = 'sijuiacion'
+    name = "sijuiacion"
 
     tokens = {
-        'root': [
+        "root": [
             *[(escape(k), token.Keyword) for k in sijuiacion_keywords],
-            *[(escape(o), token.Operator) for o in sijuiacion_keywords,
-            (r"#([^\\#]+|\\.)*?#", token.Literal), (r"\d+", token.Number),
-            (r"[-$\.a-zA-Z_\u4e00-\u9fa5][\-\!-$\.a-zA-Z0-9_\u4e00-\u9fa5]*",
-             token.Name), (r'''"([^\\"]+|\\.)*?"''', token.String),
-            (r'\s+', token.Whitespace)
+            *[(escape(o), token.Operator) for o in sijuiacion_keywords],
+            (r"#([^\\#]+|\\.)*?#", token.Literal),
+            (r"\d+", token.Number),
+            (
+                r"[-$\.a-zA-Z_\u4e00-\u9fa5][\-\!-$\.a-zA-Z0-9_\u4e00-\u9fa5]*",
+                token.Name,
+            ),
+            (r'''"([^\\"]+|\\.)*?"''', token.String),
+            (r"\s+", token.Whitespace),
         ]
     }
 
 
 class RBNFLexer(RegexLexer):
-    name = 'rbnf'
+    name = "rbnf"
 
     tokens = {
-        'root': [
-            *[(escape(o), token.Punctuation)
-              for o in ['->', '|', ';', ':', '=', '?']],
+        "root": [
+            *[(escape(o), token.Punctuation) for o in ["->", "|", ";", ":", "=", "?"]],
             (r"#([^\\#]+|\\.)*?#", token.Comment),
-            (r"[-$\.a-zA-Z_\u4e00-\u9fa5][a-zA-Z0-9_\u4e00-\u9fa5]*",
-             token.Keyword), (r'''"([^\\"]+|\\.)*?"''', token.Operator),
+            (r"[-$\.a-zA-Z_\u4e00-\u9fa5][a-zA-Z0-9_\u4e00-\u9fa5]*", token.Keyword),
+            (r'''"([^\\"]+|\\.)*?"''', token.Operator),
             (r"""'([^\\']+|\\.)*?'""", token.Operator),
-            (r'\<.*\>', token.Operator), (r'\s+', token.Whitespace)
+            (r"\<.*\>", token.Operator),
+            (r"\s+", token.Whitespace),
         ]
     }
+
 
 lexers[SijLexer.name] = SijLexer(startinline=True)
 lexers[RBNFLexer.name] = RBNFLexer(startinline=True)
 
-extensions = ['sphinx.ext.mathjax', 'recommonmark']
-templates_path = ['_templates']
-master_doc = 'guide'
+extensions = ["sphinx.ext.mathjax", "recommonmark"]
+templates_path = ["_templates"]
+master_doc = "guide"
 
 todo_include_todos = True
 
 Topics = [
-    'PL',
+    "PL",
     # 'Compiler',
-    'Design',
-    'DSL',
-    'Fiction',
-    'Others',
-    'Backup',
+    "Design",
+    "DSL",
+    "Fiction",
+    "Others",
+    "Backup",
 ]
 
-html_theme = 'bootstrap'
+html_theme = "bootstrap"
 html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 html_title = "thautwarm's blog pages"
 html_theme_options = {
     # Navigation bar title. (Default: ``project`` value)
-    'navbar_site_name': f"{project}",
-    'navbar_title': f"{project}",
-
+    "navbar_site_name": f"{project}",
+    "navbar_title": f"{project}",
     # Tab name for entire site. (Default: "Site")
-
     # A list of tuples containing pages or urls to link to.
     # Valid tuples should be in the following forms:
     #    (name, page)                 # a link to a page
@@ -115,24 +149,17 @@ html_theme_options = {
     #    (name, "http://example.com", True) # arbitrary absolute url
     # Note the "1" or "True" value above as the third argument to indicate
     # an arbitrary url.
-    'navbar_links': [('GitHub', 'github')] + [
-        (topic, f'{topic}/index')
-        for topic in Topics
-    ],
-
+    "navbar_links": [("GitHub", "github")]
+    + [(topic, f"{topic}/index") for topic in Topics],
     # Render the next and previous page links in navbar. (Default: true)
-    'navbar_sidebarrel': False,
-
+    "navbar_sidebarrel": False,
     # Render the current pages TOC in the navbar. (Default: true)
-    'navbar_pagenav': True,
-
+    "navbar_pagenav": True,
     # Tab name for the current pages TOC. (Default: "Page")
-    'navbar_pagenav_name': "Subsections",
-
+    "navbar_pagenav_name": "Subsections",
     # Global TOC depth for "site" navbar tab. (Default: 1)
     # Switching to -1 shows all levels.
-    'globaltoc_depth': -1,
-
+    "globaltoc_depth": -1,
     # Include hidden TOCs in Site navbar?
     #
     # Note: If this is "false", you cannot have mixed ``:hidden:`` and
@@ -140,20 +167,16 @@ html_theme_options = {
     # will break.
     #
     # Values: "true" (default) or "false"
-    'globaltoc_includehidden': "true",
-
+    "globaltoc_includehidden": "true",
     # HTML navbar class (Default: "navbar") to attach to <div> element.
     # For black navbar, do "navbar navbar-inverse"
-    'navbar_class': "navbar navbar-inverse",
-
+    "navbar_class": "navbar navbar-inverse",
     # Fix navigation bar to top of page?
     # Values: "true" (default) or "false"
-    'navbar_fixed_top': "true",
-
+    "navbar_fixed_top": "true",
     # Location of link to source.
     # Options are "nav" (default), "footer" or anything else to exclude.
-    'source_link_position': "footer",
-
+    "source_link_position": "footer",
     # Bootswatch (http://bootswatch.com/) theme.
     #
     # Options are nothing (default) or the name of a valid theme
@@ -165,11 +188,10 @@ html_theme_options = {
     # Currently, the supported themes are:
     # - Bootstrap 2: https://bootswatch.com/2
     # - Bootstrap 3: https://bootswatch.com/3
-    'bootswatch_theme': "united",
-
+    "bootswatch_theme": "united",
     # Choose Bootstrap version.
     # Values: "3" (default) or "2" (in quotes)
-    'bootstrap_version': "3",
+    "bootstrap_version": "3",
 }
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -181,9 +203,9 @@ html_theme_options = {
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 
-html_static_path = ['static']
+html_static_path = ["static"]
 
-html_favicon = './favicon.ico'
+html_favicon = "./favicon.ico"
 
 
 # Custom sidebar templates, must be a dictionary that maps document names
@@ -191,16 +213,13 @@ html_favicon = './favicon.ico'
 #
 # This is required for the alabaster theme
 # refs: http://alabaster.readthedocs.io/en/latest/installation.html#sidebars
-html_sidebars = {
-    '**': [
-    ]
-}
+html_sidebars = {"**": []}
 
 
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'site32_'
+htmlhelp_basename = "site32_"
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -209,15 +228,12 @@ latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     #
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     #
     # 'preamble': '',
-
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
@@ -227,8 +243,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, f'{project}.tex', f'{project}',
-     'thautwarm', 'manual'),
+    (master_doc, f"{project}.tex", f"{project}", "thautwarm", "manual"),
 ]
 
 
@@ -236,10 +251,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, f'{project}', f'{project}',
-     [author], 1)
-]
+man_pages = [(master_doc, f"{project}", f"{project}", [author], 1)]
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -248,11 +260,16 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, f'{project}', f'{project}',
-     author, f'{project}', 'Redy redy!',
-     'Miscellaneous'),
+    (
+        master_doc,
+        f"{project}",
+        f"{project}",
+        author,
+        f"{project}",
+        "Redy redy!",
+        "Miscellaneous",
+    ),
 ]
-
 
 
 # -- Options for Epub output ----------------------------------------------
@@ -273,8 +290,5 @@ epub_copyright = copyright
 # epub_uid = ''
 
 # A list of files that should not be packed into the epub file.
-epub_exclude_files = ['search.html']
-
-
-
+epub_exclude_files = ["search.html"]
 

@@ -3,11 +3,10 @@ import os.path as path
 import os
 from dateutil.parser import parse as parse_date
 from datetime import datetime
-from wisepy.talking import Talking
+from wisepy2 import wise
 from Redy.Tools.PathLib import Path
 from io import StringIO
 from textwrap import indent
-cmd = Talking()
 
 def raw_html(html):
     html = indent(html, prefix = '    ')
@@ -41,7 +40,7 @@ def card(title: str, link: str, keywords: list, time: datetime):
 </div>
 """)
 
-@cmd
+
 def build():
     dir, _ = path.split(__file__)
     dir = path.join(dir, 'src')
@@ -88,7 +87,6 @@ preserved = [
   '.git',
 ]
 
-@cmd
 def clean():
     for each in Path('.').list_dir():
         filename = each.relative()
@@ -96,5 +94,12 @@ def clean():
           continue
         each.delete()
 
+def dispatch(build: bool=False, clean: bool=False):
+  g = globals()
+  if clean:
+    g['clean']()
+  if build:
+    g['build']()
+  
 if __name__ == '__main__':
-    cmd.on()
+    wise(dispatch)()
