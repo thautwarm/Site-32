@@ -12,3 +12,4 @@ Programming Language
    HKT-typeclass-FSharp.rst
    plfp-20191212.rst
    plfp-20191219.rst
+   elaborating-julia
