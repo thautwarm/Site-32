@@ -105,5 +105,17 @@
             "Interpretation"
         ],
         "release_date": "2019-12-22 21:41"
+    },
+    {
+        "title": "Julia Counts for PL Researcher",
+        "where": "PL.elaborating-julia",
+        "keywords":[
+            "Programming Language",
+            "Julia",
+            "Macro",
+            "Staging",
+            "Code Generation"
+        ],
+        "release_date": "2020-04-01 10:29"
     }
 ]
