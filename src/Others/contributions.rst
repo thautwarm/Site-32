@@ -73,7 +73,9 @@ Leading Projects
 
    Solve the problem for anyone who wants to write static Python with most advanced type system.
 
-   i.e., **write Haskell, generates Python**.
+   i.e., **write Haskell, run in Python**.
+
+   Can use **all libraries from Python world and PureScript world**.
 
    
 - `MLStyle.jl <https://github.com/thautwarm/MLStyle.jl>`_
