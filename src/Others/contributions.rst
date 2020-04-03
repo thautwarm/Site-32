@@ -75,7 +75,7 @@ Leading Projects
 
    i.e., **write Haskell, run in Python**.
 
-   Can use **all libraries from Python world and PureScript world**.
+   Can use **all libraries from Python world**, and **all libraries from PureScript world** not relying on JavaScript only(like true threads) language features.
 
    
 - `MLStyle.jl <https://github.com/thautwarm/MLStyle.jl>`_
