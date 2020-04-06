@@ -1,4 +1,4 @@
-# Review and Observation of Python JIT
+# Research: Review and Observations of Python JIT
 
 When we talk about Python, a popular industrial programming language,
 it is well-known that Python's Just-In-Time(JIT) compilation support has become a long-term issue.
