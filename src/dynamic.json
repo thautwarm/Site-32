@@ -117,5 +117,18 @@
             "Code Generation"
         ],
         "release_date": "2020-04-01 10:29"
+    },
+    {
+        "title": "First-class Pattern Matching in the Final Approach",
+        "where": "PL.tagless-final-pattern-match",
+        "keywords":[
+            "Programming Language",
+            "Haskell",
+            "Higher Rank Types",
+            "Tagless Final",
+            "First-class Pattern Matching"
+        ],
+        "release_date": "2020-04-09 17:47"
     }
+    
 ]
