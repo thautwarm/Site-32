@@ -149,12 +149,9 @@ To avoid **impredicative polymorphisms** and support **GADTs**:
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE PartialTypeSignatures #-}
 
 module Main where
-import Text.Printf (printf)
 
 data Exp a where
     IfExp :: Exp Bool -> Exp a -> Exp a -> Exp a
@@ -162,9 +159,6 @@ data Exp a where
     App :: Exp (a -> b) -> Exp a -> Exp b
     Val :: a -> Exp a
 
-
-instance Show (a -> b) where
-    show _ = "<fun>"
 
 -- Signature
 data SYM repr =
