@@ -4,7 +4,7 @@ It's an article written extremely casually, and very short.
 
 ## What Happened Today?
 
-Today I found someone in Julia discourse asked me some questions about ADT encoding in Julia.
+Today I found someone in Julia discourse asked me some [questions about ADT encoding in Julia](https://discourse.julialang.org/t/are-there-idioms-in-julia-for-fast-algebraic-data-types-adt/37244/20).
 
 About the performance issues with Julia structures and subtyping for ADT emulations, I said it's impossible to address.
 
@@ -14,7 +14,7 @@ However, we have an alternative, to achieve everything that ADTs can achieve, in
 
 It's called tagless final.
 
-There're many resources about tagless final: http://okmij.org/ftp/tagless-final .
+There're many resources about tagless final: [http://okmij.org/ftp/tagless-final](http://okmij.org/ftp/tagless-final) .
 
 As Julia cannot encode ADTs/GADTs perfectly, with tagless final, the problem just gets eased.
 
