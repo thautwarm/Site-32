@@ -1,10 +1,14 @@
-# Julia Needs Tagless Final
+# Julia Benefits from Tagless Final
+
+It's an article written extremely casually, and very short.
 
 ## What Happened Today?
 
 Today I found someone in Julia discourse asked me some questions about ADT encoding in Julia.
 
 About the performance issues with Julia structures and subtyping for ADT emulations, I said it's impossible to address.
+
+Yes, it's impossible for Julia to have fast ADTs, so far.
 
 However, we have an alternative, to achieve everything that ADTs can achieve, in Julia.
 
@@ -77,3 +81,9 @@ evaluate =
 ```
 
 All in blue, all in blue, type stable all in blue!
+
+How could you get the full mechanisms of turning ADTs to tagless final?
+
+If you understand Haskell, you shall read [First-class Pattern Matching in the Final Approach](tagless-final-pattern-match.md).
+
+Otherwise, learn ocaml and go to Oleg-sensei's website.

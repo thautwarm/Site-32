@@ -129,6 +129,18 @@
             "First-class Pattern Matching"
         ],
         "release_date": "2020-04-09 17:47"
+    },
+    {
+        "title": "Julia Benefits from Tagless Final",
+        "where": "PL.tagless-final-for-julia",
+        "keywords":[
+            "Programming Language",
+            "Julia",
+            "Tagless Final",
+            "Algebraic Data Types",
+            "Performance"
+        ],
+        "release_date": "2020-04-13 20:19"
     }
     
 ]

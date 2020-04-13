@@ -14,3 +14,4 @@ Programming Language
    plfp-20191219.rst
    elaborating-julia
    tagless-final-pattern-match
+   tagless-final-for-julia
