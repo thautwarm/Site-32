@@ -15,7 +15,6 @@ let take' : 'a. int -> 'a iter -> 'a list = fun x ->
 
 type _ spec =
     | Gen    : (unit -> 't) -> 't spec
-    | Modify : ('t -> 't) * 't spec -> 't spec
     | Rep    : 't spec -> 't iter spec
     | App    : ('a -> 't) spec * 'a spec -> 't spec
     | Lst    : 'a spec list -> 'a list spec
@@ -26,7 +25,6 @@ let generate =
     let rec (!) : type a. a spec -> a =
         function
         | Gen run -> run()
-        | Modify(by, spec) -> by !spec
         | Rep spec -> {run = fun () -> Some(!spec)}
         | App(fm, argm) -> !fm !argm
         | Lst ys -> List.map (!) ys
