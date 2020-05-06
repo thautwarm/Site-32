@@ -24,7 +24,6 @@ let generate =
     let rec (!) : 'a spec -> 'a =
         function
         | Gen run -> run()
-        | Modify(by, spec) -> by !spec
         | Rep spec -> {run = fun () -> !spec}
         | App(fm, argm) -> !fm !argm
         | Lst xs -> List.map (!) xs
