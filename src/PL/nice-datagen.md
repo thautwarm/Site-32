@@ -14,7 +14,6 @@ let take n {run} =
 
 type _ spec =
     | Gen    : (() -> 't) -> 't spec
-    | Modify : ('t -> 't) * 't spec -> 't spec
     | Rep    : 't spec -> 't iter spec
     | App    : ('a -> 't) spec * 'a spec -> 't spec
     | Lst    : 'a spec list -> 'a list spec
