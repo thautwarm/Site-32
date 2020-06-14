@@ -1,0 +1,93 @@
+Tagless Final in F#
+===============================
+
+
+Tagless Final in F#
+
+
+.. code-block:: F#
+
+    module Poly
+    #nowarn "62"
+    type repr = obj
+
+    let invoke<'r, 'f, 'a> (f: 'f) (x: 'a) =
+        let m = typeof<'f>.GetMethod("Invoke")
+        let m = if m.IsGenericMethodDefinition then
+                        m.MakeGenericMethod([| x.GetType() |])
+                else
+                        m
+        in m.Invoke(f, [| x |]) :?> 'r
+
+    // signature
+    type 'repr Sym =
+        abstract member zero : 'repr
+        abstract member succ : 'repr -> 'repr
+
+    type inst(zero: repr, succ: repr -> repr) =
+        interface repr Sym with
+            member it.zero = zero
+            member it.succ x = succ x
+            
+    // It's not easy to erase the type in F#.
+    // this implementation works but many other
+    // equivalent will just fail, e.g., I tried
+    // to make a `type inst(sym: 'repr Sym) = interface repr Sym`,
+    // but some very confusing thing occurred and polymorphisms
+    // got lost.
+    // I haven't made sure if this is due to value restriction.
+    let erased : 'repr Sym -> repr Sym = fun orig ->
+        let zero = orig.zero :> repr
+        let succ (x: repr) = orig.succ (x :?> _) :> repr
+        inst(zero, succ) :> _
+        
+    let (|Erased|) x = erased x            
+                
+    // workaround for lack of HRT, like this in OCaml:
+    //    type sym = { e: 'a. (module SYM with repr = 'a) -> 'a }
+    type sym(f) =
+        member it.e<'repr> (Erased sym: 'repr Sym): 'repr =
+            invoke f sym
+    
+    // succ of initial algebra
+    let succ : sym -> sym = fun i ->
+        let f : repr Sym -> repr =  fun (Erased impl) -> impl.succ <| i.e impl
+        sym f
+
+    // zero of initial algebra
+    let zero : sym =
+        let f : repr Sym -> repr = fun (Erased impl) -> impl.zero
+        sym f
+
+    // implementation 1
+    type nat = Nat with
+        interface int Sym with
+            member cls.zero = 0
+            member cls.succ i = i + 1
+    
+    // implementation 2
+    type show = Show with
+        interface string Sym with
+            member cls.zero = "0"
+            member cls.succ i = sprintf "%s + 1" i
+    
+    // things are totally type safe.
+    module Say =
+        let hello name =
+            let a = zero
+            printfn "zero by nat: %d" <| a.e Nat
+            let h = succ a
+            printfn "succ zero by show: %s" <| h.e Show
+            printfn "succ zero by show: %d" <| h.e Nat
+
+
+produces
+
+.. code-block::
+
+    zero by nat: 
+    0
+    succ zero by show: 
+    0 + 1
+    succ zero by show: 
+    1

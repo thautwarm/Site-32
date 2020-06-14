@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我和Python的故事 &#8212; thautwarm&#39;s blog pages</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="杂谈" href="日记2019-10-30.html" />
+    <link rel="prev" title="Smarter Witnesses for Type Classes" href="日记2019-10-13.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default ">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../guide.html">
+          Site-32</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/thautwarm">GitHub</a></li>
+                <li><a href="../PL/index.html">PL</a></li>
+                <li><a href="../Design/index.html">Design</a></li>
+                <li><a href="../DSL/index.html">DSL</a></li>
+                <li><a href="index.html">Fiction</a></li>
+                <li><a href="../Others/index.html">Others</a></li>
+                <li><a href="../Backup/index.html">Backup</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../guide.html">Site-32 <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Compiler/index.html">Compiler</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Design/index.html">Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html">General Programming In Julia Language From An Advanced Standpoint</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#first-class">First-Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#polymorphisms-of-multiple-dispatch">Polymorphisms of Multiple Dispatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#full-featured-macros">Full-Featured Macros</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#macro-the-function-from-ast-to-ast">Macro, the Function from AST to AST</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#scope-and-hygiene">Scope and Hygiene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#other-useful-knowledge-for-julia-macros">Other Useful Knowledge for Julia Macros</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#a-big-step-forward-in-ast-manipulations">A Big Step Forward in AST Manipulations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#limitation-absence-of-function-types">Limitation: Absence of Function Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Design/Some-Thoughts-About-The-RestrainJIT.html">Some Thoughts About The Restrain JIT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Design/Research-Restrain-JIT.html">Research: Review and Observations of Python JIT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Design/Research-Restrain-JIT.html#history">History</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Design/Research-Restrain-JIT.html#observations">Observations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../DSL/index.html">DSL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html">Write You A Query Language</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#definition-of-syntaxes">Definition of Syntaxes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#codegen-target">Codegen Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#refinement-of-codegen-typed-columns">Refinement of Codegen: Typed Columns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#implementation">Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#enjoy-you-a-query-language">Enjoy You A Query Language</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Fiction</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#id1">2020年4月</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#id3">2019年10月</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.html#id4">日前安排</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html#id12">目录</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="日记2019-10-13.html">Smarter Witnesses for Type Classes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="日记2019-10-13.html#notation">Notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="日记2019-10-13.html#instance-resolution-variables-as-instances">Instance Resolution &amp; Variables As Instances</a></li>
+<li class="toctree-l5"><a class="reference internal" href="日记2019-10-13.html#the-most-general-instance-problem-overlapping-instance-problem">“The Most General Instance” Problem &amp; “Overlapping Instance” Problem</a></li>
+<li class="toctree-l5"><a class="reference internal" href="日记2019-10-13.html#id1">优化</a></li>
+<li class="toctree-l5"><a class="reference internal" href="日记2019-10-13.html#id2">该算法和相应语言设计的好处</a></li>
+<li class="toctree-l5"><a class="reference internal" href="日记2019-10-13.html#id3">不足之处</a></li>
+</ul>
+</li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">我和Python的故事</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#id1">第0节</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id2">第1节: 科学计算, Python, 生物信息学和数据挖掘</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id3">第2节: 转型的经过, 走向程序语言设计领域</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id4">第3节: 想要给Python添加高级语言特性的理想</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id5">第4节: Flowpython</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#bnf-parser-generator">第4节: BNF, Parser Generator和语言制造机器</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="日记2019-10-30.html">杂谈</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="日记2019-10-30.html#pycon-china-2019">PyCon China 2019 成都</a></li>
+<li class="toctree-l5"><a class="reference internal" href="日记2019-10-30.html#id2">直面自己的人格缺陷</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="日记2019-11-06.html">杂谈</a></li>
+<li class="toctree-l4"><a class="reference internal" href="日记2019-11-14.html">我太难了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="日记2019-11-17.html">我太懂了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="日记2020-01-07.html">打通</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="日记2020-01-07.html#parsing">Parsing</a></li>
+<li class="toctree-l5"><a class="reference internal" href="日记2020-01-07.html#python">Python 字节码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="日记2020-02-02.html">Tagless Final in F#</a></li>
+<li class="toctree-l4"><a class="reference internal" href="日记2020-02-07.html">Encoding Typeclass Default Methods in Purescript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="日记2020-02-11.html">近期规划</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="日记2020-02-11.html#purescript-python">Purescript-Python</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="日记2020-02-11.html#anf">从表达式优先到语句优先: ANF变换</a></li>
+<li class="toctree-l6"><a class="reference internal" href="日记2020-02-11.html#pythonfirst-class">Python虚拟机上的First-class的表达式优先</a></li>
+<li class="toctree-l6"><a class="reference internal" href="日记2020-02-11.html#id2">社区意见</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="cure/和平日久.html">如何写出令人感到幸福的小说</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="cure/和平日久.html#id2">合理利用“无敌”元素</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cure/和平日久.html#id3">“纯爱”而非“后宫”</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cure/和平日久.html#id4">细腻的画面感</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cure/和平日久.html#id5">节奏流畅的回忆</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cure/和平日久.html#id6">暗线和潜台词</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cure/和平日久.html#id7">总结</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="cure/乐理菜鸡怎么给自己的小说写bgm.html">乐理菜鸡怎么给自己的小说写BGM?</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="cure/乐理菜鸡怎么给自己的小说写bgm.html#id1">找调</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cure/乐理菜鸡怎么给自己的小说写bgm.html#id2">打谱</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cure/乐理菜鸡怎么给自己的小说写bgm.html#id3">总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PL/index.html">Programming Language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../PL/HKT.html">Higher Kinded Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/typeclass.html">Type Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/typeclass.html#about-abstractions">About Abstractions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/typeclass.html#about-separation-of-type-definitions-and-data-manipulations">About Separation of Type Definitions and Data Manipulations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/paper-reading-LHKP.html">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#how-to">How-To</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#static-resolution-more-polymorphic">Static Resolution: More polymorphic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#limitation1-much-higher-kinded">Limitation1: Much Higher Kinded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#limitation2-identity">Limitation2: Identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#why-this-lightweight-higher-polymorphism-instead-of-the-haskell-approach">Why this Lightweight-Higher-Polymorphism instead of the Haskell approach</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html">Compelling Higher Kinded Types and Type Classes in F#</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#active-pattern">Active Pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#statically-resolved-type-parameters">Statically Resolved Type Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#the-getsig-function-and-implicits">The <em>getsig</em> Function and Implicits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#why-abstractclass">Why AbstractClass?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#why-functor-f-instead-of-the-straightforward-functor">Why <em>Functor&lt;’F&gt;</em> instead of the straightforward <em>Functor</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html">FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#background">Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#application">Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#scoping-name-resolution">Scoping: Name Resolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#typing-type-inference">Typing: Type Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191219.html">Tagless Final For Writing Compilers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#problem">Problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#tagless-final-for-compiler-phases">Tagless Final For Compiler Phases</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#quick-start-for-tagless-final">Quick Start for Tagless Final</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#grammar">“Grammar”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#expanding-representation">Expanding Representation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#problems-of-decoupling-and-compositing">Problems of Decoupling and Compositing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#fsym">FSYM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#laziness-for-mutual-dependencies">Laziness, for Mutual Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/elaborating-julia.html">Julia Counts for PL Researchers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#expressiveness">Expressiveness</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#staging">Staging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#advantages-as-a-codegen-backend">Advantages as a codegen backend</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/tagless-final-pattern-match.html">First-class Pattern Matching in the Final Approach</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#core-ideas">Core Ideas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#full-implementation-in-haskell">Full implementation in Haskell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#enhancement-1">Enhancement 1</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/tagless-final-for-julia.html">Julia Benefits from Tagless Final</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#what-happened-today">What Happened Today?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#an-example-turns-out-to-be-type-unstable">An Example Turns Out to be Type Unstable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#tagless-final-encoding-about-above-code">Tagless Final Encoding about Above Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Backup/index.html">Backup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Backup/高观点下的Julia泛用编程.html">高观点下的Julia泛用编程</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Others/index.html">Others</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Others/contributions.html">Thautwarm’s Open Source Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#projects-owned-by-other-individuals-organizations">Projects Owned By Other Individuals/Organizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#leading-projects">Leading Projects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#other-notable-personal-projects">Other Notable Personal Projects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Subsections <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">我和Python的故事</a><ul>
+<li><a class="reference internal" href="#id1">第0节</a></li>
+<li><a class="reference internal" href="#id2">第1节: 科学计算, Python, 生物信息学和数据挖掘</a></li>
+<li><a class="reference internal" href="#id3">第2节: 转型的经过, 走向程序语言设计领域</a></li>
+<li><a class="reference internal" href="#id4">第3节: 想要给Python添加高级语言特性的理想</a></li>
+<li><a class="reference internal" href="#id5">第4节: Flowpython</a></li>
+<li><a class="reference internal" href="#bnf-parser-generator">第4节: BNF, Parser Generator和语言制造机器</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <p>日记 2019-10-15至10-26 我和Python的故事(更新中)</p>
+<div class="section" id="python">
+<h1>我和Python的故事<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>第0节<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://github.com/thautwarm/moshmosh/">Moshmosh</a> 的正式Release,  对我来说有一些意义.</p>
+<p>它标志着我以前很重要的一个理想的彻底完成,  以及一个几乎贯穿我之前整个技术生涯的故事的平淡落幕.</p>
+<p>我本科毕业已经过去了半年,  没有太多实感,  因为按照现实情况来看,  自从大一结束后我就不怎么上课,
+所以总还是有一种什么时候会回到宿舍好好睡一觉的感觉.</p>
+<p>在家里写码自觉不如学校宿舍里舒服,  不能坐个上一整天,  父母也会催我睡觉吃饭,  虽然明白他们是对我好,  但还是不由得怀念大一下开始
+整日在宿舍里学习的节奏; 我是从大二开始的小学期正式开始学习Python的.</p>
+</div>
+<div class="section" id="id2">
+<h2>第1节: 科学计算, Python, 生物信息学和数据挖掘<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>第一次接触Python是从我高中最好的一位朋友那里,  当时在学C和MATLAB这些东西,  并且第一次接触Python
+印象并不好. 我当时的想法好像是从notepad++里运行Python太过麻烦了,  还有当时不甚喜欢没法操作指针的语言,
+于是学了一点就走开了.</p>
+<p>真正开始学习Python的时间点是2016年9月的小学期.</p>
+<p>那个时候我已经非常懂MATLAB,  除开科学计算我还用MATLAB写GUI和爬虫,  沉迷从源码里学机器学习算法,  且酷爱MATLAB的向量化写法.</p>
+<p>在大一上结束的时候我被计算机老师推荐到计算机学院做生物信息学,  很快从教授那一届带的几个本科生(好像除了我都是大三科研训练的)里脱颖而出,
+并且复现了几篇论文.</p>
+<p>小学期里很闲,  学院院长教数学软件设计,  涉及到的是只是简单的Mathematica和MATLAB,  于是同时就开始看
+Python的网课.</p>
+<p>这个网课(中国大学MOOC的&lt;&lt;用Python玩转数据&gt;&gt;)的作者, 我至今都十分感激． 那是南京大学的张莉教授,  有点逗逼,  很好的一个老师.</p>
+<p>我根据她的指示安装了anaconda,  初用Spyder-IDE时便觉得很舒服,  因为很像MATLAB,  所见即所得,  写码-报错-修改代码的反馈链非常快,
+于是我越学越快,  很快超过了她的课程进度,  开始寻找其他的资源.</p>
+<p>张莉老师的课,  除了语言本身就是一些标准库和Scientific Python工具链; 同时在实验室师兄的诱导下,  做了些长期项目(直到2017年11月才结束),
+莫名其妙地对NumPy和Pandas熟悉到了相当的地步,  然后大概是在10月份开始后, 没事找数据挖掘比赛打.</p>
+<p>打起来不算太费力,  因为很喜欢那种排名慢慢提升的感觉. 然后10月底的时候, CCF/Datafountain举办了一个规模比较大的比赛,  我参加了三个题目,
+除开和学校某个师兄组队的那个题打得不好,  另外两个都取得了还不错的名次: 一个很可惜,  因为简单的TF-IDF算法没写对,
+导致差点进复赛; 另一个参加人数很多,  接近千人,  我拿到了前10的成绩,  只差两名就能进决赛拿不少钱的样子.</p>
+<p>在那之后感觉自己的Python还蛮厉害的,  虽然只学了两个月. 恰好大二上我提前修了离散和数值,  并且在后者的上机作业上,
+不像其他学长学姐从27道题里选3道完成,  我用Python2完成了所有的题目,  并写出了长长的报告. 这最终如愿地拯救了我的成绩,
+数值分析老师的欣赏弥补了我长期缺课落下的平时分．这里有一个很痛苦的回忆: 我的报告是用libreoffice写的.</p>
+<p>同时, 这个时候我刚开始使用GitHub,  作业的大部分代码都还留在GitHub上
+<a class="reference external" href="https://github.com/thautwarm/The-Algorithms-in-Numerical-Analysis-with-Python-Implementation">The-Algorithms-in-Numerical-Analysis-with-Python-Implementation</a> .</p>
+<p>虽然有点丑,  但是还是不删了.</p>
+</div>
+<div class="section" id="id3">
+<h2>第2节: 转型的经过, 走向程序语言设计领域<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>大约在17年寒假期间,  又参与了一些机器学习的外包项目, 雇主不乏米国的一些知名大公司.</p>
+<p>加上实验室师兄的引荐的长期科研项目, 每个月能拿到不少的报酬, 足以让父母不再操心学费以外的费用.</p>
+<p>在寒假的机器学习外包中, 也认识了几个后来关系不错的朋友, 他们中一些人让我去玩flask,  以及一些ORM框架.</p>
+<p>随后开始的是大二下学期, 我又去搞了一下Java网页开发的外包, 现在想来有点浪费时间,  就当增广见识.</p>
+<p>三月份时, 主要在花时间和生物信息学那边的教授交流.</p>
+<p>他还给了我一些给某篇nature文章找错的任务, 可惜我最后只完成了代码部分, 报告鸽掉了, 这一鸽就是两年半.</p>
+<p>而我为什么鸽, 就是因为迷上了所谓的函数式编程, 程序语言技术和编译器. 而那份科研任务剩下的部分, 在一年半后被教授作为科研训练任务交给了别人.</p>
+<p>在那个时间点, 因为长期的科研代码输出, 自觉在Python的了解程度上达到了某种界限, 迫切想要表达出一些自己的理解.</p>
+<p>４月,  在一个叫泰迪杯的比赛期间,  某种神秘的感觉降临了我.</p>
+<p>我觉得某种想要写一门语言的热情激荡在胸口, 于是我瞎捣鼓出了这个垃圾玩意儿: <a class="reference external" href="https://github.com/thautwarm/SquirrelLanguage">SquirrelLanguage</a> .</p>
+<p>这个真的是块废物,  大概就像是v-lang一样,  过于幼稚的思考,  缺少专业知识和素养的滑稽形态, 和箭在弦上不得不发码在心头不能不敲的热血, 促使了这个语言的实现.</p>
+<p>即便这种东西在现在的我看来一文不值,  但当时我的收获一定是货真价实的．我仍记得我花了三天三夜写出这个垃圾玩意儿的时候,
+兴奋到无法入睡,  甚至在深夜研究了一下sublime text的高亮实现,  给这个语言造了一个高亮.</p>
+<p>这背后也有很多其他有趣的故事.</p>
+<p>例如, 那个时候我刚刚加入学校的动漫社, 在那个有归属感的地方, 我认识的一个外号叫”松鼠”的女孩子真的可爱爆棚.</p>
+<p>所以, SquirrelLanguage的命名, 也有像名著开头”献给亲爱的xxx”一样献给松鼠姐姐的意思．</p>
+<p>然而这个”语言”终究不是”名著”,  只是一个无知者肮脏愚昧的尝试, 这样的玩意献给闺蜜, 自然是个友尽的结局, 所以后来松鼠姐姐和我的关系也日渐陌生, 沦为点赞之交.</p>
+<p>啊, 上面这句话就是开个玩笑, 这个归因自然是无稽之谈.</p>
+<p>实际上, 我后来因为学习太忙,  没有再和社团的朋友们经常玩, 和大家也都日渐陌生.</p>
+<p>最后,  虽然当时很嗨地写了一门”语言”,  但因为是比赛期间, 20多天的时间被我整的只有3天, 做得不理想, 没有拿奖.</p>
+<p>自那以后我意识到我对打比赛是去了兴趣,  虽然总说”哎呀我们去Kaggle/天池玩玩”, 但从2017年4月之后, 再也没有成真落实.</p>
+<p>似乎是凭借当时的这个”语言”, 我在知乎认识了雾雨魔理莎.</p>
+<p>在这位的坑蒙拐骗下, 我带着一整套的机器学习和数据挖掘的知识和技能, 踏上了一条新的道路.</p>
+<p>在那条道路上,  对于代码中广泛存在的相似, 我不再用似是而非的方式去认识.</p>
+</div>
+<div class="section" id="id4">
+<h2>第3节: 想要给Python添加高级语言特性的理想<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>从结果上来看, 雾雨魔理莎并没有教我任何具体的东西, 但是莎莎很清楚方向. 当时我们谈的东西似乎除开机器学习外就是Scala和Haskell的语言特性.</p>
+<p>我当时初识”模式匹配”, 就理解到这是一个极其essential的东西; 我意识到存在大量的抽象可以提升程序员的表达能力, 从而使得解决问题的观点
+变得更高; 我同时爱上了Haskell中的where从句, 因为我认为这可以显著地降低阅读程序的难度.</p>
+<p>此处我认为有必要稍微深入细节. 对于模式匹配, 因为它的意义过于广泛, 且生效于一定体积的codebase之中, 在这篇日记里无疑有点喧宾夺主;</p>
+<p>但我几年间多次在不同的场合elaborate为什么where子句有用且意义深远, 其篇幅相对可以接受:</p>
+<p>假设Python中存在where子句, 我们可以用下面的办法去求圆柱的表面积,</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 圆柱面积 / surface area of a cylinder</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
+<span class="n">r</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># the radius</span>
+<span class="n">h</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># the height</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">S_top</span> <span class="o">+</span> <span class="n">S_side</span><span class="p">)</span> <span class="n">where</span><span class="p">:</span>
+    <span class="n">S_top</span>  <span class="o">=</span> <span class="n">pi</span><span class="o">*</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">S_side</span> <span class="o">=</span> <span class="n">C</span> <span class="o">*</span> <span class="n">h</span> <span class="n">where</span><span class="p">:</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">r</span>
+</pre></div>
+</div>
+<p>这个例子来源于我的早期(2017年暑假)项目 <a class="reference external" href="https://github.com/thautwarm/flowpython/blob/master/flowpython/ReadMe.rst">flowpython</a> .</p>
+<p>这个程序的读法如下:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">从</span> <span class="n">math</span> <span class="n">库中导入</span> <span class="n">pi</span>
+<span class="n">半径</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">高</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">表面积</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">底面积</span> <span class="o">+</span> <span class="n">侧面积</span><span class="p">,</span> <span class="n">其中</span>
+    <span class="n">底面积</span> <span class="o">=</span> <span class="p">(</span><span class="n">pi</span> <span class="o">*</span> <span class="n">半径</span><span class="p">)</span><span class="n">的平方</span>
+    <span class="n">测面积</span> <span class="o">=</span> <span class="n">周长</span> <span class="o">*</span> <span class="n">高</span><span class="p">,</span> <span class="n">其中</span>
+        <span class="n">周长</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">半径</span>
+</pre></div>
+</div>
+<p>为什么where从句意义深远?</p>
+<p><strong>第一点 , 对于具有相关专业知识的读者, 它可以大幅优化可读性.</strong></p>
+<p>当我们看到表面积的定义时,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># 表面积 = 2 * 底面积 + 侧面积</span>
+<span class="n">S</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">S_top</span> <span class="o">+</span> <span class="n">S_side</span>
+</pre></div>
+</div>
+<p><strong>如果我们的专业知识足以告诉我们表面积和侧面积的定义, 那么where从句里的内容, 我们是可以忽略的.</strong>
+仅凭这一点, 这已是相当有益的一种代码组织方式.</p>
+<p><strong>第二点, 即便对于没有相关专业知识的人, 他在阅读代码时也会轻松很多, 因为他可以毫不费力地从where从句组织的代码结构里, 弄清某个概念的定义</strong>.</p>
+<p>当他不理解where从句的上一层逻辑时, 他可以放弃该层的阅读, 并进入从句内部, 先去理解相关定义.</p>
+<p><strong>第三点, 减小程序员阅读代码时需要的记忆空间复杂度.</strong></p>
+<p>作个假设, 你还不懂圆柱表面积怎么求, 今天你很累, 当理解一个新概念的定义时, <strong>你不能接受它的定义里含有任何未知概念,</strong>
+那么你应该怎么去理解圆柱表面积公式?</p>
+<p>答案就是使用where从句. Recall 表面积的定义,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">从</span> <span class="n">math</span> <span class="n">库中导入</span> <span class="n">pi</span>
+<span class="n">半径</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">高</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">表面积</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">底面积</span> <span class="o">+</span> <span class="n">侧面积</span><span class="p">,</span> <span class="n">其中</span>
+    <span class="n">底面积</span> <span class="o">=</span> <span class="p">(</span><span class="n">pi</span> <span class="o">*</span> <span class="n">半径</span><span class="p">)</span><span class="n">的平方</span>
+    <span class="n">测面积</span> <span class="o">=</span> <span class="n">周长</span> <span class="o">*</span> <span class="n">高</span><span class="p">,</span> <span class="n">其中</span>
+        <span class="n">周长</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">半径</span>
+</pre></div>
+</div>
+<p>并使用where从句引导的顺序去理解表面积的定义:</p>
+<img alt="../_images/where-elabo.png" src="../_images/where-elabo.png" />
+<p>可以发现, 理解新概念时不再有未知量.</p>
+<p>你可能有一个问题, 为什么我们不按照上面的定义顺序依次定义各个概念,
+而要用where从句?</p>
+<p>两个方面.</p>
+<p>首先(aka <strong>第四点</strong> ), <strong>对于代码的书写者, where从句是展现了一种类似交互编程的机制, 减小了心智负担.</strong></p>
+<p>代码的书写者有一个最终要完成的目的, 而在where从句的帮助下,
+<strong>他不需要记住实现最终目的会用到什么.</strong> 因为完成目的需要的所有定义,
+<strong>都将随着代码的推进自然的展现出来.</strong></p>
+<p>这种思想本身在算法中也有呈现, 例如在 <a class="reference external" href="https://github.com/thautwarm/RBNF.hs/blob/master/src/RBNF/LeftRecur.hs">LL parser中支持左递归的算法</a> .</p>
+<p>当存在顶层parser的概念时, 那么可以上述方式,
+层层下降, 通过inline文法的方式, 消去一些产生式, 将所有的左递归转为直接左递归, 并将这些直接左递归提取出来,
+做后续的代码生成.</p>
+<p>例如对于文法</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">-&gt;</span> <span class="n">b</span> <span class="n">c</span>
+<span class="n">A</span> <span class="o">-&gt;</span> <span class="n">B</span> <span class="n">d</span>
+<span class="n">B</span> <span class="o">-&gt;</span> <span class="n">A</span> <span class="n">e</span>
+</pre></div>
+</div>
+<p>按照where从句解构逻辑的思路, 我们处理得到下列的parsing graph,</p>
+<img alt="../_images/left-recur.png" src="../_images/left-recur.png" />
+<p>其次(aka <strong>第五点</strong> ), <strong>对于代码的阅读者, where从句的使用展现了主要目的.</strong></p>
+<p>对比</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">O</span> <span class="n">已知</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">f_bc</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span> <span class="n">where</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">f_de</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">f_gh</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">f_ij</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">)</span> <span class="n">where</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="n">f_lm</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="n">f_no</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">O</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>和</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">O</span> <span class="n">已知</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">f_de</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">f_gh</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">f_bc</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+<span class="n">I</span> <span class="o">=</span> <span class="n">f_lm</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
+<span class="n">J</span> <span class="o">=</span> <span class="n">f_no</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">O</span><span class="p">)</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">f_ij</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>前者使用where从句, 在语法上体现了不同符号的重要性; 而后者至多只能依靠不可靠的代码风格来区分重要度.</p>
+<p>上面五点就是我总结的, where从句的意义.</p>
+<p>而模式匹配比起where从句更为重要, 几乎可以说是现代化编程手段的基石.</p>
+<p>在我了解了模式匹配, where从句以及其他对当时的我可谓全新的编程构造和思想之后, 新的狂热产生了.</p>
+<p>对于Python的爱和对高级语言构造和思想的向往, 我产生了文首所说的那份理想, <strong>为Python添加高级的语言构造</strong> ;
+同时, 文首所说的那个故事, 也就此开始.</p>
+</div>
+<div class="section" id="id5">
+<h2>第4节: Flowpython<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p>在17年的暑假之前, 我的时间变得相当充裕.</p>
+<p>那可以说是我大学最轻松的一段时间, 不仅学习上轻松无比, 拿到了极好的成绩,
+还能够花大量时间参与社团的活动, 结识了好多有趣的朋友, 依然能有大把时间花在学习Scala语言上.</p>
+<p>学习Scala也是网上朋友们(例如前面提到的魔理沙)推荐的, 说是可以掌握函数式思维.</p>
+<p>但是呢, 说来惭愧, 我现在经常喜欢抨击的, 把”写法精妙”当作”写法函数式”的行为或认识, 正是我在那个时期喜欢干的.</p>
+<p>那个时候真正驱动我继续写Scala的, 是把SciPy工作栈移植到Scala里.</p>
+<p>正因如此, 我开了一个叫 <a class="reference external" href="https://github.com/thautwarm/NumScala">NumScala</a> 的项目, 听名字就知道是想做”NumPy in Scala”.</p>
+<p>也正因如此, 这个项目并没有持续多久, 因为我发现, 我居然不能在最新release的Scala上使用Spark(实际上不到一年, 就能在那个版本的Scala上轻松安装Spark),
+而我认为Spark是我期待的工作栈中不可或缺的一部分.</p>
+<p>在大概1个半月对Scala的学习和实践中, 我的”函数式思维”其实没有半分提高(解决问题的思考模型依然不是基于约归的),
+倒是学会了怎么解析xlsx文件; 知乎上的”R大”在评论区发了如何正确解析xlsx的帖子, 我想我的思路大体上没有问题.</p>
+<p>于是, 我觉得我还是应该回去用python, 但是呢, “曾经沧海难为水”.</p>
+<p>当时Scala里的语言特性让我产生长期且强烈的享受感, 给我一种写码如同写诗的沉醉体验.</p>
+<p>这种享受和体验, 使得我无法接受Python在代码上的复杂和冗余, 促使了我开始研究CPython的codebase,
+并试图给Python添加一些语言特性.</p>
+<p>这也是我培养编译器技能的开始(之前的”松鼠语”算不得编译器).</p>
+<p>终于来到了暑假, 那是一个印象极其深刻的暑假.</p>
+<p>天知道我怎么搜出来Python编译器是如何工作的:</p>
+<p>CPython的codebase很大, 我并不能一下找到我想要的全部文件(比如ast.c, symtable.c, Python-asdl, Grammar).</p>
+<p>所以, 中途经过了比较漫长的过程.</p>
+<p>最终, 经过数日的努力, 在这个issue里, 我post了相关手段的链接: <a class="reference external" href="https://github.com/thautwarm/flowpython/issues/2">https://github.com/thautwarm/flowpython/issues/2</a> .</p>
+<p>随后, 我立刻沉迷于在CPython codebase上的modification, 沉迷于trial and error, 沉迷于引入我觉得合适的语法.</p>
+<p>我在 <a class="reference external" href="https://github.com/python/cpython/blob/master/Python/ast.c">Python/ast.c</a> 里学会了visitor模式, 在 <a class="reference external" href="https://github.com/python/cpython/blob/master/Grammar/Grammar">Grammar</a> 里学会了BNF, 知道了parser generator的存在, 清楚了Python源码到字节码的大致流程.</p>
+<p>不过, 那个时候我并没有了解到Python字节码相关知识, 也没有意识到符号表的处理, 当然也更不清楚字节码的编译和解释执行过程.</p>
+<p>关于visitor模式有件非常尴尬的事是: 直到很久之后, 我都并不知道这个东西叫visitor; 直到我非常熟练后, 才从 <a class="reference external" href="https://github.com/lfkdsk">恺鸽鸽</a> 那里了解到了它的名字.</p>
+<p>虽然学了很多, 做了很多, 但flowpython只实现了一些相当简单的特性, 且那个”模式匹配”可以说是佶屈聱牙, 还没有tree pattern matching.</p>
+<p>在实现了flowpython之后, 我把项目post到了Python idea上: <a class="reference external" href="https://mail.python.org/pipermail/python-ideas/2017-August/046770.html">https://mail.python.org/pipermail/python-ideas/2017-August/046770.html</a> , 有一些反响, 但社区也反映了很多设计问题.</p>
+<p>Flowpython最终是不实用的, 除开技术深度和设计的问题, 原因还有, 它过于”重”, 也不是portable的.</p>
+<p>它通过修改CPython的源代码来实现的, 而C codebase的变更, 使得用户需要使用特别编译的Python发行版, 而不能简单地通过pip进行安装;</p>
+<p>换句话说, 它和CPython是不兼容的.</p>
+<p>目前看来, flowpython是”早期黑历史”, 展示了我探索学习的过程.</p>
+<p>诚然, 虽然flowpython有这样那样的问题, 但和之前的”松鼠语言”一样, 在设计和实现它的过程中,
+我的确在那持之以恒的努力下熟悉了一部分CPython的源码, 并且是极其熟悉的程度.</p>
+<p>我极其怀念那个暑假, 用着Deepin Linux, 开虚拟机装着可能带毒的win7 Re0雷姆主题,
+玩着FSN和其他galgame, 一个人在家里(父母在另一个地方工作)快乐地点着外卖, 学着CPython源代码, 在千里冰封的QQ群里吹着水,
+设计和实现着flowpython的那个暑假.</p>
+</div>
+<div class="section" id="bnf-parser-generator">
+<h2>第4节: BNF, Parser Generator和语言制造机器<a class="headerlink" href="#bnf-parser-generator" title="Permalink to this headline">¶</a></h2>
+<p>BNF和后续的很多故事都有关.</p>
+<p>CPython项目中的 <a class="reference external" href="https://github.com/python/cpython/blob/master/Grammar/Grammar">Grammar</a> ,
+我是秒懂的, 没有任何学习的过程. 我只是浏览了一遍文件, 就了解了EBNF的各种语言构造.</p>
+<p>我意识到*BNF可以清楚地表示源代码和其结构化表示的对应关系.</p>
+<p>我的一个朋友, 在我17年秋季学期开始后, 开始实现一个 <a class="reference external" href="https://github.com/Cm-lang/">新语言</a> .</p>
+<p>她当时需要parser, 为了帮助她, 我经过了些许探索, 便发觉从BNF到一个parser是如此的简单!</p>
+<p>我发现, 在Python的一些对象上可以实现正则表达式一般的东西, 并且写了一个 <a class="reference external" href="https://github.com/thautwarm/Stardust/blob/master/PM.py">粗陋的实现</a> .</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Int</span><span class="p">,</span> <span class="o">*</span><span class="n">String</span><span class="p">,</span> <span class="n">Float</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>像上面这个例子, <code class="code docutils literal notranslate"><span class="pre">Int</span></code> 和 <code class="code docutils literal notranslate"><span class="pre">1</span></code> 之间的对应关系, 同样也是 <code class="code docutils literal notranslate"><span class="pre">*String</span></code> 和 <code class="code docutils literal notranslate"><span class="pre">[&quot;2&quot;,</span> <span class="pre">&quot;2&quot;]</span></code> 之间的对应关系,</p>
+<p>更是 <code class="code docutils literal notranslate"><span class="pre">Float</span></code> 和 <code class="code docutils literal notranslate"><span class="pre">3.0</span></code> 之间的对应关系.</p>
+<p>这种对应关系, 可以叫parse, 也可以叫match.</p>
+<p>而实现方法也很简单, 把问题简化, 我们只需要实现</p>
+<ul class="simple">
+<li><p>一组基本的pattern: <code class="code docutils literal notranslate"><span class="pre">match(Int,</span> <span class="pre">1)</span> <span class="pre">==</span> <span class="pre">True,</span> <span class="pre">match(Float,</span> <span class="pre">3.0)</span></code></p></li>
+<li><p>pattern之间的组合方式: <code class="code docutils literal notranslate"><span class="pre">match([A,</span> <span class="pre">B,</span> <span class="pre">C],</span> <span class="pre">[a,</span> <span class="pre">b,</span> <span class="pre">c])</span> <span class="pre">==</span> <span class="pre">True</span></code>, 当 <code class="code docutils literal notranslate"><span class="pre">match(A,</span> <span class="pre">a)</span> <span class="pre">==</span> <span class="pre">match(B,</span> <span class="pre">b)</span> <span class="pre">==</span> <span class="pre">match(C,</span> <span class="pre">c)</span> <span class="pre">==</span> <span class="pre">True</span></code></p></li>
+</ul>
+<p>那么, 我们就自然的得到了一切对象上的”正则表达式”, 即”模式匹配”.</p>
+<p>当我们要match的对象是一个字符串/字符串列表/字符串的结构体的序列(tokens)时, 上述过程, 就是parser.</p>
+<p>于是, 在这里, 我又自动地理解了parser combinator(parser组合子)的概念.</p>
+<p>于是我开始实现parser generator, 从BNF文法编译到上面的parser组合子, 例如,</p>
+<p>从BNF式子 <code class="code docutils literal notranslate"><span class="pre">lambda</span> <span class="pre">::=</span> <span class="pre">&quot;lambda&quot;</span> <span class="pre">arglist</span> <span class="pre">&quot;:&quot;</span> <span class="pre">expr</span></code> 到parser组合子 <code class="code docutils literal notranslate"><span class="pre">Lambda</span> <span class="pre">=</span> <span class="pre">[Text(&quot;Lambda&quot;),</span> <span class="pre">ArgList,</span> <span class="pre">Text(&quot;:&quot;),</span> <span class="pre">Expr]</span></code> .</p>
+<p>其中, <code class="code docutils literal notranslate"><span class="pre">Lambda,</span> <span class="pre">Expr</span></code> 是在其他地方定义的parser组合子, 分别可以匹配*参数列表*的语法和*表达式*的语法.</p>
+<p>于是, 我写出了一个 <a class="reference external" href="https://github.com/thautwarm/EBNFParser">naive的parser generator框架</a> .</p>
+<p>当然, 虽然给出了链接, 我并不建议任何人阅读该项目, 因为它实在是过于落后…</p>
+<p>曾经有一位朋友在知乎评论区下给出了如此的评价, 尽管他不太可能再收到我的回复, 我现在对他表示十分的感谢.</p>
+<p>在后来, 我逐步迭代了我的parser框架, <a class="reference external" href="https://github.com/thautwarm/RBNF">RBNF</a> 完成了我上下文相关parsing的追求,
+而由于18年国庆的一个项目的缘故, 我开始同时追求parser的表达力和性能, 并在很远的未来(19年下半年),
+有了 <a class="reference external" href="https://github.com/thautwarm/RBNF.hs/">RBNF.hs</a> 和 <a class="reference external" href="https://github.com/thautwarm/rbnf-rts/">rbnf-rts</a> .</p>
+<p>后来我已经读了海量的相关论文, 而我的parser generator项目, 也从片刻灵感里迸发出的幼稚火花, 成长为巨人肩上发出的流星一条.</p>
+<p>利用这些parser, 我能够很快地在Python里造出解释性语言, 例子有</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/thautwarm/rmalt">https://github.com/thautwarm/rmalt</a></p></li>
+<li><p><a class="reference external" href="https://github.com/thautwarm/Rem">https://github.com/thautwarm/Rem</a></p></li>
+<li><p><a class="reference external" href="https://github.com/thautwarm/reley">https://github.com/thautwarm/reley</a></p></li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/Fiction/日记2019-10-15.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2020, thautwarm.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations &#8212; thautwarm&#39;s blog pages</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tagless Final For Writing Compilers" href="plfp-20191219.html" />
+    <link rel="prev" title="Compelling Higher Kinded Types and Type Classes in F#" href="HKT-typeclass-FSharp.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default ">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../guide.html">
+          Site-32</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/thautwarm">GitHub</a></li>
+                <li><a href="index.html">PL</a></li>
+                <li><a href="../Design/index.html">Design</a></li>
+                <li><a href="../DSL/index.html">DSL</a></li>
+                <li><a href="../Fiction/index.html">Fiction</a></li>
+                <li><a href="../Others/index.html">Others</a></li>
+                <li><a href="../Backup/index.html">Backup</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../guide.html">Site-32 <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Compiler/index.html">Compiler</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Design/index.html">Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html">General Programming In Julia Language From An Advanced Standpoint</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#first-class">First-Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#polymorphisms-of-multiple-dispatch">Polymorphisms of Multiple Dispatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#full-featured-macros">Full-Featured Macros</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#macro-the-function-from-ast-to-ast">Macro, the Function from AST to AST</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#scope-and-hygiene">Scope and Hygiene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#other-useful-knowledge-for-julia-macros">Other Useful Knowledge for Julia Macros</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#a-big-step-forward-in-ast-manipulations">A Big Step Forward in AST Manipulations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#limitation-absence-of-function-types">Limitation: Absence of Function Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Design/Some-Thoughts-About-The-RestrainJIT.html">Some Thoughts About The Restrain JIT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Design/Research-Restrain-JIT.html">Research: Review and Observations of Python JIT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Design/Research-Restrain-JIT.html#history">History</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Design/Research-Restrain-JIT.html#observations">Observations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../DSL/index.html">DSL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html">Write You A Query Language</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#definition-of-syntaxes">Definition of Syntaxes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#codegen-target">Codegen Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#refinement-of-codegen-typed-columns">Refinement of Codegen: Typed Columns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#implementation">Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#enjoy-you-a-query-language">Enjoy You A Query Language</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Fiction/index.html">Fiction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id1">2020年4月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id3">2019年10月</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Fiction/index.html#id4">日前安排</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Fiction/index.html#id12">目录</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-13.html">Smarter Witnesses for Type Classes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#notation">Notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#instance-resolution-variables-as-instances">Instance Resolution &amp; Variables As Instances</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#the-most-general-instance-problem-overlapping-instance-problem">“The Most General Instance” Problem &amp; “Overlapping Instance” Problem</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id1">优化</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id2">该算法和相应语言设计的好处</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id3">不足之处</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-15.html">我和Python的故事</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id1">第0节</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id2">第1节: 科学计算, Python, 生物信息学和数据挖掘</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id3">第2节: 转型的经过, 走向程序语言设计领域</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id4">第3节: 想要给Python添加高级语言特性的理想</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id5">第4节: Flowpython</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#bnf-parser-generator">第4节: BNF, Parser Generator和语言制造机器</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-30.html">杂谈</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-30.html#pycon-china-2019">PyCon China 2019 成都</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-30.html#id2">直面自己的人格缺陷</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-06.html">杂谈</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-14.html">我太难了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-17.html">我太懂了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-01-07.html">打通</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-01-07.html#parsing">Parsing</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-01-07.html#python">Python 字节码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-02.html">Tagless Final in F#</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-07.html">Encoding Typeclass Default Methods in Purescript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-11.html">近期规划</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-02-11.html#purescript-python">Purescript-Python</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#anf">从表达式优先到语句优先: ANF变换</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#pythonfirst-class">Python虚拟机上的First-class的表达式优先</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#id2">社区意见</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/cure/和平日久.html">如何写出令人感到幸福的小说</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id2">合理利用“无敌”元素</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id3">“纯爱”而非“后宫”</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id4">细腻的画面感</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id5">节奏流畅的回忆</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id6">暗线和潜台词</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id7">总结</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html">乐理菜鸡怎么给自己的小说写BGM?</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id1">找调</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id2">打谱</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id3">总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programming Language</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="HKT.html">Higher Kinded Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="typeclass.html">Type Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="typeclass.html#about-abstractions">About Abstractions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="typeclass.html#about-separation-of-type-definitions-and-data-manipulations">About Separation of Type Definitions and Data Manipulations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="paper-reading-LHKP.html">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="paper-reading-LHKP.html#how-to">How-To</a></li>
+<li class="toctree-l3"><a class="reference internal" href="paper-reading-LHKP.html#static-resolution-more-polymorphic">Static Resolution: More polymorphic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="paper-reading-LHKP.html#limitation1-much-higher-kinded">Limitation1: Much Higher Kinded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="paper-reading-LHKP.html#limitation2-identity">Limitation2: Identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="paper-reading-LHKP.html#why-this-lightweight-higher-polymorphism-instead-of-the-haskell-approach">Why this Lightweight-Higher-Polymorphism instead of the Haskell approach</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="HKT-typeclass-FSharp.html">Compelling Higher Kinded Types and Type Classes in F#</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="HKT-typeclass-FSharp.html#active-pattern">Active Pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HKT-typeclass-FSharp.html#statically-resolved-type-parameters">Statically Resolved Type Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HKT-typeclass-FSharp.html#the-getsig-function-and-implicits">The <em>getsig</em> Function and Implicits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HKT-typeclass-FSharp.html#why-abstractclass">Why AbstractClass?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HKT-typeclass-FSharp.html#why-functor-f-instead-of-the-straightforward-functor">Why <em>Functor&lt;’F&gt;</em> instead of the straightforward <em>Functor</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="HKT-typeclass-FSharp.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#background">Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#application">Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#scoping-name-resolution">Scoping: Name Resolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#typing-type-inference">Typing: Type Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plfp-20191219.html">Tagless Final For Writing Compilers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="plfp-20191219.html#problem">Problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plfp-20191219.html#tagless-final-for-compiler-phases">Tagless Final For Compiler Phases</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="plfp-20191219.html#quick-start-for-tagless-final">Quick Start for Tagless Final</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plfp-20191219.html#grammar">“Grammar”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plfp-20191219.html#expanding-representation">Expanding Representation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plfp-20191219.html#problems-of-decoupling-and-compositing">Problems of Decoupling and Compositing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plfp-20191219.html#fsym">FSYM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plfp-20191219.html#laziness-for-mutual-dependencies">Laziness, for Mutual Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="plfp-20191219.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elaborating-julia.html">Julia Counts for PL Researchers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="elaborating-julia.html#expressiveness">Expressiveness</a></li>
+<li class="toctree-l3"><a class="reference internal" href="elaborating-julia.html#staging">Staging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="elaborating-julia.html#advantages-as-a-codegen-backend">Advantages as a codegen backend</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tagless-final-pattern-match.html">First-class Pattern Matching in the Final Approach</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tagless-final-pattern-match.html#core-ideas">Core Ideas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagless-final-pattern-match.html#full-implementation-in-haskell">Full implementation in Haskell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagless-final-pattern-match.html#enhancement-1">Enhancement 1</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tagless-final-for-julia.html">Julia Benefits from Tagless Final</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tagless-final-for-julia.html#what-happened-today">What Happened Today?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagless-final-for-julia.html#an-example-turns-out-to-be-type-unstable">An Example Turns Out to be Type Unstable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tagless-final-for-julia.html#tagless-final-encoding-about-above-code">Tagless Final Encoding about Above Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Backup/index.html">Backup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Backup/高观点下的Julia泛用编程.html">高观点下的Julia泛用编程</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Others/index.html">Others</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Others/contributions.html">Thautwarm’s Open Source Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#projects-owned-by-other-individuals-organizations">Projects Owned By Other Individuals/Organizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#leading-projects">Leading Projects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#other-notable-personal-projects">Other Notable Personal Projects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Subsections <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations</a></li>
+<li><a class="reference internal" href="#terminology">Terminology</a></li>
+<li><a class="reference internal" href="#background">Background</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#application">Application</a><ul>
+<li><a class="reference internal" href="#scoping-name-resolution">Scoping: Name Resolution</a></li>
+<li><a class="reference internal" href="#typing-type-inference">Typing: Type Inference</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <p>NOTE: If you’d install <code class="docutils literal notranslate"><span class="pre">remu_ts</span></code> and <code class="docutils literal notranslate"><span class="pre">remu_scope</span></code>, clone them from
+<a class="reference external" href="https://github.com/RemuLang/">RemuLang</a> and use <code class="docutils literal notranslate"><span class="pre">opam</span> <span class="pre">install</span> <span class="pre">.</span></code>
+to install them locally.</p>
+<div class="section" id="fsym-an-abstraction-on-tagless-final-style-to-compositing-and-decoupling-multiple-interpretations">
+<h1>FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations<a class="headerlink" href="#fsym-an-abstraction-on-tagless-final-style-to-compositing-and-decoupling-multiple-interpretations" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">Lamu0</span></code> is a very simple and basic programming language, but the
+implementation in
+<a class="reference external" href="https://github.com/thautwarm/plfp/tree/master/lamu0">plfp/lamu0</a>
+shows an approach to use Tagless Final to</p>
+<ul class="simple">
+<li><p>handle the case that the order of interpretations is significant.</p></li>
+<li><p>allow the composition of decoupled compiler phases</p></li>
+</ul>
+<p>Given the grammar</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">type</span> <span class="n">litype</span> <span class="o">=</span> <span class="nc">IntT</span> <span class="o">|</span> <span class="nc">FloatT</span> <span class="o">|</span> <span class="nc">StringT</span>
+
+<span class="k">module</span> <span class="k">type</span> <span class="nc">SYM</span> <span class="o">=</span> <span class="k">sig</span>
+  <span class="k">type</span> <span class="n">repr</span>
+  <span class="k">val</span> <span class="n">letl</span> <span class="o">:</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">repr</span> <span class="o">-&gt;</span> <span class="n">repr</span> <span class="o">-&gt;</span> <span class="n">repr</span>
+  <span class="k">val</span> <span class="n">lam</span>  <span class="o">:</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">repr</span> <span class="o">-&gt;</span> <span class="n">repr</span>
+  <span class="k">val</span> <span class="n">app</span>  <span class="o">:</span> <span class="n">repr</span> <span class="o">-&gt;</span> <span class="n">repr</span> <span class="o">-&gt;</span> <span class="n">repr</span>
+  <span class="k">val</span> <span class="n">lit</span>  <span class="o">:</span> <span class="n">litype</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">repr</span>
+  <span class="k">val</span> <span class="n">var</span>  <span class="o">:</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">repr</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="terminology">
+<h1>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h1>
+<p>The following terms represent the same thing in this presentation. -
+interpretation (from a separate view of compiler) - <code class="docutils literal notranslate"><span class="pre">SYM</span></code> (from the
+view of routine implementation in OCaml) - algebra (from a view of
+mathematics) - compiler phase(from an overall view from compiler)</p>
+</div>
+<div class="section" id="background">
+<h1>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h1>
+<p>The steps through <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">repr</span></code> to the executable low level instructions
+are complex: Usually, a phase <code class="docutils literal notranslate"><span class="pre">A</span></code> should be performed prior to some
+phase <code class="docutils literal notranslate"><span class="pre">B</span></code>, so <code class="docutils literal notranslate"><span class="pre">B</span></code> depends on <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
+<p>For instance, if the last phase is back end code generation, it for sure
+depends on all of other phases.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">-&gt;</span> <span class="n">B</span> <span class="o">-&gt;</span> <span class="o">...</span> <span class="o">-&gt;</span> <span class="n">C</span>
+ \   \         <span class="o">|</span>
+  <span class="o">..</span>   <span class="o">..</span>      <span class="o">|</span>
+          \   \<span class="o">|/</span>
+            <span class="n">CodeGen</span>
+
+<span class="k">for</span> <span class="n">each</span> <span class="n">phase</span><span class="p">,</span> <span class="n">it</span><span class="s1">&#39;s either prior to phase CodeGen or phase CodeGen itself.</span>
+</pre></div>
+</div>
+<p>Another intuituve example, to perform type checking/inference, we shall
+understand the scope information firstly.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="o">---------------------</span>
+    <span class="o">|</span>                   <span class="o">|</span>
+<span class="n">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>               <span class="o">|</span>  <span class="n">identify</span> <span class="n">the</span> <span class="n">occurrences</span> <span class="n">of</span>
+   <span class="n">let</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">2</span>            <span class="o">|</span>  <span class="n">a</span> <span class="nb">type</span> <span class="n">variable</span>
+   <span class="ow">in</span> <span class="n">y</span> <span class="o">+</span> <span class="n">x</span><span class="o">-------------|</span>
+<span class="ow">in</span> <span class="n">x</span><span class="o">---------------------</span>
+</pre></div>
+</div>
+<p>More instances could be found in the real world:</p>
+<ul class="simple">
+<li><p>All type-directed code generations require the information from
+(partially) type inference.</p></li>
+<li><p>The compilation for type classes, in the approach of dictionary
+passing, requires type information, and a scope for class instances.</p></li>
+<li><p>The closure conversion needs scope information to get the free
+variables of a function.</p></li>
+<li><p>etc…</p></li>
+</ul>
+<p>The tagless final approach works for the polymorphisms of interpreting a
+given “grammar”, however, it lacks of the facilities to work with
+multuple separate interpretations, like</p>
+<ul class="simple">
+<li><p><strong>compositing separate interpretations</strong></p></li>
+<li><p><strong>resolving the dependency relationships among dependent
+interpretations</strong></p></li>
+<li><p><strong>decoupling the dependent interpretations as much as possible</strong></p></li>
+</ul>
+<p>To address these problems, I proposed - an operation(<code class="docutils literal notranslate"><span class="pre">grow</span></code>) among
+the algebras to make reductions, - a module signature(<code class="docutils literal notranslate"><span class="pre">FSYM</span></code>) very
+close to the shape of <code class="docutils literal notranslate"><span class="pre">SYM</span></code> to composite and decouple interpretations.</p>
+<p>which could be taken advantage of to solve above 3 pain spots fairly
+easy.</p>
+</div>
+<div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>The core idea is the generalization of <code class="docutils literal notranslate"><span class="pre">fold</span></code> operation, and I call it
+<code class="docutils literal notranslate"><span class="pre">grow</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">grow</span> <span class="pre">(grow</span> <span class="pre">(grow</span> <span class="pre">zero</span> <span class="pre">fst)</span> <span class="pre">snd)</span> <span class="pre">third</span></code>, where <code class="docutils literal notranslate"><span class="pre">zero</span></code>,
+<code class="docutils literal notranslate"><span class="pre">grow</span> <span class="pre">(zero,</span> <span class="pre">fst)</span></code>, and similar stuffs are algebras(<code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">SYM</span></code>),
+however, all of them have distinct representations(usually written as
+<code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">repr</span></code> in a <code class="docutils literal notranslate"><span class="pre">SYM</span></code>).</p>
+<p>In this design, for <code class="docutils literal notranslate"><span class="pre">grow(m,</span> <span class="pre">mexpander)</span></code>, where <code class="docutils literal notranslate"><span class="pre">m</span></code> is an algebra,
+and <code class="docutils literal notranslate"><span class="pre">mexpander</span></code> can produce a new algebra(e.g., <code class="docutils literal notranslate"><span class="pre">scope-&gt;scope+type</span></code>)
+by composing with <code class="docutils literal notranslate"><span class="pre">m</span></code> via <code class="docutils literal notranslate"><span class="pre">grow</span></code>.</p>
+<p>Something occurs naturally and simultaneously during expanding the
+algebra is, the expansion of the representation type(<code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">repr</span></code> in
+an algebra).</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="nc">A</span> <span class="o">:</span> <span class="k">module</span> <span class="nc">SYM</span> <span class="k">with</span> <span class="k">type</span> <span class="n">repr</span> <span class="o">=</span> <span class="n">o</span> <span class="c">(* base *)</span>
+<span class="nc">B</span> <span class="o">:</span> <span class="k">module</span> <span class="nc">SYM</span> <span class="k">with</span> <span class="k">type</span> <span class="n">repr</span> <span class="o">=</span> <span class="n">r</span> <span class="c">(* result *)</span>
+</pre></div>
+</div>
+<p>We check the “delta” from <code class="docutils literal notranslate"><span class="pre">o</span> <span class="pre">=</span> <span class="pre">A.repr</span></code> to <code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">=</span> <span class="pre">B.repr</span></code>, and
+represent it by type <code class="docutils literal notranslate"><span class="pre">c</span></code>, in other words:</p>
+<p><strong>``grow`` transforms the type ``repr`` in the algebra(``SYM``) from
+``o`` to ``r``, with a delta ``c``, while transforming the
+interpretation from ``A`` to ``A+B``.</strong></p>
+<p>We extract the type expanding function out:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">combine</span> <span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">-&gt;</span> <span class="n">r</span>
+</pre></div>
+</div>
+<p>And extract the interpretation expanding function out:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">grow</span><span class="o">:</span> <span class="k">&#39;</span><span class="n">o</span> <span class="k">&#39;</span><span class="n">c</span> <span class="k">&#39;</span><span class="n">r</span><span class="o">.</span>
+    <span class="o">(</span><span class="k">module</span> <span class="nc">SYM</span> <span class="k">with</span> <span class="k">type</span> <span class="n">repr</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">o</span><span class="o">)</span> <span class="o">-&gt;</span>
+    <span class="o">(</span><span class="k">module</span> <span class="nc">FSYM</span> <span class="k">with</span> <span class="k">type</span> <span class="n">o</span> <span class="o">=</span><span class="k">&#39;</span><span class="n">o</span> <span class="ow">and</span> <span class="k">type</span> <span class="n">c</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">c</span> <span class="ow">and</span> <span class="k">type</span> <span class="n">r</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">r</span><span class="o">)</span> <span class="o">-&gt;</span>
+    <span class="o">(</span><span class="k">module</span> <span class="nc">SYM</span> <span class="k">with</span> <span class="k">type</span> <span class="n">repr</span> <span class="o">=</span> <span class="k">&#39;</span><span class="n">r</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>So the current goal is to extract the structure of <code class="docutils literal notranslate"><span class="pre">FSYM</span></code>, and make
+sure it satisfy our final goals:</p>
+<ul>
+<li><p>compositing separate interpretations:</p>
+<p>This is already explicit and natural, according the type of <code class="docutils literal notranslate"><span class="pre">grow</span></code>
+function.</p>
+</li>
+<li><p>resolving the dependency relationships among dependent
+interpretations:</p>
+<p>We’re supposed to make sure <code class="docutils literal notranslate"><span class="pre">FSYM</span></code> can use the interpreted result
+of <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">SYM</span> <span class="pre">with</span> <span class="pre">type</span> <span class="pre">repr</span> <span class="pre">=</span> <span class="pre">o</span></code> to implement the interpretion
+<code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">SYM</span> <span class="pre">with</span> <span class="pre">type</span> <span class="pre">repr=r</span></code>.</p>
+</li>
+<li><p>decoupling the dependent interpretations as much as possible:</p>
+<p>We’re supposed to decouple the implementation of
+<code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">SYM</span> <span class="pre">with</span> <span class="pre">type</span> <span class="pre">repr</span> <span class="pre">=</span> <span class="pre">o</span></code> and <code class="docutils literal notranslate"><span class="pre">FSYM</span></code>.</p>
+<p>That is to say, we don’t have to, and even shouldn’t know or aware
+the implementation of <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">SYM</span> <span class="pre">with</span> <span class="pre">type</span> <span class="pre">repr</span> <span class="pre">=</span> <span class="pre">o</span></code> when we’re
+impelementing <code class="docutils literal notranslate"><span class="pre">FSYM</span></code>.</p>
+</li>
+</ul>
+<p>We point out that, the following signature would suffice</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="k">type</span> <span class="nc">FSYM</span> <span class="o">=</span> <span class="k">sig</span>
+    <span class="k">type</span> <span class="n">r</span>
+    <span class="k">type</span> <span class="n">c</span> <span class="c">(*delta*)</span>
+    <span class="k">type</span> <span class="n">o</span>
+
+    <span class="k">val</span> <span class="n">combine</span>  <span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">-&gt;</span> <span class="n">r</span>
+    <span class="k">val</span> <span class="n">project</span>  <span class="o">:</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">o</span>
+
+    <span class="k">val</span> <span class="n">letl</span> <span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">c</span>
+    <span class="k">val</span> <span class="n">lam</span>  <span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">c</span>
+    <span class="k">val</span> <span class="n">app</span>  <span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">c</span>
+    <span class="k">val</span> <span class="n">lit</span>  <span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="n">litype</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">c</span>
+    <span class="k">val</span> <span class="n">var</span>  <span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="kt">string</span>  <span class="o">-&gt;</span> <span class="n">c</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Deriving an <code class="docutils literal notranslate"><span class="pre">FSYM</span></code> from <code class="docutils literal notranslate"><span class="pre">SYM</span></code> is trivial:</p>
+<p>Besides the common part</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">sig</span>
+    <span class="k">type</span> <span class="n">o</span>
+    <span class="k">type</span> <span class="n">c</span> <span class="c">(* delta from o to c *)</span>
+    <span class="k">type</span> <span class="n">r</span>
+
+    <span class="k">val</span> <span class="n">combine</span>  <span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">-&gt;</span> <span class="n">r</span>
+    <span class="k">val</span> <span class="n">project</span>  <span class="o">:</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">o</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Any operator of type <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">b</span> <span class="pre">-&gt;</span> <span class="pre">...</span> <span class="pre">-&gt;</span> <span class="pre">r</span></code> in <code class="docutils literal notranslate"><span class="pre">SYM</span></code>, is supposed to
+be transformed to <code class="docutils literal notranslate"><span class="pre">o</span> <span class="pre">-&gt;</span> <span class="pre">a</span> <span class="pre">-&gt;</span> <span class="pre">b</span> <span class="pre">-&gt;</span> <span class="pre">...</span> <span class="pre">-&gt;</span> <span class="pre">c</span></code> in <code class="docutils literal notranslate"><span class="pre">FSYM</span></code>, where the
+symbols <code class="docutils literal notranslate"><span class="pre">o,</span> <span class="pre">c,</span> <span class="pre">r</span></code> keep the same meanings as the aforementioned:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">o</span></code> is the original <code class="docutils literal notranslate"><span class="pre">repr</span></code> of the original algebra <code class="docutils literal notranslate"><span class="pre">A</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">r</span></code> is the <code class="docutils literal notranslate"><span class="pre">repr</span></code> of the result algebra(<code class="docutils literal notranslate"><span class="pre">A+B</span></code>) transformed by
+<code class="docutils literal notranslate"><span class="pre">grow(A,</span> <span class="pre">B)</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code> is the delta of the change from <code class="docutils literal notranslate"><span class="pre">o</span></code> to <code class="docutils literal notranslate"><span class="pre">r</span></code>. There’s no
+algebra like <code class="docutils literal notranslate"><span class="pre">SYM</span></code>, but exactly a functor <code class="docutils literal notranslate"><span class="pre">A-&gt;A+B</span></code>.</p></li>
+</ul>
+<p>To elaborate, we can use <code class="docutils literal notranslate"><span class="pre">lam</span></code> operator as an examplar:</p>
+<ul class="simple">
+<li><p>in <code class="docutils literal notranslate"><span class="pre">SYM</span></code>/algebra/interpretation <code class="docutils literal notranslate"><span class="pre">A</span></code>:
+<code class="docutils literal notranslate"><span class="pre">ocaml</span>&#160; <span class="pre">val</span> <span class="pre">lam_1:</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">o</span> <span class="pre">-&gt;</span> <span class="pre">o</span></code></p></li>
+<li><p>in <strong>``FSYM``</strong>, <code class="docutils literal notranslate"><span class="pre">A-&gt;A+B</span></code>:
+<code class="docutils literal notranslate"><span class="pre">ocaml</span>&#160;&#160; <span class="pre">val</span> <span class="pre">lam_2:</span> <span class="pre">o</span> <span class="pre">-&gt;</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">r</span> <span class="pre">-&gt;</span> <span class="pre">c</span></code></p></li>
+<li><p>in <code class="docutils literal notranslate"><span class="pre">SYM</span></code>/algebra/interpretation <code class="docutils literal notranslate"><span class="pre">A+B</span></code>
+<code class="docutils literal notranslate"><span class="pre">ocaml</span>&#160;&#160; <span class="pre">val</span> <span class="pre">lam_3:</span> <span class="pre">string</span> <span class="pre">-&gt;</span> <span class="pre">r</span> <span class="pre">-&gt;</span> <span class="pre">r</span></code></p></li>
+</ul>
+<p>We now need to implement <code class="docutils literal notranslate"><span class="pre">lam_3</span></code> via <code class="docutils literal notranslate"><span class="pre">lam_1</span></code> and <code class="docutils literal notranslate"><span class="pre">lam_2</span></code>.</p>
+<p>Recall the last 2 of our goals which haven’t been accomplished:</p>
+<ul>
+<li><p>decoupling the dependent interpretations as much as possible:</p>
+<p>Which is to say, <code class="docutils literal notranslate"><span class="pre">lam_2</span></code> and <code class="docutils literal notranslate"><span class="pre">lam_3</span></code> shouldn’t aware how
+<code class="docutils literal notranslate"><span class="pre">lam_1</span></code> gets implemented, and it’s easy to satisfy:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">lam_3</span> <span class="o">(</span><span class="n">argname</span><span class="o">:</span> <span class="kt">string</span><span class="o">)</span> <span class="o">(</span><span class="n">body</span><span class="o">:</span> <span class="n">r</span><span class="o">)</span> <span class="o">=</span>
+    <span class="k">let</span> <span class="n">body_o</span><span class="o">:</span> <span class="n">o</span> <span class="o">=</span> <span class="n">project</span> <span class="n">body</span> <span class="k">in</span>
+    <span class="k">let</span> <span class="n">o</span> <span class="o">=</span> <span class="n">lam_1</span> <span class="n">argname</span> <span class="n">body_o</span> <span class="k">in</span> <span class="c">(* HIGHLIGHTING HERE! *)</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Of course, <code class="docutils literal notranslate"><span class="pre">lam_1</span></code>, and anything else for implementing the prior
+interpretation(a.k.a <code class="docutils literal notranslate"><span class="pre">A</span></code>), shouldn’t be referred in <code class="docutils literal notranslate"><span class="pre">lam_2</span></code>’s
+implementation, or how <code class="docutils literal notranslate"><span class="pre">lam_3</span></code> uses <code class="docutils literal notranslate"><span class="pre">lam_2</span></code>.</p>
+</li>
+<li><p>resolving the dependency relationships among dependent
+interpretations:</p>
+<p>Hence, <code class="docutils literal notranslate"><span class="pre">lam_2</span></code> should use the result of the prior
+interpretation(a.k.a <code class="docutils literal notranslate"><span class="pre">A</span></code>), and it’s quite easy as well:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">lam_3</span> <span class="o">(</span><span class="n">argname</span><span class="o">:</span> <span class="kt">string</span><span class="o">)</span> <span class="o">(</span><span class="n">body</span><span class="o">:</span> <span class="n">r</span><span class="o">)</span> <span class="o">=</span>
+<span class="k">let</span> <span class="n">body_o</span><span class="o">:</span> <span class="n">o</span> <span class="o">=</span> <span class="n">project</span> <span class="n">body</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">o</span> <span class="o">=</span> <span class="n">lam_1</span> <span class="n">argname</span> <span class="n">body_o</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">c</span> <span class="o">=</span> <span class="n">lam_2</span> <span class="n">o</span> <span class="n">argname</span> <span class="n">body</span> <span class="k">in</span>  <span class="c">(* HIGHLIGHTING HERE! *)</span>
+<span class="n">combine</span> <span class="n">o</span> <span class="n">c</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The whole code for <code class="docutils literal notranslate"><span class="pre">grow</span></code> can be found at <a class="reference external" href="https://github.com/thautwarm/plfp/blob/2745e4791ac2b6ea9102515b9d2cf8d375de4660/lamu0/lib/final.ml#L28-L59">final.ml
+L28-L59</a>,
+but notice that the type <code class="docutils literal notranslate"><span class="pre">repr</span></code> in <code class="docutils literal notranslate"><span class="pre">SYM</span></code> is written in a shorter
+form <code class="docutils literal notranslate"><span class="pre">r</span></code>.</p>
+<p>* In fact, if we use lazy types as the <code class="docutils literal notranslate"><span class="pre">repr</span></code> of each
+interpretation/phase, the order of interpretation can be more flexible.</p>
+<p>Check <code class="docutils literal notranslate"><span class="pre">Lamu0</span></code> in the sub-section <code class="docutils literal notranslate"><span class="pre">Application</span></code>.</p>
+</div>
+<div class="section" id="application">
+<h1>Application<a class="headerlink" href="#application" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://github.com/thautwarm/plfp/tree/master/lamu0">Lamu0</a> gives a
+very simple example to compose the existing and decoupled frameworks for
+compilers.</p>
+<div class="section" id="scoping-name-resolution">
+<h2>Scoping: Name Resolution<a class="headerlink" href="#scoping-name-resolution" title="Permalink to this headline">¶</a></h2>
+<p>An existing simple framework,
+<a class="reference external" href="https://github.com/RemuLang/remu-scope">remu_scope</a>, designed for
+name resolution, also written by me, provides following 3 major APIs:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">require</span><span class="o">:</span> <span class="n">env</span> <span class="o">-&gt;</span> <span class="n">scoperef</span> <span class="o">-&gt;</span> <span class="n">name</span> <span class="o">-&gt;</span> <span class="n">sym</span>
+<span class="k">val</span> <span class="n">enter</span><span class="o">:</span> <span class="n">env</span> <span class="o">-&gt;</span> <span class="n">scoperef</span> <span class="o">-&gt;</span> <span class="n">name</span> <span class="o">-&gt;</span> <span class="n">sym</span>
+<span class="k">val</span> <span class="n">subscope</span><span class="o">:</span> <span class="n">env</span> <span class="o">-&gt;</span> <span class="n">scoperef</span> <span class="o">-&gt;</span> <span class="n">scoperef</span>
+</pre></div>
+</div>
+<p>For example, to solve the scope of following code:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">in</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>We can do:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">env</span> <span class="o">=</span> <span class="n">empty_env</span><span class="bp">()</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">root</span><span class="o">:</span> <span class="n">scoperef</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">let_scope</span> <span class="o">=</span> <span class="n">subscope</span> <span class="n">env</span> <span class="n">root</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">x_assign</span> <span class="o">=</span> <span class="n">enter</span> <span class="n">let_scope</span> <span class="s2">&quot;x&quot;</span> <span class="k">in</span>
+<span class="k">let</span> <span class="n">x_load</span> <span class="o">=</span> <span class="n">require</span> <span class="n">let_scope</span> <span class="s2">&quot;x&quot;</span>
+</pre></div>
+</div>
+<p>With this snippet, you can check <code class="docutils literal notranslate"><span class="pre">assert</span> <span class="pre">(x_assign</span> <span class="pre">=</span> <span class="pre">x_load)</span></code>.</p>
+<p>With tagless final extended by <code class="docutils literal notranslate"><span class="pre">FSYM</span></code> abstraction and above existing
+framework, we can then implement a standalone but composable
+interpretation for name resolution:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">Scoping</span> <span class="o">=</span> <span class="nn">Remu_scope</span><span class="p">.</span><span class="nc">Solve</span>
+
+<span class="k">type</span> <span class="n">scopedesc</span> <span class="o">=</span>
+  <span class="o">|</span> <span class="nc">Sym</span> <span class="k">of</span> <span class="nn">Scoping</span><span class="p">.</span><span class="n">sym</span>
+  <span class="o">|</span> <span class="nc">ScopeUnrelated</span> <span class="c">(* for expressions that&#39;re not variables *)</span>
+
+<span class="k">type</span> <span class="n">scopeinfo</span> <span class="o">=</span> <span class="o">{</span><span class="n">desc</span><span class="o">:</span> <span class="n">scopedesc</span><span class="o">;</span> <span class="n">i</span><span class="o">:</span> <span class="nn">Scoping</span><span class="p">.</span><span class="n">scoperef</span><span class="o">}</span>
+
+<span class="k">module</span> <span class="k">type</span> <span class="nc">STScope</span> <span class="o">=</span> <span class="k">sig</span>
+  <span class="k">type</span> <span class="n">o</span>
+  <span class="k">type</span> <span class="n">c</span> <span class="o">=</span> <span class="n">scopeinfo</span> <span class="nn">Lazy</span><span class="p">.</span><span class="n">t</span>
+  <span class="k">type</span> <span class="n">r</span>
+  <span class="k">val</span> <span class="n">env</span> <span class="o">:</span> <span class="nn">Scoping</span><span class="p">.</span><span class="n">env</span>
+  <span class="k">val</span> <span class="n">cur_scoperef</span> <span class="o">:</span> <span class="nn">Scoping</span><span class="p">.</span><span class="n">scoperef</span> <span class="n">ref</span>
+  <span class="k">val</span> <span class="n">combine</span><span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">-&gt;</span> <span class="n">r</span>
+  <span class="k">val</span> <span class="n">project</span><span class="o">:</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">o</span>
+  <span class="k">val</span> <span class="n">get</span><span class="o">:</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">scopeinfo</span>
+<span class="k">end</span>
+
+<span class="k">module</span> <span class="nc">FSYMScope</span><span class="o">(</span><span class="nc">ST</span> <span class="o">:</span> <span class="nc">STScope</span><span class="o">)</span> <span class="o">=</span> <span class="k">struct</span>
+    <span class="k">include</span> <span class="nc">ST</span>
+    <span class="k">let</span> <span class="n">letl</span> <span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="k">let</span> <span class="n">lam</span><span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="k">let</span> <span class="n">app</span><span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="k">let</span> <span class="n">lit</span><span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="n">litype</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="k">let</span> <span class="n">var</span><span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">c</span>  <span class="o">=</span> <span class="o">...</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>The whole code can be found at <a class="reference external" href="https://github.com/thautwarm/plfp/blob/2745e4791ac2b6ea9102515b9d2cf8d375de4660/lamu0/lib/lamu0_ast.ml#L5-L60">lamu0_ast.ml
+L5-L60</a>.</p>
+<p>We unroll the implementation of <code class="docutils literal notranslate"><span class="pre">lam</span></code>:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="c">(*</span>
+<span class="c">let subscope () = Scoping.subscope ST.env (!ST.cur_scoperef)</span>
+<span class="c">let enter n = Scoping.enter ST.env (!ST.cur_scoperef) n</span>
+<span class="c">let with_scope si&#39; f =</span>
+<span class="c">    let si = !ST.cur_scoperef in</span>
+<span class="c">      ST.cur_scoperef := si&#39;;</span>
+<span class="c">      let ret = f() in</span>
+<span class="c">      ST.cur_scoperef := si;</span>
+<span class="c">      {desc=ret; i=si}</span>
+<span class="c">*)</span>
+<span class="k">let</span> <span class="n">lam</span><span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="k">fun</span> <span class="o">_</span> <span class="n">n</span> <span class="n">e</span> <span class="o">-&gt;</span> <span class="k">lazy</span> <span class="k">begin</span>
+    <span class="k">let</span> <span class="n">si&#39;</span> <span class="o">=</span> <span class="n">subscope</span> <span class="bp">()</span> <span class="k">in</span>
+    <span class="n">with_scope</span> <span class="n">si&#39;</span> <span class="o">@@</span> <span class="k">fun</span> <span class="bp">()</span> <span class="o">-&gt;</span>
+    <span class="k">let</span> <span class="o">_</span> <span class="o">=</span> <span class="n">enter</span> <span class="n">n</span> <span class="k">in</span>
+    <span class="k">let</span> <span class="o">_</span> <span class="o">=</span> <span class="n">get</span> <span class="n">e</span> <span class="k">in</span>
+    <span class="nc">ScopeUnrelated</span> <span class="k">end</span>
+</pre></div>
+</div>
+<p>It’s pretty easy, and can be composed into the compilation pipeline, for
+every programming language whose scope could be expressed by
+<code class="docutils literal notranslate"><span class="pre">remu_scope</span></code>.</p>
+</div>
+<div class="section" id="typing-type-inference">
+<h2>Typing: Type Inference<a class="headerlink" href="#typing-type-inference" title="Permalink to this headline">¶</a></h2>
+<p>Type inference requires already knowing the scope information.</p>
+<p>So it depends on the previous phase, name resolution.</p>
+<p>Firstly we check an existing framework providing type inference,
+<a class="reference external" href="https://github.com/RemuLang/remu-type-system">remu_ts</a>.</p>
+<p>And we just use a very limited part of <code class="docutils literal notranslate"><span class="pre">remu_ts</span></code>, here’s an example of
+this framework:</p>
+<p>To infer the types of code,</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">val</span> <span class="n">f</span> <span class="o">:</span> <span class="n">forall</span> <span class="n">a</span><span class="o">.</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="k">&#39;</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">bool</span>
+<span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">in</span> <span class="n">f</span> <span class="n">x</span> <span class="n">y</span>
+</pre></div>
+</div>
+<p>We write</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">open</span> <span class="nn">Remu_ts</span><span class="p">.</span><span class="nc">Infer</span>
+<span class="k">open</span> <span class="nn">Remu_ts</span><span class="p">.</span><span class="nc">Comm</span>
+<span class="k">open</span> <span class="nn">Remu_ts</span><span class="p">.</span><span class="nc">Builder</span>
+
+<span class="k">module</span> <span class="nc">TC</span> <span class="o">:</span> <span class="nc">TState</span> <span class="o">=</span> <span class="o">(</span><span class="k">val</span> <span class="n">crate_tc</span> <span class="n">empty_tctx</span> <span class="o">:</span> <span class="nc">TState</span><span class="o">)</span>
+<span class="k">let</span> <span class="o">_</span> <span class="o">=</span> <span class="k">let</span> <span class="k">open</span> <span class="nc">TC</span> <span class="k">in</span>
+   <span class="k">let</span> <span class="n">intt</span> <span class="o">=</span> <span class="n">new_type</span> <span class="s2">&quot;int&quot;</span> <span class="k">in</span>
+   <span class="k">let</span> <span class="n">boolt</span> <span class="o">=</span> <span class="n">new_type</span> <span class="s2">&quot;bool&quot;</span> <span class="k">in</span>
+   <span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="n">new_tvar</span><span class="bp">()</span> <span class="k">in</span>
+   <span class="k">let</span> <span class="n">y</span> <span class="o">=</span> <span class="n">new_tvar</span><span class="bp">()</span> <span class="k">in</span>
+   <span class="k">let</span> <span class="n">f</span> <span class="o">=</span> <span class="nc">Forall</span><span class="o">([</span><span class="s2">&quot;a&quot;</span><span class="o">],</span> <span class="nc">Arrow</span><span class="o">(</span><span class="nc">Fresh</span> <span class="s2">&quot;a&quot;</span><span class="o">,</span> <span class="nc">Arrow</span><span class="o">(</span><span class="nc">Fresh</span> <span class="s2">&quot;a&quot;</span><span class="o">,</span> <span class="n">boolt</span><span class="o">)))</span> <span class="k">in</span>
+
+   <span class="c">(* x = 1 *)</span>
+   <span class="k">assert</span> <span class="o">(</span><span class="n">unify</span> <span class="n">x</span> <span class="n">intt</span><span class="o">);</span>
+
+   <span class="c">(* f x y *)</span>
+   <span class="k">let</span> <span class="n">arg1</span> <span class="o">=</span> <span class="n">new_tvar</span><span class="bp">()</span> <span class="k">in</span>
+   <span class="k">let</span> <span class="n">arg2</span> <span class="o">=</span> <span class="n">new_tvar</span><span class="bp">()</span> <span class="k">in</span>
+   <span class="k">assert</span> <span class="o">(</span><span class="n">unify</span> <span class="n">arg1</span> <span class="n">x</span><span class="o">);</span>
+   <span class="k">assert</span> <span class="o">(</span><span class="n">unify</span> <span class="n">arg2</span> <span class="n">y</span><span class="o">);</span>
+   <span class="k">let</span> <span class="n">func</span> <span class="o">=</span> <span class="nc">Arrow</span><span class="o">(</span><span class="n">arg1</span><span class="o">,</span> <span class="nc">Arrow</span><span class="o">(</span><span class="n">arg2</span><span class="o">,</span> <span class="n">boolt</span><span class="o">))</span> <span class="k">in</span>
+   <span class="k">assert</span> <span class="o">(</span><span class="n">unify</span> <span class="n">f</span> <span class="n">func</span><span class="o">);</span>
+   <span class="k">let</span> <span class="n">print_ty</span> <span class="n">name</span> <span class="n">x</span> <span class="o">=</span>
+        <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">&quot;%s: %s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="n">name</span>   <span class="o">@@</span>
+        <span class="n">dumpstr</span>
+        <span class="o">(</span><span class="n">mk_show_named_nom</span> <span class="o">(</span><span class="k">module</span> <span class="nc">TC</span><span class="o">))</span> <span class="o">@@</span>
+        <span class="n">prune</span> <span class="n">x</span>
+    <span class="k">in</span>
+   <span class="n">print_ty</span> <span class="s2">&quot;x&quot;</span> <span class="n">x</span><span class="o">;</span>
+   <span class="n">print_ty</span> <span class="s2">&quot;y&quot;</span> <span class="n">y</span><span class="o">;</span>
+   <span class="n">print_ty</span> <span class="s2">&quot;func&quot;</span> <span class="n">func</span>
+</pre></div>
+</div>
+<p>After running this file, we got</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="p">:</span> <span class="o">^</span><span class="nb">int</span>
+<span class="n">y</span><span class="p">:</span> <span class="o">^</span><span class="nb">int</span>
+<span class="n">func</span><span class="p">:</span> <span class="o">^</span><span class="nb">int</span> <span class="o">-&gt;</span> <span class="o">^</span><span class="nb">int</span> <span class="o">-&gt;</span> <span class="o">^</span><span class="nb">bool</span>
+</pre></div>
+</div>
+<p>The implementation of <code class="docutils literal notranslate"><span class="pre">FSYM</span></code> to leverage above existing framework is:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="nc">Typing</span> <span class="o">=</span> <span class="nn">Remu_ts</span><span class="p">.</span><span class="nc">Infer</span>
+<span class="k">module</span> <span class="k">type</span> <span class="nc">STType</span> <span class="o">=</span> <span class="k">sig</span>
+  <span class="k">type</span> <span class="n">o</span>
+  <span class="k">type</span> <span class="n">c</span> <span class="o">=</span> <span class="nn">Typing</span><span class="p">.</span><span class="n">t</span> <span class="nn">Lazy</span><span class="p">.</span><span class="n">t</span>
+  <span class="k">type</span> <span class="n">r</span>
+  <span class="k">val</span> <span class="n">combine</span><span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">-&gt;</span> <span class="n">r</span>
+  <span class="k">val</span> <span class="n">project</span><span class="o">:</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">o</span>
+  <span class="c">(* type checking states *)</span>
+  <span class="k">val</span> <span class="n">tc</span><span class="o">:</span> <span class="o">(</span><span class="k">module</span> <span class="nn">Typing</span><span class="p">.</span><span class="nc">TState</span><span class="o">)</span>
+  <span class="c">(* from repr to type *)</span>
+  <span class="k">val</span> <span class="n">rtype</span><span class="o">:</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="nn">Typing</span><span class="p">.</span><span class="n">t</span>
+  <span class="c">(* from symbol to type *)</span>
+  <span class="k">val</span> <span class="n">ntype</span><span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="nn">Scoping</span><span class="p">.</span><span class="n">name</span> <span class="o">-&gt;</span> <span class="nn">Typing</span><span class="p">.</span><span class="n">t</span>
+  <span class="c">(* annotate symbol&#39;s type *)</span>
+  <span class="k">val</span> <span class="n">ann</span><span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="nn">Scoping</span><span class="p">.</span><span class="n">name</span> <span class="o">-&gt;</span> <span class="nn">Typing</span><span class="p">.</span><span class="n">t</span> <span class="o">-&gt;</span> <span class="kt">unit</span>
+  <span class="c">(* basic types *)</span>
+  <span class="k">val</span> <span class="n">intt</span><span class="o">:</span> <span class="nn">Typing</span><span class="p">.</span><span class="n">t</span>
+  <span class="k">val</span> <span class="n">strt</span><span class="o">:</span> <span class="nn">Typing</span><span class="p">.</span><span class="n">t</span>
+  <span class="k">val</span> <span class="n">floatt</span><span class="o">:</span> <span class="nn">Typing</span><span class="p">.</span><span class="n">t</span>
+<span class="k">end</span>
+
+
+<span class="k">exception</span> <span class="nc">TypeError</span>
+<span class="k">module</span> <span class="nc">FSYMType</span><span class="o">(</span><span class="nc">ST</span><span class="o">:</span> <span class="nc">STType</span><span class="o">)</span> <span class="o">=</span> <span class="k">struct</span>
+  <span class="k">include</span> <span class="nc">ST</span>
+  <span class="k">module</span> <span class="nc">TC</span> <span class="o">=</span> <span class="o">(</span><span class="k">val</span> <span class="n">tc</span><span class="o">)</span>
+  <span class="k">open</span> <span class="nc">TC</span>
+
+  <span class="k">let</span> <span class="n">letl</span> <span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="k">let</span> <span class="n">lam</span><span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="k">let</span> <span class="n">app</span><span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">r</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="k">let</span> <span class="n">lit</span><span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="n">litype</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="o">...</span>
+  <span class="k">let</span> <span class="n">var</span><span class="o">:</span> <span class="n">o</span> <span class="o">-&gt;</span> <span class="kt">string</span> <span class="o">-&gt;</span> <span class="n">c</span>  <span class="o">=</span> <span class="o">...</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>The whole code of this could be found at <a class="reference external" href="https://github.com/thautwarm/plfp/blob/2745e4791ac2b6ea9102515b9d2cf8d375de4660/lamu0/lib/lamu0_ast.ml#L62">Lamu0_ast.ml
+#L62-L129</a>.</p>
+<p>For a rough sketch, let’s check the implementation <code class="docutils literal notranslate"><span class="pre">lam</span></code> again:</p>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">let</span> <span class="n">lam</span> <span class="n">o</span> <span class="n">n</span> <span class="n">e</span> <span class="o">=</span> <span class="k">lazy</span> <span class="k">begin</span>
+    <span class="k">let</span> <span class="n">eo</span> <span class="o">=</span> <span class="n">project</span> <span class="n">e</span> <span class="k">in</span>
+    <span class="k">let</span> <span class="n">var_of_arg</span> <span class="o">=</span> <span class="n">new_tvar</span><span class="bp">()</span> <span class="k">in</span>
+    <span class="n">ann</span> <span class="n">eo</span> <span class="n">n</span> <span class="n">var_of_arg</span><span class="o">;</span>
+    <span class="nn">Typing</span><span class="p">.</span><span class="nc">Arrow</span><span class="o">(</span><span class="n">var_of_arg</span><span class="o">,</span> <span class="n">rtype</span> <span class="n">e</span><span class="o">)</span> <span class="k">end</span>
+</pre></div>
+</div>
+<p>Finally, we assembly things together, and make a type inferencer for
+<code class="docutils literal notranslate"><span class="pre">Lamu0</span></code> at
+<a class="reference external" href="https://github.com/thautwarm/plfp/blob/master/lamu0/bin/main.ml">main.ml</a>.</p>
+<p>You can run the type infer REPL with:
+<code class="docutils literal notranslate"><span class="pre">dune</span> <span class="pre">exec</span> <span class="pre">lamu0</span> <span class="pre">--profile</span> <span class="pre">release</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span> <span class="ow">in</span> <span class="n">x</span><span class="p">;;</span>
+<span class="o">=&gt;</span> <span class="n">expr0</span> <span class="p">:</span> <span class="o">^</span><span class="nb">int</span>
+
+<span class="n">let</span> <span class="n">y</span> <span class="o">=</span>
+   <span class="n">let</span> <span class="n">f</span> <span class="o">=</span> <span class="n">fn</span> <span class="n">x</span> <span class="o">=&gt;</span> <span class="n">fn</span> <span class="n">y</span> <span class="o">=&gt;</span> <span class="n">y</span> <span class="ow">in</span>
+   <span class="n">let</span> <span class="n">g</span> <span class="o">=</span> <span class="n">f</span> <span class="mi">1</span> <span class="mf">2.0</span> <span class="ow">in</span>
+   <span class="n">f</span>
+<span class="ow">in</span> <span class="n">y</span><span class="p">;;</span>
+<span class="o">=&gt;</span> <span class="n">expr0</span> <span class="p">:</span> <span class="o">^</span><span class="nb">int</span> <span class="o">-&gt;</span> <span class="o">^</span><span class="nb">float</span> <span class="o">-&gt;</span> <span class="o">^</span><span class="nb">float</span>
+
+<span class="n">let</span> <span class="n">f</span> <span class="o">=</span> <span class="n">fn</span> <span class="n">y</span> <span class="o">=&gt;</span> <span class="n">y</span> <span class="s2">&quot;123&quot;</span> <span class="ow">in</span> <span class="n">f</span> <span class="p">(</span><span class="n">fn</span> <span class="n">x</span> <span class="o">=&gt;</span> <span class="n">x</span><span class="p">);;</span>
+<span class="o">=&gt;</span> <span class="n">expr0</span> <span class="p">:</span> <span class="o">^</span><span class="n">string</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="http://okmij.org/ftp/tagless-final/Algebra.html">Algebra</a></p></li>
+<li><p><a class="reference external" href="http://okmij.org/ftp/tagless-final/course2/">Tagless-Final Optimizations, Algebraically and
+Semantically</a></p></li>
+</ul>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/PL/plfp-20191212.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2020, thautwarm.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

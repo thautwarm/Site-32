@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Programming In Julia Language From An Advanced Standpoint &#8212; thautwarm&#39;s blog pages</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Some Thoughts About The Restrain JIT" href="Some-Thoughts-About-The-RestrainJIT.html" />
+    <link rel="prev" title="Design" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default ">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../guide.html">
+          Site-32</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/thautwarm">GitHub</a></li>
+                <li><a href="../PL/index.html">PL</a></li>
+                <li><a href="index.html">Design</a></li>
+                <li><a href="../DSL/index.html">DSL</a></li>
+                <li><a href="../Fiction/index.html">Fiction</a></li>
+                <li><a href="../Others/index.html">Others</a></li>
+                <li><a href="../Backup/index.html">Backup</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../guide.html">Site-32 <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Compiler/index.html">Compiler</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Design</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">General Programming In Julia Language From An Advanced Standpoint</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#first-class">First-Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#polymorphisms-of-multiple-dispatch">Polymorphisms of Multiple Dispatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#full-featured-macros">Full-Featured Macros</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#macro-the-function-from-ast-to-ast">Macro, the Function from AST to AST</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scope-and-hygiene">Scope and Hygiene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#other-useful-knowledge-for-julia-macros">Other Useful Knowledge for Julia Macros</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#a-big-step-forward-in-ast-manipulations">A Big Step Forward in AST Manipulations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitation-absence-of-function-types">Limitation: Absence of Function Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Some-Thoughts-About-The-RestrainJIT.html">Some Thoughts About The Restrain JIT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Research-Restrain-JIT.html">Research: Review and Observations of Python JIT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Research-Restrain-JIT.html#history">History</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Research-Restrain-JIT.html#observations">Observations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../DSL/index.html">DSL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html">Write You A Query Language</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#definition-of-syntaxes">Definition of Syntaxes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#codegen-target">Codegen Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#refinement-of-codegen-typed-columns">Refinement of Codegen: Typed Columns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#implementation">Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#enjoy-you-a-query-language">Enjoy You A Query Language</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Fiction/index.html">Fiction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id1">2020年4月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id3">2019年10月</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Fiction/index.html#id4">日前安排</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Fiction/index.html#id12">目录</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-13.html">Smarter Witnesses for Type Classes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#notation">Notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#instance-resolution-variables-as-instances">Instance Resolution &amp; Variables As Instances</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#the-most-general-instance-problem-overlapping-instance-problem">“The Most General Instance” Problem &amp; “Overlapping Instance” Problem</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id1">优化</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id2">该算法和相应语言设计的好处</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id3">不足之处</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-15.html">我和Python的故事</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id1">第0节</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id2">第1节: 科学计算, Python, 生物信息学和数据挖掘</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id3">第2节: 转型的经过, 走向程序语言设计领域</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id4">第3节: 想要给Python添加高级语言特性的理想</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id5">第4节: Flowpython</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#bnf-parser-generator">第4节: BNF, Parser Generator和语言制造机器</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-30.html">杂谈</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-30.html#pycon-china-2019">PyCon China 2019 成都</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-30.html#id2">直面自己的人格缺陷</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-06.html">杂谈</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-14.html">我太难了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-17.html">我太懂了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-01-07.html">打通</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-01-07.html#parsing">Parsing</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-01-07.html#python">Python 字节码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-02.html">Tagless Final in F#</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-07.html">Encoding Typeclass Default Methods in Purescript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-11.html">近期规划</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-02-11.html#purescript-python">Purescript-Python</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#anf">从表达式优先到语句优先: ANF变换</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#pythonfirst-class">Python虚拟机上的First-class的表达式优先</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#id2">社区意见</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/cure/和平日久.html">如何写出令人感到幸福的小说</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id2">合理利用“无敌”元素</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id3">“纯爱”而非“后宫”</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id4">细腻的画面感</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id5">节奏流畅的回忆</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id6">暗线和潜台词</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id7">总结</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html">乐理菜鸡怎么给自己的小说写BGM?</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id1">找调</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id2">打谱</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id3">总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PL/index.html">Programming Language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../PL/HKT.html">Higher Kinded Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/typeclass.html">Type Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/typeclass.html#about-abstractions">About Abstractions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/typeclass.html#about-separation-of-type-definitions-and-data-manipulations">About Separation of Type Definitions and Data Manipulations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/paper-reading-LHKP.html">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#how-to">How-To</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#static-resolution-more-polymorphic">Static Resolution: More polymorphic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#limitation1-much-higher-kinded">Limitation1: Much Higher Kinded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#limitation2-identity">Limitation2: Identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#why-this-lightweight-higher-polymorphism-instead-of-the-haskell-approach">Why this Lightweight-Higher-Polymorphism instead of the Haskell approach</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html">Compelling Higher Kinded Types and Type Classes in F#</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#active-pattern">Active Pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#statically-resolved-type-parameters">Statically Resolved Type Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#the-getsig-function-and-implicits">The <em>getsig</em> Function and Implicits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#why-abstractclass">Why AbstractClass?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#why-functor-f-instead-of-the-straightforward-functor">Why <em>Functor&lt;’F&gt;</em> instead of the straightforward <em>Functor</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html">FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#background">Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#application">Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#scoping-name-resolution">Scoping: Name Resolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#typing-type-inference">Typing: Type Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191219.html">Tagless Final For Writing Compilers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#problem">Problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#tagless-final-for-compiler-phases">Tagless Final For Compiler Phases</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#quick-start-for-tagless-final">Quick Start for Tagless Final</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#grammar">“Grammar”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#expanding-representation">Expanding Representation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#problems-of-decoupling-and-compositing">Problems of Decoupling and Compositing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#fsym">FSYM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#laziness-for-mutual-dependencies">Laziness, for Mutual Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/elaborating-julia.html">Julia Counts for PL Researchers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#expressiveness">Expressiveness</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#staging">Staging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#advantages-as-a-codegen-backend">Advantages as a codegen backend</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/tagless-final-pattern-match.html">First-class Pattern Matching in the Final Approach</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#core-ideas">Core Ideas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#full-implementation-in-haskell">Full implementation in Haskell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#enhancement-1">Enhancement 1</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/tagless-final-for-julia.html">Julia Benefits from Tagless Final</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#what-happened-today">What Happened Today?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#an-example-turns-out-to-be-type-unstable">An Example Turns Out to be Type Unstable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#tagless-final-encoding-about-above-code">Tagless Final Encoding about Above Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Backup/index.html">Backup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Backup/高观点下的Julia泛用编程.html">高观点下的Julia泛用编程</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Others/index.html">Others</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Others/contributions.html">Thautwarm’s Open Source Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#projects-owned-by-other-individuals-organizations">Projects Owned By Other Individuals/Organizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#leading-projects">Leading Projects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#other-notable-personal-projects">Other Notable Personal Projects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Subsections <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">General Programming In Julia Language From An Advanced Standpoint</a><ul>
+<li><a class="reference internal" href="#first-class">First-Class</a></li>
+<li><a class="reference internal" href="#polymorphisms-of-multiple-dispatch">Polymorphisms of Multiple Dispatch</a></li>
+<li><a class="reference internal" href="#full-featured-macros">Full-Featured Macros</a><ul>
+<li><a class="reference internal" href="#macro-the-function-from-ast-to-ast">Macro, the Function from AST to AST</a></li>
+<li><a class="reference internal" href="#scope-and-hygiene">Scope and Hygiene</a></li>
+<li><a class="reference internal" href="#other-useful-knowledge-for-julia-macros">Other Useful Knowledge for Julia Macros</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#a-big-step-forward-in-ast-manipulations">A Big Step Forward in AST Manipulations</a></li>
+<li><a class="reference internal" href="#limitation-absence-of-function-types">Limitation: Absence of Function Types</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="general-programming-in-julia-language-from-an-advanced-standpoint">
+<h1>General Programming In Julia Language From An Advanced Standpoint<a class="headerlink" href="#general-programming-in-julia-language-from-an-advanced-standpoint" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://julialang.org/">Julia</a> is a multi-paradigm language which is purely dynamic but supports optional typing.</p>
+<p>As the introduction of some basic constructs like <code class="docutils literal notranslate"><span class="pre">For-Loop</span></code>, <code class="docutils literal notranslate"><span class="pre">While-Loop</span></code> and <code class="docutils literal notranslate"><span class="pre">If-Else</span></code> and <code class="docutils literal notranslate"><span class="pre">Function</span></code> akin to
+those of Python, R or MATLAB, Julia becomes simple and concise, and allows you to work fluently with a fraction of its language
+features.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="../_images/4-langs.png"><img alt="../_images/4-langs.png" class="align-center" src="../_images/4-langs.png" style="width: 500px;" /></a>
+</div></blockquote>
+<p>Although People seldom focus on Julia’s language features other than its high performance(until April 2019), I’d show my point
+of view of the general programming in Julia.</p>
+<div class="section" id="first-class">
+<h2>First-Class<a class="headerlink" href="#first-class" title="Permalink to this headline">¶</a></h2>
+<p>Almost all language constructs in Julia are <em>first-class</em>, upholding more flexible and advanced program composition.</p>
+<p>There’re quite a lot of people that has a prejudice against Python for the absense of multi-line lambdas. Although
+it’s pretty trivial and straightforward to compile multi-line lambdas into normal Python code objects, the frontend,
+more concretely the mandatory indentation, comfines Python to the expressive power as a result of that statements are rigidly separate
+from expressions(statements cannot occur in expressions), and then <em>first-class</em> gets missed. There’re other manners to achieve indentation without lossing
+<em>expression-first</em> like that of ML family and Haskell, but not adopted by Python community yet.</p>
+<p>Julia seems to be over-<em>first-class</em>, for all constructs there are expressions and, syntactically there’s no
+restriction to compose arbitrary constructs. Definitions and computations are distinct from each other in major
+functional languages, but each of both consists of the other.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span> <span class="p">[</span><span class="k">let</span> <span class="n">y</span><span class="o">=</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">end</span> <span class="k">for</span> <span class="n">x</span> <span class="kp">in</span> <span class="n">points</span><span class="p">]</span>
+
+ <span class="n">map</span><span class="p">(</span>
+   <span class="k">function</span> <span class="n">map_fn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+     <span class="c"># do stuffs</span>
+   <span class="k">end</span><span class="p">,</span>
+   <span class="n">points</span>
+<span class="p">)</span>
+
+
+<span class="k">let</span> <span class="n">bind_maybe</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">a</span> <span class="o">==</span> <span class="nb">nothing</span> <span class="o">?</span> <span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">:</span> <span class="nb">nothing</span><span class="p">,</span>
+    <span class="p">(</span><span class="o">|&gt;</span><span class="p">)</span> <span class="o">=</span> <span class="n">bind_maybe</span>
+
+    <span class="n">init</span>          <span class="o">|&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span>
+    <span class="n">do1_stuffs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">|&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span>
+    <span class="o">...</span>           <span class="o">|&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span>
+    <span class="o">...</span>           <span class="o">|&gt;</span> <span class="n">a</span> <span class="o">-&gt;</span>
+    <span class="o">...</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>The reason why composability is crucial has been discussed often years on, so I won’t make an another about this topic.</p>
+<p>For Julia, first-class also helps when it comes to <strong>processing programs as data</strong>, which will be unfolded latter in this article.</p>
+</div>
+<div class="section" id="polymorphisms-of-multiple-dispatch">
+<h2>Polymorphisms of Multiple Dispatch<a class="headerlink" href="#polymorphisms-of-multiple-dispatch" title="Permalink to this headline">¶</a></h2>
+<p>Julia supports polymorphisms to achieve necessary abstractions and reduce self-repeating, though it
+does stand apart from those pooular industrial languages.</p>
+<p>Multiple dispatch looks like parametric polymorphism, but actually it’s more than the latter.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">usum</span><span class="p">(</span><span class="n">x</span> <span class="o">::</span> <span class="kt">Vector</span><span class="p">{</span><span class="n">T</span><span class="p">})</span> <span class="n">where</span> <span class="n">T</span>
+   <span class="n">s</span> <span class="o">=</span> <span class="n">zero</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+   <span class="k">for</span> <span class="n">each</span> <span class="kp">in</span> <span class="n">x</span>
+      <span class="n">s</span> <span class="o">+=</span> <span class="n">each</span>
+   <span class="k">end</span>
+   <span class="n">s</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Overloading is supported as well.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">uzero</span><span class="p">(</span><span class="n">_</span> <span class="o">::</span> <span class="kt">Type</span><span class="p">{</span><span class="kt">Int</span><span class="p">})</span>     <span class="o">=</span> <span class="mi">0</span>
+<span class="n">uzero</span><span class="p">(</span>  <span class="o">::</span> <span class="kt">Type</span><span class="p">{</span><span class="kt">Float64</span><span class="p">})</span> <span class="o">=</span> <span class="mf">0.0</span>
+</pre></div>
+</div>
+<p>However, multiple dispatch is more than what I listed above. In fact, type is exclusively
+a specialized instance of immutable data that could be taken advantage of dispatching,
+while you can make dispatches via immutable data no matter whether it is a type or others.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">Const</span><span class="p">{</span><span class="n">T</span><span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">flip</span><span class="p">(</span><span class="o">::</span><span class="kt">Type</span><span class="p">{</span><span class="n">Const</span><span class="p">{</span><span class="o">:</span><span class="n">even</span><span class="p">}})</span> <span class="o">=</span> <span class="n">Const</span><span class="p">{</span><span class="o">:</span><span class="n">odd</span><span class="p">}</span>
+<span class="n">flip</span><span class="p">(</span><span class="o">::</span><span class="kt">Type</span><span class="p">{</span><span class="n">Const</span><span class="p">{</span><span class="o">:</span><span class="n">odd</span><span class="p">}})</span>  <span class="o">=</span> <span class="n">Const</span><span class="p">{</span><span class="o">:</span><span class="n">even</span><span class="p">}</span>
+
+<span class="n">f</span><span class="p">(</span><span class="o">::</span><span class="kt">Type</span><span class="p">{</span><span class="n">Const</span><span class="p">{</span><span class="mi">0</span><span class="p">}})</span> <span class="o">=</span> <span class="n">Const</span><span class="p">{</span><span class="o">:</span><span class="n">even</span><span class="p">}</span>
+<span class="n">f</span><span class="p">(</span><span class="o">::</span><span class="kt">Type</span><span class="p">{</span><span class="n">Const</span><span class="p">{</span><span class="mi">1</span><span class="p">}})</span> <span class="o">=</span> <span class="n">Const</span><span class="p">{</span><span class="o">:</span><span class="n">odd</span><span class="p">}</span>
+<span class="n">f</span><span class="p">(</span><span class="o">::</span><span class="kt">Type</span><span class="p">{</span><span class="n">Const</span><span class="p">{</span><span class="n">N</span><span class="p">}})</span> <span class="n">where</span> <span class="n">N</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">Const</span><span class="p">{</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">})</span> <span class="o">|&gt;</span> <span class="n">flip</span>
+</pre></div>
+</div>
+<p>With above codes, we can statically compute parity of numbers, just as expected.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">julia</span><span class="o">&gt;</span> <span class="nd">@code_warntype</span> <span class="n">f</span><span class="p">(</span><span class="n">Const</span><span class="p">{</span><span class="mi">2</span><span class="p">})</span>
+
+<span class="n">Body</span><span class="o">::</span><span class="kt">Type</span><span class="p">{</span><span class="n">Const</span><span class="p">{</span><span class="o">:</span><span class="n">even</span><span class="p">}}</span>
+  <span class="mi">1</span> <span class="n">─</span>     <span class="k">return</span> <span class="n">Const</span><span class="p">{</span><span class="o">:</span><span class="n">even</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that when multiple dispatch fails at static inferences, it’ll behave as dynamic dispatch like Python’s.</p>
+</div>
+<div class="section" id="full-featured-macros">
+<h2>Full-Featured Macros<a class="headerlink" href="#full-featured-macros" title="Permalink to this headline">¶</a></h2>
+<p>Macro is one of the quite few manners to achieve code reuse, also the reason of why
+some programmers can be thousands of times more efficient than others.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">julia</span><span class="o">&gt;</span> <span class="k">macro</span> <span class="n">gen_var</span><span class="p">(</span><span class="n">n</span> <span class="o">::</span> <span class="kt">Int</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+       <span class="n">defs</span> <span class="o">=</span> <span class="p">[</span><span class="kt">Expr</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="o">=</span><span class="p">),</span> <span class="kt">Symbol</span><span class="p">(</span><span class="s">&quot;var&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">f</span><span class="p">(</span><span class="o">$</span><span class="n">i</span><span class="p">)))</span>  <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="mi">1</span><span class="o">:</span><span class="n">n</span><span class="p">]</span>
+       <span class="n">esc</span><span class="p">(</span><span class="kt">Expr</span><span class="p">(</span><span class="o">:</span><span class="n">block</span><span class="p">,</span>  <span class="n">defs</span><span class="o">...</span><span class="p">,</span> <span class="nb">nothing</span><span class="p">))</span>
+     <span class="k">end</span>
+
+<span class="nd">@gen_var</span> <span class="p">(</span><span class="k">macro</span> <span class="n">with</span> <span class="mi">1</span> <span class="n">method</span><span class="p">)</span>
+
+<span class="n">julia</span><span class="o">&gt;</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">-</span> <span class="mi">2</span>
+<span class="n">f</span> <span class="p">(</span><span class="n">generic</span> <span class="k">function</span> <span class="n">with</span> <span class="mi">1</span> <span class="n">method</span><span class="p">)</span>
+
+<span class="n">julia</span><span class="o">&gt;</span> <span class="nd">@gen_var</span> <span class="n">f</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">julia</span><span class="o">&gt;</span> <span class="n">var1</span>
+<span class="mi">8</span>
+
+<span class="n">julia</span><span class="o">&gt;</span> <span class="n">var2</span>
+<span class="mi">18</span>
+
+<span class="n">julia</span><span class="o">&gt;</span> <span class="n">var3</span>
+<span class="mi">28</span>
+</pre></div>
+</div>
+<div class="section" id="macro-the-function-from-ast-to-ast">
+<h3>Macro, the Function from AST to AST<a class="headerlink" href="#macro-the-function-from-ast-to-ast" title="Permalink to this headline">¶</a></h3>
+<p>Once you know macros are functions from ASTs to ASTs, there’s no mystery in Julia macros.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">macro</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="n">println</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="nd">@assert</span> <span class="p">(</span><span class="nd">@f</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>Above snippet shows a vivid example of Julia macros. Firstly <code class="docutils literal notranslate"><span class="pre">macro</span></code> keyword leads a definition of
+macro transformation rule, and <code class="docutils literal notranslate"><span class="pre">&#64;f</span></code> marks a callsite of corresonding macro.</p>
+<p>You might ask why <code class="docutils literal notranslate"><span class="pre">(&#64;f</span> <span class="pre">1)</span> <span class="pre">==</span> <span class="pre">2</span></code>, for the return of macro <code class="docutils literal notranslate"><span class="pre">&#64;f</span></code> is supposed to be an AST, it seems
+a bit magic that it equals to an integer <code class="docutils literal notranslate"><span class="pre">2</span></code>.</p>
+<p>Pay attention to the expression <code class="docutils literal notranslate"><span class="pre">&#64;assert</span> <span class="pre">(&#64;f</span> <span class="pre">1)</span> <span class="pre">==</span> <span class="pre">2</span></code>. As the macro invocations are processed recursively
+from the inside out, we should firstly process <code class="docutils literal notranslate"><span class="pre">&#64;f</span> <span class="pre">1</span></code>.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">function</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">println</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+   <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>         <span class="o">=&gt;</span>  <span class="o">:</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">end</span><span class="p">)(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Above step also writes stdio, when executing the AST to AST function <code class="docutils literal notranslate"><span class="pre">f</span></code>, a.k.a macro <code class="docutils literal notranslate"><span class="pre">&#64;f</span></code>.</p>
+<p>Next, as we has already got the output, an AST <code class="docutils literal notranslate"><span class="pre">:(1</span> <span class="pre">+</span> <span class="pre">1)</span></code>, imagine that we displace <code class="docutils literal notranslate"><span class="pre">&#64;f</span> <span class="pre">1</span></code> by it in the preceding codes,
+which produces <code class="docutils literal notranslate"><span class="pre">&#64;assert</span> <span class="pre">$(:(1</span> <span class="pre">+</span> <span class="pre">1))</span> <span class="pre">==</span> <span class="pre">2</span></code>, simplify it, we’ll get <code class="docutils literal notranslate"><span class="pre">&#64;assert</span> <span class="pre">(1</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">==</span> <span class="pre">2</span></code>.</p>
+<p>You might ask why not <code class="docutils literal notranslate"><span class="pre">&#64;assert</span> <span class="pre">:(1</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">==</span> <span class="pre">2</span></code>, good question, let’s dig into it.</p>
+<p>Think that if what you return from a macro invocation is always a runtime AST, it will not
+be transformed into codes to compile, so that such a macro becomes useless at all.</p>
+<p>However, if we “unquote” the macro return</p>
+<table class="colwidths-given docutils align-left" id="id1">
+<caption><span class="caption-text"><em>Unquote</em> Rule</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Quoted</p></th>
+<th class="head"><p>Unquoted</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">:(:(1</span> <span class="pre">+</span> <span class="pre">1))</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">:(1</span> <span class="pre">+</span> <span class="pre">1)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">:(1</span> <span class="pre">+</span> <span class="pre">1)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">+</span> <span class="pre">1</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">quote</span> <span class="pre">1</span> <span class="pre">+</span> <span class="pre">1</span> <span class="pre">end</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">+</span> <span class="pre">1</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">quote</span> <span class="pre">$x</span> <span class="pre">+</span> <span class="pre">x</span> <span class="pre">end</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;x&gt;</span> <span class="pre">+</span> <span class="pre">x</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;x&gt;</span></code> stands for some computated expression.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Above table unveils the rules of AST interpolations, and obviously there’s a law that
+if we say an expression is quoted <code class="docutils literal notranslate"><span class="pre">N</span></code> times, it’ll be interpolated as an expression
+quoted <code class="docutils literal notranslate"><span class="pre">max(0,</span> <span class="pre">N</span> <span class="pre">-</span> <span class="pre">1)</span></code> times.</p>
+</div>
+<div class="section" id="scope-and-hygiene">
+<h3>Scope and Hygiene<a class="headerlink" href="#scope-and-hygiene" title="Permalink to this headline">¶</a></h3>
+<p>The scoping rules of macros are simple enough when you are under the point of view that
+macros are functions from ASTs to ASTs.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">julia</span><span class="o">&gt;</span> <span class="k">module</span> <span class="n">A</span>
+  <span class="n">var</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">macro</span> <span class="n">ma</span><span class="p">()</span>
+    <span class="k">quote</span>
+      <span class="n">var</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">julia</span><span class="o">&gt;</span> <span class="n">var</span> <span class="o">=</span> <span class="mi">5555</span>
+
+<span class="n">julia</span><span class="o">&gt;</span> <span class="n">A</span><span class="o">.</span><span class="nd">@ma</span>
+<span class="mi">0</span>
+
+<span class="n">julia</span><span class="o">&gt;</span> <span class="k">using</span> <span class="o">.</span><span class="n">A</span><span class="o">:</span> <span class="nd">@ma</span>
+
+<span class="n">julia</span><span class="o">&gt;</span> <span class="nd">@ma</span>
+<span class="mi">0</span>
+</pre></div>
+</div>
+<p>The first I’d present here is, the expression a macro return is evaluated by
+the module where the macro’s defined.</p>
+<p>When a macro is expanding inside the local scope of a function, a concept called <em>hygiene</em> comes up
+naturally.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">macro</span> <span class="n">assign_y</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+   <span class="o">:</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="o">$</span><span class="n">x</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="nd">@assign_y</span> <span class="n">x</span>
+  <span class="n">y</span>
+<span class="k">end</span>
+
+<span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You might expect it works, but unfortunately it won’t, and solely feed you with</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">ERROR</span><span class="o">:</span> <span class="kt">UndefVarError</span><span class="o">:</span> <span class="n">x</span> <span class="n">not</span> <span class="n">defined</span>
+<span class="n">Stacktrace</span><span class="o">:</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">f</span><span class="p">(</span><span class="o">::</span><span class="kt">Int64</span><span class="p">)</span> <span class="n">at</span> <span class="o">./</span><span class="n">REPL</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span><span class="mi">2</span>
+<span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="n">top</span><span class="o">-</span><span class="n">level</span> <span class="n">scope</span> <span class="n">at</span> <span class="n">none</span><span class="o">:</span><span class="mi">0</span>
+</pre></div>
+</div>
+<p>The reason why for this is, AST interpolations will be always preprocessed to make sure all
+bare symbols(not boxed in QuoteNode or deeper quotation) are transformed into <strong>mangled</strong> names(a.k.a, <em>gensym</em>) that looks
+a bit weird like <code class="docutils literal notranslate"><span class="pre">##a#168</span></code>. Also, the reason why Julia does this is, to by default avoid generate new symbols visible
+in current local context.</p>
+<p>Just think about you want a macro to log the value just calculated:</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">macro</span> <span class="n">with_logging</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+   <span class="k">quote</span>
+     <span class="n">a</span> <span class="o">=</span> <span class="o">$</span><span class="n">expr</span>
+     <span class="nd">@info</span> <span class="o">:</span><span class="n">logging</span> <span class="n">a</span>
+     <span class="n">a</span>
+   <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>We didn’t transform the symbol <code class="docutils literal notranslate"><span class="pre">a</span></code> into something like <code class="docutils literal notranslate"><span class="pre">##a#167</span></code>,  what if
+you had already define <code class="docutils literal notranslate"><span class="pre">a</span></code> in your codes?</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">x5</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="c"># take it as multiply 5</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="nd">@with_logging</span> <span class="mi">2</span><span class="n">a</span>
+    <span class="n">x3</span> <span class="o">=</span> <span class="nd">@with_logging</span> <span class="mi">3</span><span class="n">a</span>
+    <span class="n">x2</span> <span class="o">+</span> <span class="n">x3</span>
+<span class="k">end</span>
+
+<span class="n">my_func</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can see that if macro <code class="docutils literal notranslate"><span class="pre">with_logging</span></code> didn’t transform <code class="docutils literal notranslate"><span class="pre">a</span></code> written in macro body,
+you’ll get <code class="docutils literal notranslate"><span class="pre">x5(1)</span> <span class="pre">==</span> <span class="pre">8</span></code> instead of <code class="docutils literal notranslate"><span class="pre">x5(1)</span> <span class="pre">==</span> <span class="pre">5</span></code>.</p>
+<p>That’s it, and we call this sort of macro the Hygienic Macros.</p>
+<p>But there does have some context-sensitive cases for code generation, that you want to
+share the context of multiple generator functions. A impressive example is
+my <a class="reference external" href="https://github.com/thautwarm/MLStyle.jl">MLStyle</a>, which I’m extremely proud of
+for it has reached a high performant pattern matching compilation with the extensibility(customizable)
+I’ve dreamed about since I started programming. In this package, when compiling patterns,
+I’d use manual gensym instead of depend on hygienic macros, for I might access specific symbols
+from separate functions that’ll generate some codes.</p>
+<p>In this case that people want to generate symbols that will contaminate scopes,
+Julia provides an <strong>escape</strong> mechanism to avoid <em>gensym</em>.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">macro</span> <span class="n">assign_y</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+   <span class="n">esc</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="o">$</span><span class="n">x</span><span class="p">))</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="nd">@assign_y</span> <span class="n">x</span>
+  <span class="n">y</span>
+<span class="k">end</span>
+
+<span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c"># 1</span>
+</pre></div>
+</div>
+<p>The previous code finally works after supplementing a <code class="docutils literal notranslate"><span class="pre">esc</span></code> invocation on returned AST.</p>
+</div>
+<div class="section" id="other-useful-knowledge-for-julia-macros">
+<h3>Other Useful Knowledge for Julia Macros<a class="headerlink" href="#other-useful-knowledge-for-julia-macros" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;__MODULE__</span></code> gets you current module.</p></li>
+<li><p>When you want to control which module to evaluate a given AST, you can use <code class="docutils literal notranslate"><span class="pre">moduleX.eval(expr)</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&#64;eval</span> <span class="pre">moduleX</span> <span class="pre">expr</span></code>.</p></li>
+<li><p>Although we already know macros are functions, something need to be stressed is,
+there’re 2 implicit arguments of a macro: <code class="docutils literal notranslate"><span class="pre">__module__</span></code> and <code class="docutils literal notranslate"><span class="pre">__source__</span></code>. <code class="docutils literal notranslate"><span class="pre">__module</span></code> is
+the module you invoke the macro in, <code class="docutils literal notranslate"><span class="pre">__source__</span></code> is the line number node that denotes the number of the line
+you invoke the macro.</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="a-big-step-forward-in-ast-manipulations">
+<h2>A Big Step Forward in AST Manipulations<a class="headerlink" href="#a-big-step-forward-in-ast-manipulations" title="Permalink to this headline">¶</a></h2>
+<p>Julia does a lot on ASTs, e.g., analysis, substitution, rewriting, and so on.</p>
+<p>As we’ve introduced the laws of AST interpolations, you might know
+that we can generate ASTs like following codes instead of in purely constructive manner.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">ex0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">ex1</span> <span class="o">=</span> <span class="o">:</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">ex2</span> <span class="o">=</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">ex0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c"># :([1, 2, 3] + 1), [1, 2, 3] here is already evaluated before interpolation.</span>
+
+<span class="n">ex3</span> <span class="o">=</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">ex1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c"># :([1, 2, 3] + 1)</span>
+</pre></div>
+</div>
+<p>That’s not that cool for there’re also other approximate supports in other languages in current stage.</p>
+<p>The advance is at the deconstructing of ASTs, which extremely impacts the way we could analyse ASTs.</p>
+<p>Think about a case that you’d like to collect positional arguments and keyword arguments
+from some function callsites.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">get_arg_info</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)))</span> <span class="c"># =&gt; ([:a, :b, :(c = 1)], [:(b = 2)])</span>
+<span class="n">get_arg_info</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">args</span><span class="o">...</span><span class="p">;</span> <span class="n">kwargs</span><span class="o">...</span><span class="p">)))</span> <span class="c"># =&gt; ([:(args...)], [:(kwargs...)])</span>
+<span class="n">get_arg_info</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)))</span>            <span class="c"># =&gt; ([:a, :b, :c], [])</span>
+</pre></div>
+</div>
+<p>How will you achieve this task?</p>
+<p>Attention! No matter how you’ll deal with it, think about whether you need to
+get a prerequisite about Julia AST structures? Say, you have to know <code class="docutils literal notranslate"><span class="pre">Expr</span></code> (a.k.a
+one of the most important Julia AST types) has 2 fields, <code class="docutils literal notranslate"><span class="pre">head</span></code> and <code class="docutils literal notranslate"><span class="pre">args</span></code>,
+or you have to understand the structure of <code class="docutils literal notranslate"><span class="pre">a.b</span></code> is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expr</span>
+<span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="o">.</span>
+<span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">2</span><span class="p">,))</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">a</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="n">QuoteNode</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>instead of</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expr</span>
+<span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="o">.</span>
+<span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">2</span><span class="p">,))</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">a</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>, or you have to make it clear that in vector literals, there’re</p>
+<table class="colwidths-given docutils align-left" id="id2">
+<caption><span class="caption-text">Vector/Matrix Literals</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Julia code</p></th>
+<th class="head"><p>AST structure</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[1</span> <span class="pre">2</span> <span class="pre">3]</span></code></p></td>
+<td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expr</span>
+<span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">hcat</span>
+<span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">3</span><span class="p">,))</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">1</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">2</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code></p></td>
+<td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expr</span>
+<span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">vect</span>
+<span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">3</span><span class="p">,))</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">1</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">2</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">[1;</span> <span class="pre">2;</span> <span class="pre">3]</span></code></p></td>
+<td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expr</span>
+<span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">vcat</span>
+<span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">3</span><span class="p">,))</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">1</span>
+  <span class="mi">2</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">2</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span>
+               <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Expr</span>
+  <span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">vcat</span>
+  <span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">2</span><span class="p">,))</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="n">Expr</span>
+      <span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">row</span>
+      <span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">2</span><span class="p">,))</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">1</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">2</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="n">Expr</span>
+      <span class="n">head</span><span class="p">:</span> <span class="n">Symbol</span> <span class="n">row</span>
+      <span class="n">args</span><span class="p">:</span> <span class="n">Array</span><span class="p">{</span><span class="n">Any</span><span class="p">}((</span><span class="mi">2</span><span class="p">,))</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">3</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="n">Int64</span> <span class="mi">4</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>To be honest, there’re so many detailed rules about the strcutrue, but
+is it really necessary to know them all if you’re planning to work
+with Julia ASTs(including analysis about their strcutrues)?</p>
+<p>No! Absolutely no! Although I know many of you older Julia guys are always
+checking and decomposing ASTs with your vast knowledge about Julia internals , I’d suggest you sincerely to
+start using MLStyle.jl, for the sake of your efficiency.</p>
+<p>At here, I’d introduce <a class="reference external" href="https://thautwarm.github.io/MLStyle.jl/latest">MLStyle’s AST Manipulations</a> to you via giving some impressive examples.
+For sure this package will be displaced by some better alternative one day, but the underlying methodology wouldn’t
+change at all. Don’t open the link immediately now, just follow my introduction now, you don’t need to care much about
+a specific package or framework, but its core idea.</p>
+<p>A tremendous inspiration occurred to me on one day in the last year(2018) that,
+what if we can <strong>deconstruct ASTs just as how they’re constructed</strong>.</p>
+<p>In fact, You don’t have to know accurately about all AST structures when you start using
+corresonding syntaxes, like you just write</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">;</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="mi">2</span><span class="p">;</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Does you have to know what will the their AST look like? No.</p>
+<p>A classmate of mine who knows only mathematics and has never got an experience
+in programming before can still write such codes fluently to complish his linear algebra
+homeworks, but he does feel annoyed when I try to explain the concepts of ASTs and
+how the ASTs he just written would look like.</p>
+<p>You might have notice the importance of using syntactic components, yes, it’ll simply makes
+progress in the history we manipulate programs as data.</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Pattern_matching">Pattern matching</a> is an essential infrastructure in modern functional languages, which
+reduces the complexity of almost all logics via <strong>deconstructing data as how data is constructed</strong>.</p>
+<p>Okay, this sentence occurred twice now:</p>
+<p><strong>deconstructing data as how data is constructed</strong>.</p>
+<p>Remember it, and it’s our principle in this section.</p>
+<p>Let’s think about how ASTs are constructed?</p>
+<p>Firstly, we can write raw ASTs, write them literally.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">ex</span> <span class="o">=</span> <span class="o">:</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ex</span> <span class="o">=</span> <span class="o">:</span><span class="p">[</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Next, there are syntactic AST interpolations.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">ex</span> <span class="o">=</span> <span class="o">:</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">ex</span> <span class="o">=</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">ex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="c"># :([1, 2, 3] + 1)</span>
+</pre></div>
+</div>
+<p>That’s enough. Now, let’s introduce a <code class="docutils literal notranslate"><span class="pre">&#64;match</span></code>. This syntax may be
+deprecated in the better alternative in your time, but you must be able to simply
+make an equivalence or superior via the better one with the new start-of-the-art pattern matching package
+at the time you’re reading this article.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@match</span> <span class="n">value</span> <span class="k">begin</span>
+  <span class="n">pattern1</span> <span class="o">=&gt;</span> <span class="n">value1</span>
+  <span class="n">pattern2</span> <span class="o">=&gt;</span> <span class="n">value2</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>To support match literal ASTs, we must get a <code class="docutils literal notranslate"><span class="pre">true</span></code> with following codes,</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="c"># rmlines is a function that removes all line number nodes in an AST.</span>
+<span class="c"># you can fetch it here : https://github.com/thautwarm/MLStyle.jl#preview</span>
+
+<span class="nd">@match</span> <span class="n">rmlines</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">x</span> <span class="k">end</span><span class="p">))</span> <span class="k">begin</span>
+  <span class="o">:</span><span class="p">(</span><span class="k">let</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">x</span> <span class="k">end</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="kc">true</span>
+  <span class="n">_</span> <span class="o">=&gt;</span> <span class="kc">false</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Think about the principle we’ve figured out, okay, I’d stress it again here as I’m a shabby
+repeater:</p>
+<p><strong>deconstructing data as how data is constructed</strong>.</p>
+<p>Then</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="o">:</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">ex</span> <span class="o">=</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">v</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nd">@match</span> <span class="n">ex</span> <span class="k">begin</span>
+  <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">v</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">v</span> <span class="o">==</span> <span class="o">:</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+  <span class="n">_</span> <span class="o">=&gt;</span> <span class="kc">false</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Oooh! Do you understand it? Does it make sense in your opinion?</p>
+<p>AST interpolation corresponds to constructing, while AST interpolations occur in pattern
+it’s regarded as deconstructing. We can call it “AST extractions”.</p>
+<p>Now, let’s turn back to the original question, to implement <code class="docutils literal notranslate"><span class="pre">get_arg_info</span></code> mentioned previously.</p>
+<p>We should at first introduce some examples about constructing in the case of <code class="docutils literal notranslate"><span class="pre">get_arg_info</span></code>.</p>
+<p>If we want to pass arguments to <code class="docutils literal notranslate"><span class="pre">f(a,</span> <span class="pre">b;</span> <span class="pre">c,</span> <span class="pre">d)</span></code>, we can use</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span>
+<span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">kwargs</span> <span class="o">=</span> <span class="kt">Dict</span><span class="p">(</span><span class="o">:</span><span class="n">c</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="o">:</span><span class="n">d</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">f</span><span class="p">(</span><span class="n">args</span><span class="o">...</span> <span class="p">;</span> <span class="n">kwargs</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>, which produces a result <code class="docutils literal notranslate"><span class="pre">6</span></code>.</p>
+<p>Notice about the form <code class="docutils literal notranslate"><span class="pre">f(args...;</span> <span class="pre">kwargs...)</span></code>, it might indicates that
+in AST level, positional arguments and keyword arguments are stored in
+arrays, respectively.</p>
+<p>Let’s have a try:</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="o">:</span><span class="n">a</span><span class="p">,</span> <span class="o">:</span><span class="n">b</span><span class="p">]</span>
+<span class="o">:</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="o">$</span><span class="p">(</span><span class="n">args</span><span class="o">...</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>And you’ll get an output exactly as</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:(</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Good job, now we use MLStyle’s <code class="docutils literal notranslate"><span class="pre">&#64;match</span></code>, following the rule
+<strong>deconstructing data as how data is constructed</strong> as well.</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="o">:</span><span class="n">a</span><span class="p">,</span> <span class="o">:</span><span class="n">b</span><span class="p">]</span>
+<span class="nd">@match</span> <span class="o">:</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="o">$</span><span class="p">(</span><span class="n">args</span><span class="o">...</span><span class="p">)))</span> <span class="k">begin</span>
+   <span class="o">:</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="o">$</span><span class="p">(</span><span class="n">args</span><span class="o">...</span><span class="p">)))</span> <span class="o">=&gt;</span> <span class="n">args</span> <span class="o">==</span> <span class="p">[</span><span class="o">:</span><span class="n">a</span><span class="p">,</span> <span class="o">:</span><span class="n">b</span><span class="p">]</span>
+   <span class="n">_</span> <span class="o">=&gt;</span> <span class="kc">false</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Then you get a <code class="docutils literal notranslate"><span class="pre">true</span></code>  as output.</p>
+<p>Think a while, and check the final implementation of <code class="docutils literal notranslate"><span class="pre">get_arg_info</span></code>:</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="n">get_arg_info</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span> <span class="o">=</span> <span class="nd">@match</span> <span class="n">ex</span> <span class="k">begin</span>
+     <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">name</span><span class="p">(</span><span class="o">$</span><span class="p">(</span><span class="n">args</span><span class="o">...</span><span class="p">);</span> <span class="o">$</span><span class="p">(</span><span class="n">kwargs</span><span class="o">...</span><span class="p">)))</span> <span class="o">||</span>
+     <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">name</span><span class="p">(</span><span class="o">$</span><span class="p">(</span><span class="n">args</span><span class="o">...</span><span class="p">)))</span> <span class="o">&amp;&amp;</span> <span class="n">Do</span><span class="p">(</span><span class="n">kwargs</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+     <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">throw</span><span class="p">(</span><span class="s">&quot;invalid input&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">||</span></code> denotes the so-called Or-Pattern.</p>
+</div>
+<div class="section" id="limitation-absence-of-function-types">
+<h2>Limitation: Absence of Function Types<a class="headerlink" href="#limitation-absence-of-function-types" title="Permalink to this headline">¶</a></h2>
+<p>Julia is an ideal language for quite many domains but, not for all.</p>
+<p>For people who’re used to functional programming languages, especially for
+the groups that tilts the advanced type-based polymorphisms(type classes’ instance resolution,
+implicit type variables, higher-kinded-polymorphisms, etc.), there’s an essential necessity of the
+dedicated function type.</p>
+<p>On and off, I’ve attempted a lot with my friends to emulate those advanced type-based polymorphisms
+in Julia, but finally we noticed that without implicit inferences on functions, only
+dynamic typing and multiple dispatch are far from being sufficient.</p>
+<p>In Julia, each function has its own type which is a subtype of <code class="docutils literal notranslate"><span class="pre">Function</span></code>, which prevents
+making abstractions for functions from common behaviours in type level. The worse is, these
+abstractions on functions in type level have been proven pervasive and fairly useful by academic
+world for about 10000 year, and perform a role like arithmetic operation in our educations.</p>
+<p>In Haskell, the type signature of a function does help in semantics side.
+Following Haskell code allows users to automatically generate tests for a given
+type/domain by taking advantage of properties/traits of the type/domain.</p>
+<div class="highlight-Haskell notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nn">Control.Arrow</span>
+<span class="kr">import</span> <span class="nn">Data.Kind</span>
+
+<span class="kr">newtype</span> <span class="kt">MkTest</span> <span class="p">(</span><span class="n">c</span> <span class="ow">::</span> <span class="o">*</span> <span class="ow">-&gt;</span> <span class="kt">Constraint</span><span class="p">)</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">MkTest</span> <span class="p">{</span><span class="n">runTest</span> <span class="ow">::</span> <span class="n">a</span><span class="p">}</span>
+
+<span class="kr">class</span> <span class="kt">TestCase</span> <span class="p">(</span><span class="n">c</span> <span class="ow">::</span> <span class="o">*</span> <span class="ow">-&gt;</span> <span class="kt">Constraint</span><span class="p">)</span> <span class="n">a</span> <span class="kr">where</span>
+    <span class="n">samples</span>      <span class="ow">::</span> <span class="n">c</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="kt">MkTest</span> <span class="n">c</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+    <span class="n">testWith</span>     <span class="ow">::</span> <span class="n">c</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">MkTest</span> <span class="n">c</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">)]</span>
+    <span class="n">testWith</span> <span class="n">logic</span> <span class="ow">=</span>
+        <span class="kt">MkTest</span> <span class="o">$</span> <span class="n">map</span> <span class="p">(</span><span class="n">id</span> <span class="o">&amp;&amp;&amp;</span> <span class="n">logic</span><span class="p">)</span> <span class="n">seq</span>
+        <span class="kr">where</span>
+            <span class="n">seq</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span>
+            <span class="n">seq</span> <span class="ow">=</span> <span class="n">runTest</span> <span class="p">(</span><span class="n">samples</span> <span class="ow">::</span> <span class="kt">MkTest</span> <span class="n">c</span> <span class="p">[</span><span class="n">a</span><span class="p">])</span>
+
+<span class="kr">type</span> <span class="kt">TestOn</span> <span class="n">c</span> <span class="n">a</span> <span class="ow">=</span> <span class="n">c</span> <span class="n">a</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">MkTest</span> <span class="n">c</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Now I’m to illustrate how Haskell achieves a perfectly extensible and reasonable automatic test generator, through
+following instances(terminology in Haskell, other than a synonym of “example”), using function types to achieve polymorphisms that absolutely Julia cannot make so far(Juliav1.1).</p>
+<div class="highlight-Haskell notranslate"><div class="highlight"><pre><span></span><span class="kr">instance</span> <span class="kt">TestCase</span> <span class="kt">Enum</span> <span class="n">a</span> <span class="kr">where</span>
+    <span class="n">samples</span> <span class="ow">=</span> <span class="kt">MkTest</span> <span class="o">.</span> <span class="n">enumFrom</span> <span class="o">.</span> <span class="n">toEnum</span> <span class="o">$</span> <span class="mi">0</span>
+
+<span class="kr">instance</span> <span class="kt">TestCase</span> <span class="kt">Bounded</span> <span class="n">a</span> <span class="kr">where</span>
+    <span class="n">samples</span> <span class="ow">=</span> <span class="kt">MkTest</span> <span class="p">[</span><span class="n">maxBound</span><span class="p">,</span> <span class="n">minBound</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We has now made instances for <code class="docutils literal notranslate"><span class="pre">TestCase</span></code> on the constraints(a.k.a Type Classes) <code class="docutils literal notranslate"><span class="pre">Enum</span></code> and <code class="docutils literal notranslate"><span class="pre">Bounded</span></code>.</p>
+<p>For the readers who’re not that familiar to Haskell, you could take constraints in
+Haskell as traits(in Rust) or loose-coupled interfaces.</p>
+<p>Once a type is under constraint <code class="docutils literal notranslate"><span class="pre">Enum</span></code>, you can enumerate its values, plus
+<code class="docutils literal notranslate"><span class="pre">Bounded</span></code> is a constraint capable of making sure that the maximum and minimum are
+available(via <code class="docutils literal notranslate"><span class="pre">maxBound</span></code> and <code class="docutils literal notranslate"><span class="pre">minBound</span></code>). <code class="docutils literal notranslate"><span class="pre">instance</span> <span class="pre">TestCase</span> <span class="pre">Enum</span> <span class="pre">a</span></code>
+denotes for all concrete type <code class="docutils literal notranslate"><span class="pre">a</span></code>, make the constraint <cite>TestCase</cite> on
+constraint <code class="docutils literal notranslate"><span class="pre">Enum</span></code> and type <code class="docutils literal notranslate"><span class="pre">a</span></code>. Yes, <code class="docutils literal notranslate"><span class="pre">TestCase</span></code> is also a constraint,
+a constraint among other constraints and types.</p>
+<p>So far our test generator has been already finished, a bit too fast, right?
+That’s how Haskell matters: pragmatic, productive.</p>
+<p>We can then make tests with above codes, taking advantage of properties/traits of our data types:</p>
+<div class="highlight-Haskell notranslate"><div class="highlight"><pre><span></span><span class="nf">onEnumerable</span> <span class="ow">::</span> <span class="kt">TestOn</span> <span class="kt">Enum</span> <span class="n">a</span>
+<span class="nf">onEnumerable</span> <span class="n">logic</span> <span class="ow">=</span> <span class="n">testWith</span> <span class="n">logic</span>
+
+<span class="nf">intTest</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Int</span>
+<span class="nf">intTest</span> <span class="n">x</span> <span class="ow">=</span> <span class="n">x</span> <span class="o">^</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">==</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span>
+
+<span class="nf">boolTest</span> <span class="ow">::</span> <span class="kt">Bool</span> <span class="ow">-&gt;</span> <span class="kt">Bool</span>
+<span class="nf">boolTest</span> <span class="n">x</span> <span class="ow">=</span> <span class="kt">True</span>
+
+<span class="nf">main</span> <span class="ow">=</span> <span class="kr">do</span>
+  <span class="n">putStrLn</span> <span class="o">.</span> <span class="n">show</span> <span class="o">.</span> <span class="n">take</span> <span class="mi">10</span> <span class="o">.</span> <span class="n">runTest</span> <span class="o">$</span> <span class="n">onEnumerable</span> <span class="n">intTest</span>
+  <span class="n">putStrLn</span> <span class="o">.</span> <span class="n">show</span> <span class="o">.</span> <span class="n">runTest</span> <span class="o">$</span> <span class="n">onEnumerable</span> <span class="n">boolTest</span>
+  <span class="n">return</span> <span class="nb">()</span>
+</pre></div>
+</div>
+<p>which outputs</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">4</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">6</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">7</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">8</span><span class="p">,</span><span class="kc">True</span><span class="p">),(</span><span class="mi">9</span><span class="p">,</span><span class="kc">True</span><span class="p">)]</span>
+<span class="p">[(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Take care that the I did nothing to generate test sets, but passing off the function <cite>intTest</cite>
+and <cite>boolTest</cite> to specify the test logics. I solely said that I want to test data
+types on their enumerable traits(<code class="docutils literal notranslate"><span class="pre">onEnumerable</span></code>), then the polymorphic automatic test generator
+took advantage of functions’ type signatures(<cite>intTest: Int -&gt; Bool</cite>, <cite>boolTest: Bool -&gt; Bool</cite>), and
+all tasks finished.</p>
+<p>Turn back to Julia side, although Haskell does a lot implcits, multiple dispatch can often emulate
+them successfully(without strongly typed and static checking though). The problem is at the absense of
+function types, as we cannot take advantage of their type information to engage dispatching.</p>
+<p>Some tentative but incomplete workaround could be made through following idea:</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">Base</span><span class="o">:</span> <span class="n">convert</span>
+<span class="k">struct</span> <span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}</span>
+    <span class="n">f</span> <span class="o">::</span> <span class="n">JlFuncType</span>
+<span class="k">end</span>
+
+<span class="nd">@inline</span> <span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">}(</span><span class="n">f</span> <span class="o">::</span> <span class="n">JlFuncType</span><span class="p">)</span> <span class="n">where</span> <span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}</span> <span class="o">=</span> <span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="nd">@generated</span> <span class="k">function</span> <span class="p">(</span><span class="n">f</span> <span class="o">::</span> <span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">})(</span><span class="n">a</span> <span class="o">::</span> <span class="n">Arg</span><span class="p">)</span> <span class="o">::</span> <span class="n">Ret</span> <span class="n">where</span> <span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}</span>
+  <span class="k">quote</span>
+      <span class="o">$</span><span class="p">(</span><span class="kt">Expr</span><span class="p">(</span><span class="o">:</span><span class="n">meta</span><span class="p">,</span> <span class="o">:</span><span class="n">inline</span><span class="p">))</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">convert</span><span class="p">(</span><span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">},</span> <span class="n">f</span> <span class="o">::</span> <span class="n">JlFuncType</span><span class="p">)</span> <span class="n">where</span> <span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}</span> <span class="o">=</span> <span class="n">Fn</span><span class="p">{</span><span class="n">Arg</span><span class="p">,</span> <span class="n">Ret</span><span class="p">,</span> <span class="n">JlFuncType</span><span class="p">}(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is a considerably efficient function type implementation according to <a class="reference external" href="https://github.com/yuyichao/FunctionWrappers.jl">FunctionWrappers.jl</a>,
+However, the problem is that its usage is quite unfriendly for peope have to manually annotate disturbingly much.</p>
+<p>To address the polymorphism problems, the major methods(type-based) from current academic world won’t work in Julia, and
+you should pave the way for a LISP-flavored “polymorphism”, in other words, use macros frequently.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2020, thautwarm.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

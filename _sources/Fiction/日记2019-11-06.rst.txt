@@ -1,0 +1,46 @@
+日记 2019-11-06
+
+杂谈
+===================================
+
+签证的事情要收尾了...
+
+然后今天神医说他回去当研究生了, bandwidth够了想来做点好玩的项目.
+
+我立即给他讲了Restrain JIT的实现, 不愧是在Python技能上相当全面的选手,
+很快就摸清楚了原理, 接下来希望他能好好实现闭包的JIT诶嘿.
+
+闭包的JIT其实还是有一点挤牙膏式的性能问题的.
+
+- Python的自由变量很多时候是只读的, 存储的时候, 完全可以做成type stable的.
+  但是因为是Cython后端, 又没有generic type(specifically, intensional type analysis),
+  相应的优化暂时没办法实现. 具体的问题示例, 就是
+
+  .. code-block:: Python
+
+    def add(x):
+        def addx(y):
+            return x + y
+        return addx
+
+  的时候, 当 :code:`add` 还未JIT过, 其返回的闭包 :code:`addx` 存储自由变量 :code:`x` 还是当作 :code:`object`
+  类型在存. 即使之后 :code:`add` 触发JIT, 已经返回的 :code:`addx` 还是慢的版本.
+
+- 即使自由变量是会被写的, 可能也是type stable的. 这个优化需要一定完成度的type infer, 暂时不考虑.
+
+
+对于第一点我有点想法, 那就是咱们也在Python里造一套intensional type analysis, 提供runtime type representation.
+
+闭包变量会使用 :code:`Cell` 数据结构去表示
+
+.. code-block:: Cython
+
+    cdef class Cell:
+        cdef object cell_contents
+
+为了避免 :code:`cell_contents` 是 :code:`object` , 可以在构造的时候判断类型,
+弄出 :code:`Cell[int]` , :code:`Cell[MyJITableType]` 这样的类型.
+
+PS: 如果真搞出这一套东西, 那么就会有 :code:`JITList[T]` vs. :code:`list` 了.
+
+PPS: 想了一下, 我觉得真行. 求python type在Cython端是0开销, 总开销大头是从 :code:`1` 构造 :code:`Cell[Int](1)` 的一个dispatch, JIT之后这dispatch有机会被消去.

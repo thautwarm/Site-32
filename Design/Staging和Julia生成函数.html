@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staging和Julia生成函数 &#8212; thautwarm&#39;s blog pages</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default ">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../guide.html">
+          Site-32</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/thautwarm">GitHub</a></li>
+                <li><a href="../PL/index.html">PL</a></li>
+                <li><a href="index.html">Design</a></li>
+                <li><a href="../DSL/index.html">DSL</a></li>
+                <li><a href="../Fiction/index.html">Fiction</a></li>
+                <li><a href="../Others/index.html">Others</a></li>
+                <li><a href="../Backup/index.html">Backup</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../guide.html">Site-32 <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../Compiler/index.html">Compiler</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html">General Programming In Julia Language From An Advanced Standpoint</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#first-class">First-Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#polymorphisms-of-multiple-dispatch">Polymorphisms of Multiple Dispatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#full-featured-macros">Full-Featured Macros</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#macro-the-function-from-ast-to-ast">Macro, the Function from AST to AST</a></li>
+<li class="toctree-l4"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#scope-and-hygiene">Scope and Hygiene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#other-useful-knowledge-for-julia-macros">Other Useful Knowledge for Julia Macros</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#a-big-step-forward-in-ast-manipulations">A Big Step Forward in AST Manipulations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#limitation-absence-of-function-types">Limitation: Absence of Function Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Some-Thoughts-About-The-RestrainJIT.html">Some Thoughts About The Restrain JIT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Research-Restrain-JIT.html">Research: Review and Observations of Python JIT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Research-Restrain-JIT.html#history">History</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Research-Restrain-JIT.html#observations">Observations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../DSL/index.html">DSL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html">Write You A Query Language</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#definition-of-syntaxes">Definition of Syntaxes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#codegen-target">Codegen Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#refinement-of-codegen-typed-columns">Refinement of Codegen: Typed Columns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#implementation">Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#enjoy-you-a-query-language">Enjoy You A Query Language</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Fiction/index.html">Fiction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id1">2020年4月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id3">2019年10月</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Fiction/index.html#id4">日前安排</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Fiction/index.html#id12">目录</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-13.html">Smarter Witnesses for Type Classes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#notation">Notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#instance-resolution-variables-as-instances">Instance Resolution &amp; Variables As Instances</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#the-most-general-instance-problem-overlapping-instance-problem">“The Most General Instance” Problem &amp; “Overlapping Instance” Problem</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id1">优化</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id2">该算法和相应语言设计的好处</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id3">不足之处</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-15.html">我和Python的故事</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id1">第0节</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id2">第1节: 科学计算, Python, 生物信息学和数据挖掘</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id3">第2节: 转型的经过, 走向程序语言设计领域</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id4">第3节: 想要给Python添加高级语言特性的理想</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id5">第4节: Flowpython</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#bnf-parser-generator">第4节: BNF, Parser Generator和语言制造机器</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-30.html">杂谈</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-30.html#pycon-china-2019">PyCon China 2019 成都</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-30.html#id2">直面自己的人格缺陷</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-06.html">杂谈</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-14.html">我太难了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-17.html">我太懂了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-01-07.html">打通</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-01-07.html#parsing">Parsing</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-01-07.html#python">Python 字节码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-02.html">Tagless Final in F#</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-07.html">Encoding Typeclass Default Methods in Purescript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-11.html">近期规划</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-02-11.html#purescript-python">Purescript-Python</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#anf">从表达式优先到语句优先: ANF变换</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#pythonfirst-class">Python虚拟机上的First-class的表达式优先</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#id2">社区意见</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/cure/和平日久.html">如何写出令人感到幸福的小说</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id2">合理利用“无敌”元素</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id3">“纯爱”而非“后宫”</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id4">细腻的画面感</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id5">节奏流畅的回忆</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id6">暗线和潜台词</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id7">总结</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html">乐理菜鸡怎么给自己的小说写BGM?</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id1">找调</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id2">打谱</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id3">总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PL/index.html">Programming Language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../PL/HKT.html">Higher Kinded Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/typeclass.html">Type Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/typeclass.html#about-abstractions">About Abstractions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/typeclass.html#about-separation-of-type-definitions-and-data-manipulations">About Separation of Type Definitions and Data Manipulations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/paper-reading-LHKP.html">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#how-to">How-To</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#static-resolution-more-polymorphic">Static Resolution: More polymorphic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#limitation1-much-higher-kinded">Limitation1: Much Higher Kinded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#limitation2-identity">Limitation2: Identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#why-this-lightweight-higher-polymorphism-instead-of-the-haskell-approach">Why this Lightweight-Higher-Polymorphism instead of the Haskell approach</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html">Compelling Higher Kinded Types and Type Classes in F#</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#active-pattern">Active Pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#statically-resolved-type-parameters">Statically Resolved Type Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#the-getsig-function-and-implicits">The <em>getsig</em> Function and Implicits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#why-abstractclass">Why AbstractClass?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#why-functor-f-instead-of-the-straightforward-functor">Why <em>Functor&lt;’F&gt;</em> instead of the straightforward <em>Functor</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html">FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#terminology">Terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#background">Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#application">Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#scoping-name-resolution">Scoping: Name Resolution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#typing-type-inference">Typing: Type Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191219.html">Tagless Final For Writing Compilers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#problem">Problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#tagless-final-for-compiler-phases">Tagless Final For Compiler Phases</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#quick-start-for-tagless-final">Quick Start for Tagless Final</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#grammar">“Grammar”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#expanding-representation">Expanding Representation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#problems-of-decoupling-and-compositing">Problems of Decoupling and Compositing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#fsym">FSYM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#laziness-for-mutual-dependencies">Laziness, for Mutual Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/elaborating-julia.html">Julia Counts for PL Researchers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#expressiveness">Expressiveness</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#staging">Staging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#advantages-as-a-codegen-backend">Advantages as a codegen backend</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/tagless-final-pattern-match.html">First-class Pattern Matching in the Final Approach</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#core-ideas">Core Ideas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#full-implementation-in-haskell">Full implementation in Haskell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#enhancement-1">Enhancement 1</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/tagless-final-for-julia.html">Julia Benefits from Tagless Final</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#what-happened-today">What Happened Today?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#an-example-turns-out-to-be-type-unstable">An Example Turns Out to be Type Unstable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#tagless-final-encoding-about-above-code">Tagless Final Encoding about Above Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Backup/index.html">Backup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Backup/高观点下的Julia泛用编程.html">高观点下的Julia泛用编程</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Others/index.html">Others</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Others/contributions.html">Thautwarm’s Open Source Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#projects-owned-by-other-individuals-organizations">Projects Owned By Other Individuals/Organizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#leading-projects">Leading Projects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#other-notable-personal-projects">Other Notable Personal Projects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Subsections <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Staging和Julia生成函数</a><ul>
+<li><a class="reference internal" href="#staging">Staging是什么</a></li>
+<li><a class="reference internal" href="#julia">运行时函数构造: Julia生成函数</a><ul>
+<li><a class="reference internal" href="#world-age">“世界纪元”(“World Age”)问题</a></li>
+<li><a class="reference internal" href="#fibonaccijulia">从Fibonacci数列到Julia生成函数</a></li>
+<li><a class="reference internal" href="#id3">Julia生成函数的优越性</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="stagingjulia">
+<h1>Staging和Julia生成函数<a class="headerlink" href="#stagingjulia" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="staging">
+<h2>Staging是什么<a class="headerlink" href="#staging" title="Permalink to this headline">¶</a></h2>
+<p>有一种叫做  <strong>staging</strong> 的技术, 它通过将程序运行时分割成更多的编译/运行期,
+每一阶段, 都会运用相比之前更加丰富的信息, 去生成更加高效的程序.</p>
+<p>而在静态编译的情况下, 若非人为操作编译器的internal API,
+所有的Staging优化都不可能完成, 因此带着native code编译器的动态语言,
+例如Julia, 很多时候很容易在性能上远胜静态语言.</p>
+<p>一个经典的案例来源于 <a class="reference external" href="http://okmij.org/ftp/meta-programming/calculi.html">Oleg Kiselyov的这篇”博客”</a> :</p>
+<p>给定 <span class="math notranslate nohighlight">\(Fibonacci\)</span> 数列的</p>
+<ul class="simple">
+<li><p>前两项 <span class="math notranslate nohighlight">\(a_1, a_2\)</span> ,</p></li>
+<li><p>以及递推关系的运算 <span class="math notranslate nohighlight">\(f\)</span> , 其中 <span class="math notranslate nohighlight">\(f(a_{k}, a_{k+1}) = a_{k+2}\)</span></p></li>
+</ul>
+<p>求解第 <span class="math notranslate nohighlight">\(n\)</span> 项.</p>
+<p>问题解的直观定义如下</p>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">fibnr</span><span class="p">(</span><span class="n">plus</span><span class="o">::</span><span class="n">Plus</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span> <span class="n">where</span> <span class="n">Plus</span> <span class="o">&lt;:</span> <span class="kt">Function</span>
+    <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="k">return</span> <span class="n">x</span>
+    <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="k">return</span> <span class="n">y</span>
+    <span class="n">plus</span><span class="p">(</span><span class="n">fibnr</span><span class="p">(</span><span class="n">plus</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">fibnr</span><span class="p">(</span><span class="n">plus</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">end</span>
+
+<span class="p">[</span><span class="n">fibnr</span><span class="p">(</span><span class="o">+</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="kp">in</span> <span class="mi">1</span><span class="o">:</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">out</span><span class="o">:</span>
+    <span class="mi">10</span><span class="o">-</span><span class="n">element</span> <span class="kt">Array</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span><span class="mi">1</span><span class="p">}</span><span class="o">:</span>
+    <span class="mi">1</span>
+    <span class="mi">1</span>
+    <span class="mi">2</span>
+    <span class="mi">3</span>
+    <span class="mi">5</span>
+    <span class="mi">8</span>
+    <span class="mi">13</span>
+    <span class="mi">21</span>
+    <span class="mi">34</span>
+    <span class="mi">55</span>
+
+<span class="k">using</span> <span class="n">BenchmarkTools</span>
+
+<span class="nd">@btime</span> <span class="n">fibnr</span><span class="p">(</span><span class="o">+</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">out</span><span class="o">:</span>
+    <span class="mf">42.766</span> <span class="n">μs</span> <span class="p">(</span><span class="mi">0</span> <span class="n">allocations</span><span class="o">:</span> <span class="mi">0</span> <span class="n">bytes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>注意 <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">us</span> <span class="pre">=</span> <span class="pre">1000</span> <span class="pre">ns</span></code> .</p>
+<p>而staging技术将程序的运行分为多个阶段,
+搜集前一阶段信息, 去优化后一阶段要执行的代码.</p>
+<p>在上述案例里, 当我们的问题是 <strong>计算给定</strong> <span class="math notranslate nohighlight">\(n\)</span> <strong>后不同的</strong> <span class="math notranslate nohighlight">\(f\)</span> <strong>和</strong> <span class="math notranslate nohighlight">\(a_1, a_2\)</span> 时,
+一个直接的staging实现如下:</p>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">islinenumbernode</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="n">x</span> <span class="kp">isa</span> <span class="kt">LineNumberNode</span>
+<span class="n">rmlines</span><span class="p">(</span><span class="n">ex</span><span class="o">::</span><span class="kt">Expr</span><span class="p">)</span> <span class="o">=</span> <span class="k">begin</span>
+        <span class="n">hd</span> <span class="o">=</span> <span class="n">ex</span><span class="o">.</span><span class="n">head</span>
+        <span class="n">tl</span> <span class="o">=</span> <span class="n">map</span><span class="p">(</span><span class="n">rmlines</span><span class="p">,</span> <span class="n">filter</span><span class="p">(</span><span class="o">!</span><span class="n">islinenumbernode</span><span class="p">,</span> <span class="n">ex</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
+        <span class="kt">Expr</span><span class="p">(</span><span class="n">hd</span><span class="p">,</span> <span class="n">tl</span><span class="o">...</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="n">rmlines</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">=</span> <span class="n">a</span>
+
+<span class="n">fibnr_with_n</span><span class="p">(</span><span class="n">n</span><span class="o">::</span><span class="kt">Int64</span><span class="p">)</span> <span class="o">=</span> <span class="k">begin</span>
+        <span class="n">splus</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">=</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">x</span> <span class="o">+</span> <span class="o">$</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">quote</span>
+            <span class="k">function</span> <span class="p">(</span><span class="n">f</span> <span class="o">::</span> <span class="n">Plus</span><span class="p">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">Int64</span><span class="p">,</span> <span class="n">y</span><span class="o">::</span><span class="kt">Int64</span><span class="p">)</span> <span class="n">where</span> <span class="n">Plus</span> <span class="o">&lt;:</span> <span class="kt">Function</span>
+                <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span>
+                <span class="o">$</span><span class="p">(</span><span class="n">fibnr</span><span class="p">(</span><span class="n">splus</span><span class="p">,</span> <span class="o">:</span><span class="n">x</span><span class="p">,</span> <span class="o">:</span><span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+            <span class="k">end</span>
+        <span class="k">end</span> <span class="o">|&gt;</span> <span class="n">rmlines</span>
+    <span class="k">end</span>
+</pre></div>
+</div>
+<p>我们使用一下这个代码</p>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">fibnr_with_n</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">out</span><span class="o">:</span>
+    <span class="k">quote</span>
+        <span class="k">function</span> <span class="p">(</span><span class="n">f</span><span class="o">::</span><span class="n">Plus</span><span class="p">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">Int64</span><span class="p">,</span> <span class="n">y</span><span class="o">::</span><span class="kt">Int64</span><span class="p">)</span> <span class="n">where</span> <span class="n">Plus</span> <span class="o">&lt;:</span> <span class="kt">Function</span>
+            <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span>
+            <span class="n">y</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+
+<span class="n">fibnr_with_n</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">out</span><span class="o">:</span>
+    <span class="k">quote</span>
+        <span class="k">function</span> <span class="p">(</span><span class="n">f</span><span class="o">::</span><span class="n">Plus</span><span class="p">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">Int64</span><span class="p">,</span> <span class="n">y</span><span class="o">::</span><span class="kt">Int64</span><span class="p">)</span> <span class="n">where</span> <span class="n">Plus</span> <span class="o">&lt;:</span> <span class="kt">Function</span>
+            <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span>
+            <span class="n">y</span> <span class="o">+</span> <span class="n">x</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+
+<span class="n">fibnr_with_n</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">out</span><span class="o">:</span>
+    <span class="k">quote</span>
+        <span class="k">function</span> <span class="p">(</span><span class="n">f</span><span class="o">::</span><span class="n">Plus</span><span class="p">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">Int64</span><span class="p">,</span> <span class="n">y</span><span class="o">::</span><span class="kt">Int64</span><span class="p">)</span> <span class="n">where</span> <span class="n">Plus</span> <span class="o">&lt;:</span> <span class="kt">Function</span>
+            <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span>
+            <span class="p">(((</span><span class="n">y</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="p">((</span><span class="n">y</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+
+<span class="n">fib_20</span> <span class="o">=</span> <span class="n">eval</span><span class="p">(</span><span class="n">fibnr_with_n</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+<span class="nd">@btime</span> <span class="n">fib_20</span><span class="p">(</span><span class="o">+</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="mf">17.538</span> <span class="n">ns</span> <span class="p">(</span><span class="mi">1</span> <span class="n">allocation</span><span class="o">:</span> <span class="mi">16</span> <span class="n">bytes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>可以看到, 对 <code class="docutils literal notranslate"><span class="pre">n=20</span></code> , 也就快了1000多倍, 并且这个性能差距是随规模而增大的.</p>
+<p>观察 <code class="docutils literal notranslate"><span class="pre">fibnr_with_n(5)</span></code> 生成的代码, 可以发现, 有很多项被重复地计算了,
+例如 <code class="docutils literal notranslate"><span class="pre">(y+x)</span></code> 和 <code class="docutils literal notranslate"><span class="pre">((y+x)</span> <span class="pre">+</span> <span class="pre">y)</span></code>.</p>
+<p>我们可以使用 <strong>编译期记忆化技术</strong> 来继续优化代码.</p>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">genlet!</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">memo</span><span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Pair</span><span class="p">{</span><span class="kt">Any</span><span class="p">,</span> <span class="kt">Symbol</span><span class="p">}},</span> <span class="n">counter</span><span class="o">::</span><span class="kt">Ref</span><span class="p">{</span><span class="kt">Int</span><span class="p">})</span> <span class="o">=</span> <span class="k">begin</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="n">counter</span><span class="o">.</span><span class="n">x</span>
+        <span class="n">counter</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">sym</span> <span class="o">=</span> <span class="kt">Symbol</span><span class="p">(</span><span class="o">:</span><span class="n">x</span><span class="p">,</span> <span class="n">number</span><span class="p">)</span>
+        <span class="n">push!</span><span class="p">(</span><span class="n">memo</span><span class="p">,</span> <span class="n">expr</span><span class="o">=&gt;</span><span class="n">sym</span><span class="p">)</span>
+        <span class="n">sym</span>
+    <span class="k">end</span>
+
+<span class="n">fibnr_with_n_and_memo</span><span class="p">(</span><span class="n">n</span><span class="o">::</span><span class="kt">Int64</span><span class="p">)</span> <span class="o">=</span> <span class="k">begin</span>
+        <span class="n">memo</span> <span class="o">=</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Pair</span><span class="p">{</span><span class="kt">Any</span><span class="p">,</span> <span class="kt">Symbol</span><span class="p">}}()</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="kt">Ref</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">splus</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">=</span>
+            <span class="k">let</span> <span class="n">computation</span> <span class="o">=</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">x</span> <span class="o">+</span> <span class="o">$</span><span class="n">y</span><span class="p">)</span>
+                <span class="n">computed_where</span> <span class="o">=</span> <span class="n">findfirst</span><span class="p">(</span><span class="n">memo</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                    <span class="n">k</span> <span class="o">==</span> <span class="n">computation</span>
+                <span class="k">end</span>
+                <span class="n">computed_where</span> <span class="o">!=</span> <span class="nb">nothing</span> <span class="o">&amp;&amp;</span> <span class="k">return</span> <span class="n">memo</span><span class="p">[</span><span class="n">computed_where</span><span class="p">]</span><span class="o">.</span><span class="n">second</span>
+                <span class="n">genlet!</span><span class="p">(</span><span class="n">computation</span><span class="p">,</span> <span class="n">memo</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
+            <span class="k">end</span>
+        <span class="n">body</span> <span class="o">=</span> <span class="n">fibnr</span><span class="p">(</span><span class="n">splus</span><span class="p">,</span> <span class="o">:</span><span class="n">x</span><span class="p">,</span> <span class="o">:</span><span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">letbindings</span> <span class="o">=</span> <span class="p">[</span><span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">v</span> <span class="o">=</span> <span class="o">$</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="kp">in</span> <span class="n">memo</span><span class="p">]</span>
+
+        <span class="k">quote</span>
+            <span class="k">function</span> <span class="p">(</span><span class="n">f</span><span class="o">::</span><span class="n">Plus</span><span class="p">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">Int64</span><span class="p">,</span> <span class="n">y</span><span class="o">::</span><span class="kt">Int64</span><span class="p">)</span> <span class="n">where</span> <span class="n">Plus</span> <span class="o">&lt;:</span> <span class="kt">Function</span>
+                <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span>
+                <span class="o">$</span><span class="p">(</span><span class="n">letbindings</span><span class="o">...</span><span class="p">)</span>
+                <span class="o">$</span><span class="n">body</span>
+            <span class="k">end</span>
+        <span class="k">end</span> <span class="o">|&gt;</span> <span class="n">rmlines</span>
+    <span class="k">end</span>
+
+<span class="n">fibnr_with_n_and_memo</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">out</span><span class="o">:</span>
+    <span class="k">quote</span>
+        <span class="k">function</span> <span class="p">(</span><span class="n">f</span><span class="o">::</span><span class="n">Plus</span><span class="p">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">Int64</span><span class="p">,</span> <span class="n">y</span><span class="o">::</span><span class="kt">Int64</span><span class="p">)</span> <span class="n">where</span> <span class="n">Plus</span> <span class="o">&lt;:</span> <span class="kt">Function</span>
+            <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">x</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">y</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">x0</span>
+            <span class="n">x3</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">+</span> <span class="n">x1</span>
+            <span class="n">x3</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+
+<span class="n">fib_20_with_memo</span> <span class="o">=</span> <span class="n">eval</span><span class="p">(</span><span class="n">fibnr_with_n_and_memo</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+<span class="nd">@btime</span> <span class="n">fib_20_with_memo</span><span class="p">(</span><span class="o">+</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">out</span><span class="o">:</span>
+    <span class="mf">18.128</span> <span class="n">ns</span> <span class="p">(</span><span class="mi">1</span> <span class="n">allocation</span><span class="o">:</span> <span class="mi">16</span> <span class="n">bytes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>看起来似乎还变慢了? 但实际情况是, 和未优化重复项时没有差别, 因为Benchmark的指示量有浮动.</p>
+<p>为什么没有变快, 这是因为Julia的编译器优化能力很强, 避免了重复项的计算.</p>
+<p>但这不意味着使用编译期记忆化就毫无意义, 对于简单的数字运算, 优化重复项很简单,
+但运算规模大了之后就会给编译器带来很大的负担.</p>
+<p>除开不依赖编译器的性能优化外, 编译期记忆化还使得生成的代极为简洁:</p>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">fibnr_with_n_and_memo</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">out</span><span class="o">:</span>
+    <span class="k">quote</span>
+        <span class="k">function</span> <span class="p">(</span><span class="n">f</span><span class="o">::</span><span class="n">Plus</span><span class="p">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">Int64</span><span class="p">,</span> <span class="n">y</span><span class="o">::</span><span class="kt">Int64</span><span class="p">)</span> <span class="n">where</span> <span class="n">Plus</span> <span class="o">&lt;:</span> <span class="kt">Function</span>
+            <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">x</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">y</span>
+            <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">x0</span>
+            <span class="n">x3</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">+</span> <span class="n">x1</span>
+            <span class="n">x4</span> <span class="o">=</span> <span class="n">x3</span> <span class="o">+</span> <span class="n">x2</span>
+            <span class="n">x5</span> <span class="o">=</span> <span class="n">x4</span> <span class="o">+</span> <span class="n">x3</span>
+            <span class="n">x6</span> <span class="o">=</span> <span class="n">x5</span> <span class="o">+</span> <span class="n">x4</span>
+            <span class="n">x7</span> <span class="o">=</span> <span class="n">x6</span> <span class="o">+</span> <span class="n">x5</span>
+            <span class="n">x8</span> <span class="o">=</span> <span class="n">x7</span> <span class="o">+</span> <span class="n">x6</span>
+            <span class="n">x8</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+
+<span class="n">fibnr_with_n</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">out</span><span class="o">:</span>
+    <span class="k">quote</span>
+        <span class="k">function</span> <span class="p">(</span><span class="n">f</span><span class="o">::</span><span class="n">Plus</span><span class="p">,</span> <span class="n">x</span><span class="o">::</span><span class="kt">Int64</span><span class="p">,</span> <span class="n">y</span><span class="o">::</span><span class="kt">Int64</span><span class="p">)</span> <span class="n">where</span> <span class="n">Plus</span> <span class="o">&lt;:</span> <span class="kt">Function</span>
+            <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span>
+            <span class="p">((((((((</span><span class="n">y</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="p">((</span><span class="n">y</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span><span class="p">))</span> <span class="o">+</span> <span class="p">(((</span><span class="n">y</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span> <span class="o">...</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">fibnr_with_n(10)</span></code> 生成的代码, 有一行长达 <strong>531个字符</strong> 的表达式计算;
+而 <code class="docutils literal notranslate"><span class="pre">fibnr_with_n_and_memo(10)</span></code> 的结果则一目了然.</p>
+</div>
+<div class="section" id="julia">
+<h2>运行时函数构造: Julia生成函数<a class="headerlink" href="#julia" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="world-age">
+<h3>“世界纪元”(“World Age”)问题<a class="headerlink" href="#world-age" title="Permalink to this headline">¶</a></h3>
+<p>前面我们介绍了staging, 作为一个优化利器, 这很美好.</p>
+<p>但在Julia中, <code class="docutils literal notranslate"><span class="pre">eval</span></code> 只能在模块顶层(全局作用域)创建函数, 否则,
+将会导致一种名为 <a class="reference external" href="https://discourse.julialang.org/t/world-age-problem-explanation/9714">“世界纪元”</a> 的问题.</p>
+<p>(注: “Wolrd Age”翻译为”世界纪元”听起来极为酷炫, 所以我必定要在这里使用一次. 但究其语义, “编译期阶数”之类的或许更为合适)</p>
+<p>“世界纪元”问题, 反映为一个模块在运行时通过 <code class="docutils literal notranslate"><span class="pre">eval</span></code> 等手段创建的函数,
+无法在直接在该模块内部引用.</p>
+<p>如果允许在模块随时随地定义新函数, 并在模块内部调用它,
+那么, 模块中已经编译优化的对象, 都可能发生改变(例如被重定义等).</p>
+<p>实际上, 这种过于灵活的行为使得一切都有可能发生, 同时,
+几乎每一种编译器的优化, 都需要某种条件的成立, 也就是代码满足确定的约束.</p>
+<p>为了优化, 随时随地定义函数的功能受到了一定的限制, 表现为”世界纪元”问题.</p>
+<p>只有在模块顶层/全局作用域, 用 <code class="docutils literal notranslate"><span class="pre">eval</span></code> 等手段创建的函数才能在该模块内部被直接引用.</p>
+<p>我们看一个案例</p>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="n">Mod</span>
+
+<span class="s">&quot;&quot;&quot;</span>
+<span class="s">make functions dynamically</span>
+<span class="s">&quot;&quot;&quot;</span>
+<span class="k">function</span> <span class="n">make_func_dyn</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
+    <span class="n">eval</span><span class="p">(</span><span class="n">exp</span><span class="p">)</span>
+<span class="k">end</span>
+
+
+<span class="n">add2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="n">make_func_dyn</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">))(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="k">end</span>
+
+<span class="c"># Case1:</span>
+<span class="n">f1</span> <span class="o">=</span> <span class="n">Mod</span><span class="o">.</span><span class="n">make_func_dyn</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">))</span>
+<span class="nd">@info</span> <span class="o">:</span><span class="n">case1</span> <span class="n">f1</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c"># Case2:</span>
+<span class="nd">@info</span> <span class="o">:</span><span class="n">case2</span> <span class="n">Mod</span><span class="o">.</span><span class="n">add2</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>上述代码中, <code class="docutils literal notranslate"><span class="pre">case1</span></code> 的代码正常执行, 而 <code class="docutils literal notranslate"><span class="pre">case2</span></code> 则抛出了错误:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌ Info: case1
+└   f1(10) = 12
+
+┌ Error: Exception while generating log record in module Main at case.jl
+│   exception =
+│    MethodError: no method matching (::getfield(Main.Mod, Symbol(&quot;##3#4&quot;)))(::Int64)
+│    The applicable method may be too new: running in world age 25581, while current world is 25582.
+</pre></div>
+</div>
+<p>“世界纪元”问题可以用 <a class="reference external" href="https://discourse.julialang.org/t/world-age-problem-explanation/9714/4?u=thautwarm">invokelatest</a> 解决,</p>
+<p>但 <a class="reference external" href="https://docs.julialang.org/en/v1/base/base/index.html#Base.invokelatest">代价是失去性能, 永远和快沾不上边</a> :</p>
+<blockquote>
+<div><p>(The drawback is that invokelatest is somewhat slower than calling f directly, and the type of the result cannot be inferred by the compiler.)</p>
+</div></blockquote>
+<p>现在我们回到之前 <span class="math notranslate nohighlight">\(Fibonacci\)</span> 数列的例子.</p>
+</div>
+<div class="section" id="fibonaccijulia">
+<h3>从Fibonacci数列到Julia生成函数<a class="headerlink" href="#fibonaccijulia" title="Permalink to this headline">¶</a></h3>
+<p>一. 首先我们说明, 这里存在”世界纪元”问题.</p>
+<p>试想, 当要固定的 <span class="math notranslate nohighlight">\(n\)</span> 不是一个可以静态地(在编译时期, 在模块顶层)确定的数,
+而需要和外部环境商量才能得到, 例如, 一个文件的行数, JSON数据中某种对象的数量. 此时,
+必然需要 <strong>在运行时创建staged函数</strong> .</p>
+<p>二. 那么, 怎么解决”世界纪元”问题呢?</p>
+<p>Staging主要目的就是优化加速, 要是使用 <code class="docutils literal notranslate"><span class="pre">invokelatest</span></code> , 就失去了意义.</p>
+<p>此时, 我们就得介绍今天的主角, Julia强无敌的 <a class="reference external" href="https://docs.julialang.org/en/v1/manual/metaprogramming/index.html#Generated-functions-1">生成函数(generated function)</a> .</p>
+<p>Julia生成函数, 其功能上是运行时 <code class="docutils literal notranslate"><span class="pre">eval</span></code> 的一个子集.</p>
+<p>它的参数的定义, 和普通函数一模一样, 但特别是, <strong>它的函数体分为两个阶段</strong> .</p>
+<p>下面是一个生成函数 <code class="docutils literal notranslate"><span class="pre">assoc_ap</span></code> 的定义.</p>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">一个满足结合律的运算符</span>
+<span class="s">&quot;&quot;&quot;</span>
+<span class="nd">@generated</span> <span class="k">function</span> <span class="n">assoc_ap</span><span class="p">(</span><span class="n">x</span> <span class="o">::</span> <span class="n">T</span><span class="p">,</span> <span class="n">y</span> <span class="o">::</span> <span class="n">T</span><span class="p">)</span> <span class="n">where</span> <span class="n">T</span>
+    <span class="nd">@assert</span> <span class="n">x</span> <span class="o">==</span> <span class="n">T</span>
+    <span class="nd">@assert</span> <span class="n">y</span> <span class="o">==</span> <span class="n">T</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;:</span> <span class="kt">Number</span>
+        <span class="o">:</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">elseif</span> <span class="n">x</span> <span class="o">&lt;:</span> <span class="kt">AbstractString</span>
+        <span class="o">:</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">else</span>
+        <span class="n">throw</span><span class="p">(</span><span class="kt">MethodError</span><span class="p">(</span><span class="n">assoc_ap</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="nd">@assert</span> <span class="n">assoc_ap</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="nd">@assert</span> <span class="n">assoc_ap</span><span class="p">(</span><span class="s">&quot;2&quot;</span><span class="p">,</span> <span class="s">&quot;33&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;233&quot;</span>
+</pre></div>
+</div>
+<p>对于上面的代码, 注意两点:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">assoc_ap</span></code> 返回Julia的语法树</p></li>
+<li><p>在返回值的语法树之外, <code class="docutils literal notranslate"><span class="pre">assoc_ap</span></code> 的参数 <code class="docutils literal notranslate"><span class="pre">x</span></code> , <code class="docutils literal notranslate"><span class="pre">y</span></code> 实际上 <strong>代表相应参数的类型</strong></p></li>
+</ol>
+<p>生成函数的函数体, 其返回值(一棵语法树)以外的地方, 是第一个阶段, 是小的编译期, <strong>它可以利用参数的类型信息</strong> ,
+生成一份代码(一棵语法树), 该代码则是第二个阶段, 真正执行函数调用的阶段.</p>
+<p>Racket的粉丝如果粗略看一眼, 会觉得啊, 这有什么了不起. 这是我遇到的实际情况.</p>
+<p>但Julia的生成函数是无开销的, 事实上, 因为某些已知的原因, 还经常比静态定义的函数更快.</p>
+<p>定义Julia生成函数, 本质上是定义了一个生成器, 而受益于Julia的多重分派, 静态类型推导以及一些优化,</p>
+<p><strong>这个生成器在无需用户关心的情况下, 对每一组不同分派下的参数类型做且仅做一次生成</strong> , 并且,
+在不使用危险的动态特性时, <strong>可以inline</strong> , <strong>可以静态分派</strong> .</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@btime</span> <span class="n">assoc_ap</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">out</span><span class="p">:</span>
+ <span class="mf">0.017</span> <span class="n">ns</span> <span class="p">(</span><span class="mi">0</span> <span class="n">allocations</span><span class="p">:</span> <span class="mi">0</span> <span class="nb">bytes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这个速度, 对于有经验的Julian来说, 一眼就知道它全身上下, 都被静态实现查找, 内联和常量化得彻彻底底.</p>
+<p>利用生成函数, 我们轻松地改写 <span class="math notranslate nohighlight">\(Fibonacci\)</span>  数列的staging实现.</p>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@noinline</span> <span class="n">fibnr_staged_n</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">fibnr_staged_n</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="kt">Val</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+<span class="nd">@noinline</span> <span class="nd">@generated</span> <span class="k">function</span> <span class="n">fibnr_staged_n</span><span class="p">(</span><span class="n">f</span> <span class="o">::</span> <span class="n">Plus</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">::</span><span class="kt">Val</span><span class="p">{</span><span class="n">n</span><span class="p">})</span> <span class="n">where</span> <span class="p">{</span><span class="n">n</span><span class="p">,</span> <span class="n">Plus</span> <span class="o">&lt;:</span> <span class="kt">Function</span><span class="p">}</span>
+    <span class="n">memo</span> <span class="o">=</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Pair</span><span class="p">{</span><span class="kt">Any</span><span class="p">,</span> <span class="kt">Symbol</span><span class="p">}}()</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="kt">Ref</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">splus</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">=</span>
+        <span class="k">let</span> <span class="n">computation</span> <span class="o">=</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">x</span> <span class="o">+</span> <span class="o">$</span><span class="n">y</span><span class="p">)</span>
+            <span class="n">computed_where</span> <span class="o">=</span> <span class="n">findfirst</span><span class="p">(</span><span class="n">memo</span><span class="p">)</span> <span class="k">do</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                <span class="n">k</span> <span class="o">==</span> <span class="n">computation</span>
+            <span class="k">end</span>
+            <span class="n">computed_where</span> <span class="o">!=</span> <span class="nb">nothing</span> <span class="o">&amp;&amp;</span> <span class="k">return</span> <span class="n">memo</span><span class="p">[</span><span class="n">computed_where</span><span class="p">]</span><span class="o">.</span><span class="n">second</span>
+            <span class="n">genlet!</span><span class="p">(</span><span class="n">computation</span><span class="p">,</span> <span class="n">memo</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">fibnr</span><span class="p">(</span><span class="n">splus</span><span class="p">,</span> <span class="o">:</span><span class="n">x</span><span class="p">,</span> <span class="o">:</span><span class="n">y</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">letbindings</span> <span class="o">=</span> <span class="p">[</span><span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">v</span> <span class="o">=</span> <span class="o">$</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="kp">in</span> <span class="n">memo</span><span class="p">]</span>
+    <span class="k">quote</span>
+        <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">=</span> <span class="n">f</span>
+        <span class="o">$</span><span class="p">(</span><span class="n">letbindings</span><span class="o">...</span><span class="p">)</span>
+        <span class="o">$</span><span class="n">body</span>
+    <span class="k">end</span> <span class="o">|&gt;</span> <span class="n">rmlines</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>使用方法很简单</p>
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">fibnr_staged_n</span><span class="p">(</span><span class="o">+</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">out</span><span class="o">:</span> <span class="mi">55</span>
+
+<span class="n">fibnr_staged_n</span><span class="p">(</span><span class="o">+</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="n">out</span><span class="o">:</span> <span class="mi">34</span>
+
+<span class="nd">@btime</span> <span class="n">fibnr_staged_n</span><span class="p">(</span><span class="o">+</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">out</span><span class="o">:</span> <span class="mf">0.017</span> <span class="n">ns</span> <span class="p">(</span><span class="mi">0</span> <span class="n">allocations</span><span class="o">:</span> <span class="mi">0</span> <span class="n">bytes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>虽然看似性能提升很更多, 但通过 <code class="docutils literal notranslate"><span class="pre">&#64;code_llvm</span></code> 可以看到 <code class="docutils literal notranslate"><span class="pre">fibnr_staged_n(+,</span> <span class="pre">0,</span> <span class="pre">1,</span> <span class="pre">Val(20))</span></code> 和
+<code class="docutils literal notranslate"><span class="pre">eval(fibnr_with_n_and_memo(20))(+,</span> <span class="pre">0,</span> <span class="pre">1)</span></code> 的LLVM IR是完全一致的.</p>
+<p>性能差距的原因, 个人见解是, 类似C++开O3后不易benchmark, 因为编译器优化的能力太强, 做了太多内联和常量化.</p>
+</div>
+<div class="section" id="id3">
+<h3>Julia生成函数的优越性<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>我们再提一次之前讲过一句话:</p>
+<p><strong>在无需用户关心的情况下, 对每一组不同分派下的参数类型做且仅做一次生成</strong>.</p>
+<p>Julia的生成函数, 是一种兼顾简便, 编程效率和性能的staging实现.</p>
+<p>除开其追求极致的性能外, 就简便和编程效率我们做如下两点分析.</p>
+<p>一. Julia生成函数拥有着和普通函数一样的使用方法, 这意味着,
+使用生成函数的Julia库即便引入大量的staging优化,
+用户也不需要承受任何相关的心智负担.</p>
+<p>二. Julia生成函数是自动生成函数. 受益于Julia的多重分派,
+用户在使用staging前,
+<strong>不需要</strong> 分析出 <strong>第一次使用某一组类型参数对应的程序</strong> 的位置,
+更不需要进行对生成的代码进行手动记忆化来避免再次生成程序.</p>
+<p>具体到 <span class="math notranslate nohighlight">\(Fibonacci\)</span> 数列的例子,
+如果没有Julia这样的生成函数, 那么对于任意给定的 <span class="math notranslate nohighlight">\(n\)</span> ,
+我们必须分析函数在哪些位置可能被第一次被调用(常常会是所有调用点),
+并在这些位置检查是否已经代码生成, 还可能需要维护用于记忆化的表的结构.</p>
+<p>这些都可能导致性能问题, 却都是Julia在静态类型推导和JIT优化下帮我们搞定的事.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/Design/Staging和Julia生成函数.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2020, thautwarm.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.1.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

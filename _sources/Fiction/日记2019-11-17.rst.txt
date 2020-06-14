@@ -1,0 +1,55 @@
+日记 2019-11-17
+
+我太懂了
+===================================
+
+Made progress.
+
+现在Julia scope analyzer的部分核心代码如下, 还是很工整漂亮的:
+
+.. code-block:: Julia
+
+        @when Expr(:let, :($a = $b), body) = ex
+            S₀ = S[]
+            S₁ = CHILD(S₀, PSEUDO)
+            RHS(S₀, b)
+            LOCAL_LHS(S₁, a)
+            RHS(S₁, body)
+            S[] = S₀
+            IS_SCOPED(S₁, body)
+            SymRef[]
+
+        @when Expr(:let, a::SymRef, body) = ex
+            S₀ = S[]
+            S₁ = CHILD(S₀, PSEUDO)
+            LOCAL(S₁, a)
+            RHS(S₁, body)
+            IS_SCOPED(S₁, body)
+            S[] = S₀
+            SymRef[]
+
+        @when Expr(:let, Expr(:block), body) = ex
+            S₀ = S[]
+            S₁ = CHILD(S₀, PSEUDO)
+            RHS(S₁, body)
+            IS_SCOPED(S₁, body)
+            S[] = S₀
+            SymRef[]
+
+
+说实话, 写完之后看起来总有点像codegen(特有幻视...
+
+总的来说, once again使用更好的算法和抽象去解决了问题, 代码量只有别人十分之一, 可读性也十倍nice, 不过性能上就不知道了, RAII用的多了点.
+
+未来还打算用ML module去实现extensible/customizable的scope analyzer:
+
+众所周知, 大部分的宏变换是无法静态分析的(所以只能展开后检查). 但比方说, MLStyle里的模式匹配, 就有着确定的可静态分析的scope信息: 只要我专门添加几个match规则, 就可以支持一些pattern的scope检查.
+
+这种扩展可以使用ML module来做到, 只需要把旧的模块include进去, 或者做成parameterised module的形式即可.
+
+所谓的Julia中的ML module, 当然也是我实现的, 因为目前世界上, 应该没有其他又有相应知识能力, 又这么了解Julia, 还愿意放弃争取现实中的大部分事情,
+把精力放到开源项目上的人了.
+
+这件事之外, 前段时间日本那边签证也实在地拿到手上了, 突然还有一周半就要出国了.
+
+总觉得回家这么几个月都没休息一下, 有点令人窒息...

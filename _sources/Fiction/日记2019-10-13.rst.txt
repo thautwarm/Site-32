@@ -1,0 +1,186 @@
+日记 2019-10-13 Smarter Witnesses for Type Classes
+
+
+Smarter Witnesses for Type Classes
+=====================================
+
+昨天看导师的讲typeclass实现的博客, 第一段就是
+
+    The awareness of low-level implementation details brings the appreciation of an abstraction
+    and the intuitive explanation for it.
+
+大概这会成为未来两个月内的重要激励之一.
+
+然后, 对于type class constraint的witnesses, 我想出来一个新的算法, 这里记录一下.
+
+Notation
+----------------------------
+
+基础是利用dict passing实现type classes.
+
+我们用简单的类ML代码来描述(实际上是近期设计的Remu的语法):
+
+
+.. code-block:: OCaml
+
+    type a eq = {
+        eq : (a, a) -> bool
+    }
+    val (==) : {a eq} -> (a, a) -> bool
+    let (==) = fn eq -> eq.eq
+
+    1 == 2
+
+其中 :code:`{a}` 表示implcit argument.
+
+不用在意二元运算函数的signature, 下面不会提到.
+
+Instance Resolution & Variables As Instances
+--------------------------------------------------------
+
+观察下面这段代码,
+
+.. code-block:: OCaml
+
+    val f : {a} -> b
+    let f = fn ...
+
+    val g : b
+    let g = ...
+
+    val func : a -> a -> ...
+
+    func f g
+
+可以知道 :code:`f` 和 :code:`g` 的类型(即 :code:`{a} -> b` 和 :code:`b` 会进行一次unification,
+此时可通过变换 :code:`func f g` 的AST来查找instance.
+
+用简化的AST表示上述过程, 就是 :code:`func f g` 的AST从
+
+.. code-block:: Python
+
+    App(
+        App(
+            Sym(func)[typ1],
+            Sym(f)[type2], # type1 = {a} -> b
+        )[type3],
+        Sym(g)[type4]
+    )[type5]
+
+变成
+
+.. code-block:: Python
+
+    App(
+        App(
+            Sym(func)[type1],
+            App(
+                Sym(f)[type2],        # type1 = a -> b
+                SearchInstance(type0) # type0 = a
+            )[type2_] # type2 = b
+        )[type3],
+        Sym(g)[type4]
+    )[type5]
+
+
+只需在 :code:`SearchInstance` 中利用scoping信息, 在可访问的scope内,
+找出一个类型最 **general** 的variable, 其类型能和 :code:`type1` 的 domain 部分
+进行unification.
+
+
+"The Most General Instance" Problem & "Overlapping Instance" Problem
+------------------------------------------------------------------------------------
+
+这里主要问题是如何找类型 **最general** 的instance:
+
+作用域内可能存在有多个variable(i.e. instance), 使得其类型均可与implicit argument做unification;
+此时, 应该挑出一个受约束最小的instance, 否则, 存在多个备选的instance之间存在重叠(overlapping instances).
+
+算法的主要思路是, 通过定义一个类似subtyping(but actually not)的类型运算, 记为 :code:`<` ,
+
+其中 :code:`a < b` 表示 :code:`a, b` 进行unification之后, b不发生更新.
+
+而 :code:`<` 读作"小于", 则基于"小于"所实现的 :code:`minimum` 可以求出最general的instance.
+
+伪代码(也是实际代码...)如下:
+
+.. code-block:: Python
+
+    def minimum(implicit_argument_type, scope):
+        most_general_type = implicit_argument_type
+        most_general_instance = None
+
+        for instance, type in scope.list_typed_variables:
+
+            if most_general_type < type:
+                most_general_type = type
+                most_general_instance = instance
+
+            elif type < most_general_type == False:
+                raise "Overlapping Instance"
+
+        if most_general_instance == None:
+            raise "Cannot resolve type class instance"
+
+        return most_general_instance
+
+读者可以发现, 在算法中, overlapping instances的问题被自动地解决了.
+
+overlapping的情形, 实际上是两个备选instance的类型 :code:`a, b` 满足
+
+.. code-block::
+
+    assert a < b == false
+    assert b < a == false
+
+
+优化
+--------------------------------------------------------
+
+如果全部变量都参与instance resolution, 编译器的开销就太大了.
+所以用`instance`关键字mark一下.
+
+.. code-block:: OCaml
+
+    val show_int : 'a show
+    let show_int = {show = ...}
+
+    instance show_int  # allow treating `a` as an instance
+
+    val show : {a show} -> a -> string
+    let show = fn show_inst value = show_inst.show value
+
+    show 1
+
+该算法和相应语言设计的好处
+---------------------------------------------
+
+1. 简单轻量: 不需要引入term unification, 且对于HM的扩展非常小.
+2. 语法上方便初学者理解type class实现的本质, 使用上依然承诺简洁, 不像OCaml和F#一样需要大量boilerplate.
+3. 不引入Haskell那样的 :code:`class` 和 :code:`instance` 语言构造, 使得core lang体积减小.
+4. 自动的消除了orphan instance的问题; 毕竟, instance就是作用域内可访问的变量.
+
+
+不足之处
+-------------------------------
+
+
+Haskell里多个class的约束 :code:`(ClsA a, ClsB a) => ...` , 其顺序是insignificant的.
+
+这个问题我没有解决, 但打算用row polymorphisms来搞:
+
+也就是把
+
+.. code-block:: OCaml
+
+    val adhoc_func : {a clsA, a clsB} -> ...
+
+转成
+
+.. code-block:: OCaml
+
+    type a bothClses = a clsA with a clsB
+    val multicls : {a clsA} -> {a clsB} -> a bothClses
+    let multicls = fn instA instB -> instA with instB
+
+    val adhoc_func : {a bothClses} -> ...
