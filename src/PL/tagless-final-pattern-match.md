@@ -15,6 +15,7 @@ The core idea is,
 1. avoid using type classes to express tagless final, instead, follow OCaml's implementations(`SYM`, `SYMShow`, `sym`(by higher rank types), `SYMSelf` mentioned in [http://okmij.org/ftp/tagless-final/](http://okmij.org/ftp/tagless-final/))
 
 2. code shall look this way:
+
    ```haskell
    match (succ zero) $ defaultMatcher
     { zero_m = error "non-exhausted"

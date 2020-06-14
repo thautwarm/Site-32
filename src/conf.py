@@ -5,28 +5,6 @@ from sphinx.highlighting import lexers
 from pygments.style import Style
 from re import escape
 
-from sphinx_markdown_parser.parser import MarkdownParser
-
-def setup(app):
-    app.add_source_suffix('.md', 'markdown')
-    app.add_source_parser(MarkdownParser)
-    app.add_config_value('markdown_parser_config', {
-        'auto_toc_tree_section': 'Content',
-        'enable_auto_doc_ref': True,
-        'enable_auto_toc_tree': True,
-        'enable_eval_rst': True,
-        'extensions': [
-            'extra',
-            'nl2br',
-            'sane_lists',
-            'smarty',
-            'toc',
-            'wikilinks',
-            'pymdownx.arithmatex',
-        ],
-    }, True)
-
-
 project = "Site-32"
 copyright = "2020, thautwarm"
 author = "thautwarm"
@@ -141,7 +119,7 @@ class RBNFLexer(RegexLexer):
 lexers[SijLexer.name] = SijLexer(startinline=True)
 lexers[RBNFLexer.name] = RBNFLexer(startinline=True)
 
-extensions = ["sphinx.ext.mathjax"]
+extensions = ["sphinx.ext.mathjax", "recommonmark"]
 templates_path = ["_templates"]
 master_doc = "guide"
 
