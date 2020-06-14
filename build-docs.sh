@@ -1,9 +1,8 @@
-git checkout gh-pages
-git merge -X theirs master
+git branch -D gh-pages
+git checkout -b gh-pages
 python manage.py --clean
 python manage.py --build
-python fix.py
 git add -A
 git commit -m "docs update"
-git push origin gh-pages
+git push origin gh-pages --force
 git checkout master
