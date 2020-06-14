@@ -8,11 +8,6 @@ import asyncio
 import os.path as op
 import re
 
-"""
-<script src="./Powerful Pattern Matching in Flowpython - 知乎_files/vendor.6c16e03dca561b828324.js">
-</script>
-"""
-
 url = re.compile("(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?")
 
 netlocs_to_local = {

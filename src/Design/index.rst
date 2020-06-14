@@ -4,7 +4,7 @@ Design
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.rst
