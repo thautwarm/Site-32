@@ -85,6 +85,7 @@ preserved = [
   '.nojekyll',
   '.',
   '.git',
+  "build-docs.sh"
 ]
 
 def clean():
