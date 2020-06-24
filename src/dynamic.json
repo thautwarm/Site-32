@@ -141,6 +141,16 @@
             "Performance"
         ],
         "release_date": "2020-04-13 20:19"
+    },
+    {
+        "title": "Revision and Suggestions for PEP 622(V1)",
+        "where": "Design.PEP622-1",
+        "keywords":[
+            "Python",
+            "PEP 622",
+            "Pattern Matching"
+        ],
+        "release_date": "2020-06-24 19:25"
     }
     
 ]
