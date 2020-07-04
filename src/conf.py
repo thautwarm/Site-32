@@ -86,9 +86,9 @@ class SijLexer(RegexLexer):
 
     tokens = {
         "root": [
+            (r"\#.*\n", token.Literal),
             *[(escape(k), token.Keyword) for k in sijuiacion_keywords],
             *[(escape(o), token.Operator) for o in sijuiacion_keywords],
-            (r"#([^\\#]+|\\.)*?#", token.Literal),
             (r"\d+", token.Number),
             (
                 r"[-$\.a-zA-Z_\u4e00-\u9fa5][\-\!-$\.a-zA-Z0-9_\u4e00-\u9fa5]*",
@@ -106,12 +106,12 @@ class RBNFLexer(RegexLexer):
     tokens = {
         "root": [
             *[(escape(o), token.Punctuation) for o in ["->", "|", ";", ":", "=", "?"]],
-            (r"#([^\\#]+|\\.)*?#", token.Comment),
             (r"[-$\.a-zA-Z_\u4e00-\u9fa5][a-zA-Z0-9_\u4e00-\u9fa5]*", token.Keyword),
             (r'''"([^\\"]+|\\.)*?"''', token.Operator),
             (r"""'([^\\']+|\\.)*?'""", token.Operator),
             (r"\<.*\>", token.Operator),
             (r"\s+", token.Whitespace),
+            (r"\#.*\n", token.Comment),
         ]
     }
 
@@ -150,7 +150,7 @@ html_theme_options = {
     #    (name, "http://example.com", True) # arbitrary absolute url
     # Note the "1" or "True" value above as the third argument to indicate
     # an arbitrary url.
-    "navbar_links":  [("GitHub", "https://github.com/thautwarm", True)]
+    "navbar_links": [("GitHub", "https://github.com/thautwarm", True)]
     + [(topic, f"{topic}/index") for topic in Topics],
     # Render the next and previous page links in navbar. (Default: true)
     "navbar_sidebarrel": False,
@@ -293,4 +293,3 @@ epub_copyright = copyright
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ["search.html"]
-

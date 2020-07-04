@@ -143,7 +143,7 @@
         "release_date": "2020-04-13 20:19"
     },
     {
-        "title": "My Comments about  PEP 622(V1)",
+        "title": "My Comments about PEP 622(V1)",
         "where": "Design.PEP622-1",
         "keywords":[
             "Python",
@@ -151,6 +151,16 @@
             "Pattern Matching"
         ],
         "release_date": "2020-06-24 19:25"
+    },
+    {
+        "title": "More about PEP 622(V2)",
+        "where": "Design.PEP622-2",
+        "keywords": [
+            "Python",
+            "PEP 622",
+            "Pattern Matching"
+        ],
+        "release_date": "2020-07-04 11:56"
     }
     
 ]
