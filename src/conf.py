@@ -45,6 +45,23 @@ sijuiacion_keywords = [
     "args",
     "firstlineno",
 ]
+
+mlfs_keywords = [
+    "let",
+    "module",
+    "Module",
+    "namespace",
+    "let",
+    "if",
+    "in",
+    "then",
+    "else",
+    "match",
+    "fun",
+    "check",
+    "as"
+]
+
 common_operators = ["{", "}", "|", "=>", "_", "[", "]"]
 
 
@@ -88,7 +105,26 @@ class SijLexer(RegexLexer):
         "root": [
             (r"\#.*\n", token.Literal),
             *[(escape(k), token.Keyword) for k in sijuiacion_keywords],
-            *[(escape(o), token.Operator) for o in sijuiacion_keywords],
+            (r"\d+", token.Number),
+            (
+                r"[-$\.a-zA-Z_\u4e00-\u9fa5][\-\!-$\.a-zA-Z0-9_\u4e00-\u9fa5]*",
+                token.Name,
+            ),
+            (r'''"([^\\"]+|\\.)*?"''', token.String),
+            (r"\s+", token.Whitespace),
+        ]
+    }
+
+
+class MLFSLexer(RegexLexer):
+    name = "mlfs"
+
+    tokens = {
+        "root": [
+            (r"\#.*\n", token.Literal),
+            *[(escape(k), token.Keyword) for k in mlfs_keywords],
+            *[(escape(o), token.Punctuation) for o in ["->", "|", ";", ":", "=", "?"]],
+            (r"\d+.\d+", token.Number),
             (r"\d+", token.Number),
             (
                 r"[-$\.a-zA-Z_\u4e00-\u9fa5][\-\!-$\.a-zA-Z0-9_\u4e00-\u9fa5]*",
@@ -118,6 +154,7 @@ class RBNFLexer(RegexLexer):
 
 lexers[SijLexer.name] = SijLexer(startinline=True)
 lexers[RBNFLexer.name] = RBNFLexer(startinline=True)
+lexers[MLFSLexer.name] = RBNFLexer(startinline=True)
 
 extensions = ["sphinx.ext.mathjax", "recommonmark"]
 templates_path = ["_templates"]

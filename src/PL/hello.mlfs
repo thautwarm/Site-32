@@ -1,0 +1,57 @@
+module main
+val main : i64
+let main = 1
+
+let x = 1
+check main as main
+
+val unit : Type @unit
+let unit = unit
+
+val println : forall a. a -> unit
+let println = extern "println"
+
+val eq : forall a. a -> a -> bool
+let eq = extern "x -> y -> x == y"
+
+let _ = println (
+  if eq 1 2
+  then 1
+  else 2
+)
+
+val id : forall a. a -> a
+let id = fun x -> x
+
+val choose : forall a. a -> a -> a
+let choose = fun x -> fun y -> x
+
+let choose_id = choose id
+let x = choose_id id
+check x as x
+
+check println as println
+
+val Nat : Type @Vec
+let Nat = Nat
+
+val S : Nat -> Nat
+let S = extern "(x::UInt) -> 1 + x"
+
+val Z : Nat
+let Z = extern "UInt(0)"
+
+val matchNat : forall a. (Nat -> a) -> (Nat -> a) -> Nat -> a
+let matchNat = extern "f1 -> f2 -> x -> x == 0 ? f2(x) : f1(x)"
+
+
+
+let _ = println(x "hellow world!")
+
+let _ = println(
+  matchNat
+  (fun x -> "isS")
+  (fun x -> "isZ")
+  (S Z)
+)
+
