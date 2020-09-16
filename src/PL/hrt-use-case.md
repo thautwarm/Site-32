@@ -44,7 +44,7 @@ let _ = interp ctx @@ let a = TN.inj "a" in Fun(a, Var a)
 (* '_weak1 -> '_weak1 = <fun> *)
 ```
 
-Implementation: https://gist.github.com/thautwarm/080795ebc7d1c26d1e7f103ceb1ec1ca
+Implementation: [Gist Link](https://gist.github.com/thautwarm/080795ebc7d1c26d1e7f103ceb1ec1ca)
 
 However, we cannot have a `('a. 'a -> 'a) expr` to represent polymorphic identity function,
 due to
@@ -123,6 +123,6 @@ apply (take 2) arr3
 (* take the first 2 rows for all columns *)
 ```
 
-Implementation: https://gist.github.com/thautwarm/01ab69d4ae2420cd4ec6b7cb7607d425
+Implementation: [Gist Link](https://gist.github.com/thautwarm/01ab69d4ae2420cd4ec6b7cb7607d425)
 
 So far in OCaml, we can use a datatype to box a polymorphic function to partly achieve the higher rank polymorphisms.
