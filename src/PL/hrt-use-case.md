@@ -8,7 +8,7 @@ by which your programs can always grow without invasive refactoring and
 avoid repeating code.
 
 However, monadic programming is not yet accepted by most programming communities,
-so the higher rank polymorphism is still not honored much by the whole world.
+so the higher rank polymorphism is still not honored much in general scope.
 
 In this article we introduce a few "more practical" use cases for higher rank polymorphisms.
 
@@ -60,15 +60,15 @@ Existential types give us the power to properly specify constraints for your arg
 type Showable = forall a. Show a => a
 
 x :: Showable
-x = 1
+x = 1 -- 'Num a => Show a' exists
 
 x :: Showable
-x = 1
+x = "2" -- 'Show String' exists
 ```
 
 In OOP languages, concepts and implementations for OOP interfaces are made for achieving the same.
 
-The real existing types via higher rank polymorphisms are better than OOP interfaces because they work the same,
+The real existential types via higher rank polymorphisms are better than OOP interfaces because they work the same,
 and the former needs no special language constructs from the language compiler.
 
 ## Unifiable Manipulation for Heterogenous Data
@@ -119,7 +119,7 @@ let take n xs =
          done;
          ys
     
-apply (take 2) arr3
+apply_columns (take 2) arr3
 (* take the first 2 rows for all columns *)
 ```
 
