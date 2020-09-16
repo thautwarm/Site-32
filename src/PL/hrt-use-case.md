@@ -71,7 +71,7 @@ In OOP languages, concepts and implementations for OOP interfaces are made for a
 The real existential types via higher rank polymorphisms are better than OOP interfaces because they work the same,
 and the former needs no special language constructs from the language compiler.
 
-## Unifiable Manipulation for Heterogenous Data
+## Unifiable Manipulation for Heterogeneous Data
 
 Suppose you now have a dataframe with 3 columns in different data types.
 
