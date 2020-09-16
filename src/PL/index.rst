@@ -15,3 +15,4 @@ Programming Language
    elaborating-julia
    tagless-final-pattern-match
    tagless-final-for-julia
+   hrt-use-case

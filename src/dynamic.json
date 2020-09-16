@@ -161,6 +161,14 @@
             "Pattern Matching"
         ],
         "release_date": "2020-07-04 11:56"
+    },
+    {
+        "title": "Some Use Cases for Higher Rank Polymorphisms(No Monad)",
+        "where": "PL.hrt-use-case",
+        "keywords": [
+            "Higher Rank Polymorphisms"
+        ],
+        "release_date": "2020-09-17 06:35"
     }
     
 ]

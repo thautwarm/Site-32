@@ -1,4 +1,4 @@
-# New Use Cases for Higher Rank Polymorphisms
+# Some Use Cases for Higher Rank Polymorphisms(No Monad)
 
 Higher rank polymorphisms are regarded crucial mainly due to its necessity to
 implement **monadic programming** infrastructure.
