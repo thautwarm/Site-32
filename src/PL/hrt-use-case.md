@@ -18,7 +18,7 @@ In this article we introduce a few "more practical" use cases for higher rank po
 type 'a expr = ..
 ```
 
-Does your `eDSL` have functions? Even only first-order ones?
+Does your `eDSL` have functions? Even if first-order ones?
 
 ```ocaml
 module type TNT = sig
@@ -26,9 +26,6 @@ module type TNT = sig
   val inj : string -> 'a typed_name
   val prj : 'a typed_name -> string
 end
-
-type _ poly
-let mkpoly : 'a -> _ poly = Obj.magic
 
 type 'a typed_name = 'a TN.typed_name
 type 'a expr =
@@ -49,11 +46,11 @@ let _ = interp ctx @@ let a = TN.inj "a" in Fun(a, Var a)
 
 Implementation: https://gist.github.com/thautwarm/080795ebc7d1c26d1e7f103ceb1ec1ca
 
-However, we cannot have a `('a -> 'a) expr` to represent polymorphic identity function,
+However, we cannot have a `('a. 'a -> 'a) expr` to represent polymorphic identity function,
 due to
 
 1. value restriction: cannot generalise from a let binding when the bound value is not a function
-2. lack of higher rank types prevent polymorphic types: cannot write `('a -> 'a) expr`.
+2. lack of higher rank types: cannot write `('a. 'a -> 'a) expr` in OCaml.
 
 ## Existential Types(Require Type Classes)
 
