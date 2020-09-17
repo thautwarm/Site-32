@@ -1,6 +1,6 @@
 # Some Use Cases for Higher Rank Polymorphisms(No Monad)
 
-Higher rank polymorphisms are regarded crucial mainly due to its necessity to
+Higher rank polymorphism is regarded crucial mainly due to its necessity to
 implement **monadic programming** infrastructure.
 
 Monadic programming fundamentally enhances the programming composability,
