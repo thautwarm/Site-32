@@ -12,7 +12,7 @@ so the higher rank polymorphism is still not honored much in general scope.
 
 In this article we introduce a few "more practical" use cases for higher rank polymorphisms.
 
-## Polymorphic Functions in eDSL
+## Polymorphic Functions for eDSL
 
 ```ocaml
 type 'a expr = ..
