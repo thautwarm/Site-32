@@ -1,0 +1,5 @@
+recommonmark
+sphinx_bootstrap_theme
+sphinx==2.0.0
+Redy
+wisepy2
