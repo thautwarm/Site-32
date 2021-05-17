@@ -1,0 +1,16 @@
+2020年10月28
+============================================
+
+`emacs -nw` with UNICODE support on Windows
+---------------------------------------------------
+
+On Windows, the **only** emacs distribution with unicode support for **non-window mode** is **msys2 emacs**.
+
+![MSYS2 EMACS UNICODE](./static/msys2-emacs-unicode.PNG)
+
+
+
+Building Blog Page Failed
+---------------------------------
+
+Downgrade `sphinx`, e.g., `pip install sphinx==2.0.0`.

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>My Comments about PEP 622(V1) &#8212; thautwarm&#39;s blog pages</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PEP 622(V2)" href="PEP622-2.html" />
+    <link rel="prev" title="Research: Review and Observations of Python JIT" href="Research-Restrain-JIT.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default ">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../guide.html">
+          Site-32</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/thautwarm">GitHub</a></li>
+                <li><a href="../PL/index.html">PL</a></li>
+                <li><a href="index.html">Design</a></li>
+                <li><a href="../DSL/index.html">DSL</a></li>
+                <li><a href="../Fiction/index.html">Fiction</a></li>
+                <li><a href="../Others/index.html">Others</a></li>
+                <li><a href="../Backup/index.html">Backup</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../guide.html">Site-32 <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Site-32 Considered Harmful</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Compiler/index.html">Compiler</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Design</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html">General Programming In Julia Language From An Advanced Standpoint</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#first-class">First-Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#polymorphisms-of-multiple-dispatch">Polymorphisms of Multiple Dispatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#full-featured-macros">Full-Featured Macros</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#macro-the-function-from-ast-to-ast">Macro, the Function from AST to AST</a></li>
+<li class="toctree-l4"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#scope-and-hygiene">Scope and Hygiene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#other-useful-knowledge-for-julia-macros">Other Useful Knowledge for Julia Macros</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#a-big-step-forward-in-ast-manipulations">A Big Step Forward in AST Manipulations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#limitation-absence-of-function-types">Limitation: Absence of Function Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Some-Thoughts-About-The-RestrainJIT.html">Some Thoughts About The Restrain JIT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Research-Restrain-JIT.html">Research: Review and Observations of Python JIT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Research-Restrain-JIT.html#history">History</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Research-Restrain-JIT.html#observations">Observations</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">My Comments about PEP 622(V1)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#my-concerns">My Concerns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scoping-issues">Scoping Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comments-about-the-rejection-of-and-patterns">Comments about the rejection of AND (&amp;) patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#consider-performance-guards-as-patterns">Consider Performance: Guards As Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#grammar-change-feature-request-parameterized-patterns">Grammar Change &amp; Feature Request: Parameterized Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#an-alternative-match-protocol-can-be-better-in-simplicity-efficiency-and-expressivity">An Alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> Protocol Can be Better in Simplicity, Efficiency, and Expressivity.</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#simplicity-of-the-alternative-match-protocol">Simplicity of the alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-alternative-match-protocol-is-efficient">The alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol is efficient</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-alternative-match-protocol-results-in-better-expressivity">The alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol results in better expressivity</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#miscellaneous">Miscellaneous</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#else-clauses-in-pattern-matching"><code class="docutils literal notranslate"><span class="pre">else</span></code> Clauses in Pattern Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#grammar-of-patterns-could-become-that-of-expressions">Grammar of Patterns Could Become That of Expressions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="PEP622-2.html">PEP 622(V2)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#bringing-else-back-is-rejected">Bringing <code class="docutils literal notranslate"><span class="pre">else</span></code> Back is Rejected</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#variables-in-patterns-bindings-instead-of-evaluations-and-comparisons">Variables in Patterns: Bindings instead of Evaluations and Comparisons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#alternative-match-protocol">Alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#the-switch-semantics">The Switch Semantics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#scope">Scope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../DSL/index.html">DSL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html">Write You A Query Language</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#definition-of-syntaxes">Definition of Syntaxes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#codegen-target">Codegen Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#refinement-of-codegen-typed-columns">Refinement of Codegen: Typed Columns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#implementation">Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#enjoy-you-a-query-language">Enjoy You A Query Language</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Fiction/index.html">Fiction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id1">2021年4月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id3">2020年10月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id4">2020年6月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id7">2020年4月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id9">2019年10月</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Fiction/index.html#id10">日前安排</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Fiction/index.html#id18">目录</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-13.html">Smarter Witnesses for Type Classes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#notation">Notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#instance-resolution-variables-as-instances">Instance Resolution &amp; Variables As Instances</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#the-most-general-instance-problem-overlapping-instance-problem">“The Most General Instance” Problem &amp; “Overlapping Instance” Problem</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id1">优化</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id2">该算法和相应语言设计的好处</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id3">不足之处</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-15.html">我和Python的故事</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id1">第0节</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id2">第1节: 科学计算, Python, 生物信息学和数据挖掘</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id3">第2节: 转型的经过, 走向程序语言设计领域</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id4">第3节: 想要给Python添加高级语言特性的理想</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id5">第4节: Flowpython</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#bnf-parser-generator">第4节: BNF, Parser Generator和语言制造机器</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-30.html">杂谈</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-30.html#pycon-china-2019">PyCon China 2019 成都</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-30.html#id2">直面自己的人格缺陷</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-06.html">杂谈</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-14.html">我太难了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-17.html">我太懂了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-01-07.html">打通</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-01-07.html#parsing">Parsing</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-01-07.html#python">Python 字节码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-02.html">Tagless Final in F#</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-07.html">Encoding Typeclass Default Methods in Purescript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-11.html">近期规划</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-02-11.html#purescript-python">Purescript-Python</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#anf">从表达式优先到语句优先: ANF变换</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#pythonfirst-class">Python虚拟机上的First-class的表达式优先</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#id2">社区意见</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/cure/和平日久.html">如何写出令人感到幸福的小说</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id2">合理利用“无敌”元素</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id3">“纯爱”而非“后宫”</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id4">细腻的画面感</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id5">节奏流畅的回忆</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id6">暗线和潜台词</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id7">总结</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html">乐理菜鸡怎么给自己的小说写BGM?</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id1">找调</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id2">打谱</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id3">总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PL/index.html">Programming Language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../PL/HKT.html">Higher Kinded Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/typeclass.html">Type Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/typeclass.html#about-abstractions">About Abstractions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/typeclass.html#about-separation-of-type-definitions-and-data-manipulations">About Separation of Type Definitions and Data Manipulations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/paper-reading-LHKP.html">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#how-to">How-To</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#static-resolution-more-polymorphic">Static Resolution: More polymorphic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#limitation1-much-higher-kinded">Limitation1: Much Higher Kinded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#limitation2-identity">Limitation2: Identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#why-this-lightweight-higher-polymorphism-instead-of-the-haskell-approach">Why this Lightweight-Higher-Polymorphism instead of the Haskell approach</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html">Compelling Higher Kinded Types and Type Classes in F#</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#active-pattern">Active Pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#statically-resolved-type-parameters">Statically Resolved Type Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#the-getsig-function-and-implicits">The <em>getsig</em> Function and Implicits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#why-abstractclass">Why AbstractClass?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#why-functor-f-instead-of-the-straightforward-functor">Why <em>Functor&lt;’F&gt;</em> instead of the straightforward <em>Functor</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html">FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#terminology">Terminology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#background">Background</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#application">Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191212.html#scoping-name-resolution">Scoping: Name Resolution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191212.html#typing-type-inference">Typing: Type Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191219.html">Tagless Final For Writing Compilers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#problem">Problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#tagless-final-for-compiler-phases">Tagless Final For Compiler Phases</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#quick-start-for-tagless-final">Quick Start for Tagless Final</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#grammar">“Grammar”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#expanding-representation">Expanding Representation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#problems-of-decoupling-and-compositing">Problems of Decoupling and Compositing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#fsym">FSYM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#laziness-for-mutual-dependencies">Laziness, for Mutual Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/elaborating-julia.html">Julia Counts for PL Researchers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#expressiveness">Expressiveness</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#staging">Staging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#advantages-as-a-codegen-backend">Advantages as a codegen backend</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/tagless-final-pattern-match.html">First-class Pattern Matching in the Final Approach</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#core-ideas">Core Ideas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#full-implementation-in-haskell">Full implementation in Haskell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#enhancement-1">Enhancement 1</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/tagless-final-for-julia.html">Julia Benefits from Tagless Final</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#what-happened-today">What Happened Today?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#an-example-turns-out-to-be-type-unstable">An Example Turns Out to be Type Unstable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#tagless-final-encoding-about-above-code">Tagless Final Encoding about Above Code</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/hrt-use-case.html">Some Use Cases for Higher Rank Polymorphisms(No Monad)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/hrt-use-case.html#polymorphic-functions-for-edsl">Polymorphic Functions for eDSL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/hrt-use-case.html#existential-types">Existential Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/hrt-use-case.html#manipulation-for-heterogeneous-data">Manipulation for Heterogeneous Data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Backup/index.html">Backup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Backup/高观点下的Julia泛用编程.html">高观点下的Julia泛用编程</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Others/index.html">Others</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Others/contributions.html">Thautwarm’s Open Source Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#projects-owned-by-other-individuals-organizations">Projects Owned By Other Individuals/Organizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#leading-projects">Leading Projects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#other-notable-personal-projects">Other Notable Personal Projects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Subsections <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">My Comments about PEP 622(V1)</a><ul>
+<li><a class="reference internal" href="#my-concerns">My Concerns</a></li>
+<li><a class="reference internal" href="#scoping-issues">Scoping Issues</a></li>
+<li><a class="reference internal" href="#comments-about-the-rejection-of-and-patterns">Comments about the rejection of AND (&amp;) patterns</a></li>
+<li><a class="reference internal" href="#consider-performance-guards-as-patterns">Consider Performance: Guards As Patterns</a></li>
+<li><a class="reference internal" href="#grammar-change-feature-request-parameterized-patterns">Grammar Change &amp; Feature Request: Parameterized Patterns</a></li>
+<li><a class="reference internal" href="#an-alternative-match-protocol-can-be-better-in-simplicity-efficiency-and-expressivity">An Alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> Protocol Can be Better in Simplicity, Efficiency, and Expressivity.</a><ul>
+<li><a class="reference internal" href="#simplicity-of-the-alternative-match-protocol">Simplicity of the alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol</a></li>
+<li><a class="reference internal" href="#the-alternative-match-protocol-is-efficient">The alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol is efficient</a></li>
+<li><a class="reference internal" href="#the-alternative-match-protocol-results-in-better-expressivity">The alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol results in better expressivity</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#miscellaneous">Miscellaneous</a><ul>
+<li><a class="reference internal" href="#else-clauses-in-pattern-matching"><code class="docutils literal notranslate"><span class="pre">else</span></code> Clauses in Pattern Matching</a></li>
+<li><a class="reference internal" href="#grammar-of-patterns-could-become-that-of-expressions">Grammar of Patterns Could Become That of Expressions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="my-comments-about-pep-622-v1">
+<h1>My Comments about PEP 622(V1)<a class="headerlink" href="#my-comments-about-pep-622-v1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="my-concerns">
+<h2>My Concerns<a class="headerlink" href="#my-concerns" title="Permalink to this headline">¶</a></h2>
+<p>Python pattern matching is what in the very beginning motivates me, to study in the field of Programming Languages.</p>
+<p>Now I’m skilled in more than 30 programming languages, and have developed a lot of interests in many other topics. My research topic is CPython compatible JIT compiler, it seems I cannot graduate if I cannot work it out.</p>
+<p>From these facts, you know how special Python is to me.</p>
+<p>Today, a friend of mine, <a class="reference external" href="https://laike9m.com/">laike9m</a> referred me a tweet which talks about PEP 622, Structural Pattern Matching for Python..</p>
+<p>My youth recalled!</p>
+<p>Next, I read up the proposal, went to the cpython repo branch and checked the grammar.</p>
+<p>There’re quite a few issues with the PEP and maybe the implementations,
+and I’d give my concerns in this article.</p>
+<p>To convince the readers, I’d show my concerns with pattern matching stuffs:</p>
+<ol class="simple">
+<li>I’m familiar with pattern matching in many programming languages(including the languages mentioned in PEP 622).</li>
+<li>I understand the most complex and compelling parts of pattern matching in F#/OCaml, Haskell.</li>
+<li>I wrote lots of Scala code during some period, and I nearly only use case classes + abstract classes(using ADTs), and traits.</li>
+<li>I studied Elixir and Erlang and used to earn money with them, by writing games. Especially, I love Elixir’s pin-operators.</li>
+<li>I wrote lots of pattern matching implementations for Python:<ul>
+<li><a class="reference external" href="https://github.com/thautwarm/moshmosh">moshmosh</a>(it’s a Japanese phrase used in phone calls), which provides a nearly full-featured pattern matching implementation(most stuffs mentioned in PEP 622 are implemented there), and I’m pretty sure this is so far the fastest implementation because I do code generation statically.</li>
+<li><a class="reference external" href="https://github.com/Xython/pattern-matching">Xython/pattern-matching</a>, this is only for fun. The infrastructure of this library is conceptually the same as the very popular one PamPy, but I did this in year 2017.</li>
+</ul>
+</li>
+<li>I also implemented the <a class="reference external" href="https://github.com/thautwarm/MLStyle.jl">Extensible Pattern Matching for Julia Programming Language</a>. Unlike moshmosh and Xython/pattern-matching, this library is actually widely in use because it’s very efficient, extensible and effective.</li>
+<li>(this item is a little bit academic)I have understandings about pattern matching from some other point of views, for instance, I can use denotational semantics to show the underlying structures of pattern matching: <a class="reference external" href="https://thautwarm.github.io/Site-32/PL/tagless-final-pattern-match.html">First-class Pattern Matching in the Final Approach</a>.</li>
+<li>Maybe people in Python-ideas mailing list could remember what I post there in the summer of 2017. I modified CPython codebase and made something called “flowpython”, it supports basic pattern matching but is quite naïve/limited. Besides, I learned *BNF from CPython project, thanks a lot, now I’m quite skilled in parsing things.. that’s another story..</li>
+</ol>
+</div>
+<div class="section" id="scoping-issues">
+<h2>Scoping Issues<a class="headerlink" href="#scoping-issues" title="Permalink to this headline">¶</a></h2>
+<p>A simple example could show this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">match</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+    <span class="n">case</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span> <span class="o">...</span>
+    <span class="n">case</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span> <span class="o">...</span>
+    <span class="n">case</span> <span class="n">_</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A pattern might fail in the halfway, I don’t yet see the specification talk anything about this problem.</p>
+<p>In the exemplar code, variable <code class="docutils literal notranslate"><span class="pre">a</span></code> should be <code class="docutils literal notranslate"><span class="pre">1</span></code> before a match clause succeeded,
+and especially, expected to be <code class="docutils literal notranslate"><span class="pre">1</span></code> in the body of <code class="docutils literal notranslate"><span class="pre">case</span> <span class="pre">_</span></code>.</p>
+<p>However, <a class="reference external" href="https://www.python.org/dev/peps/pep-0622/#match-semantics">as the specification said</a>:</p>
+<blockquote>
+<div>Name bindings made during a successful pattern match outlive the executed suite and can be used after the match statement. This follows the logic of other Python statements that can bind names, such as for loop and with statement.</div></blockquote>
+<p>It seems that <code class="docutils literal notranslate"><span class="pre">a</span></code> will be modified unexpectedly to <code class="docutils literal notranslate"><span class="pre">2</span></code>, when we come to the last match clause.</p>
+<p>This is dangerous.</p>
+<p>In <a class="reference external" href="https://github.com/thautwarm/moshmosh">moshmosh</a>, I solved this issue by a simple technique called <strong>gensym</strong>, which means generating unique symbols that users cannot write down.</p>
+<p>By gensym, before any match clause succeeded, an occurrence of name pattern will <strong>locally shadow</strong> a symbol. A simple scoping analysis shall solve this, by transforming</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">match</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+    <span class="n">case</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]:</span> <span class="o">...</span>
+    <span class="n">case</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span> <span class="o">...</span>
+    <span class="n">case</span> <span class="n">_</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>into</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>a = 1
+match [2, 3]:
+    case [0, 1]: ...
+    case [x$asda, 2]: 
+        a = x$asda
+        ...
+    case _:
+        print(a)
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">x$asda</span></code> is a unique variable name used internally, exactly like how what we emit code for list/map/set comprehensions.</p>
+<p>HINTS For people not familiar with CPython compiler details: we generate a variable whose name is <code class="docutils literal notranslate"><span class="pre">.0</span></code>,
+which couldn’t be written down by a user:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dis</span>
+
+<span class="nd">@dis</span><span class="o">.</span><span class="n">dis</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+   <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+
+<span class="o">...</span>
+<span class="n">Disassembly</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">code</span> <span class="nb">object</span> <span class="o">&lt;</span><span class="n">listcomp</span><span class="o">&gt;</span> <span class="n">at</span> <span class="mh">0x000002694FF09C00</span><span class="p">,</span> <span class="n">file</span> <span class="s2">&quot;&lt;...&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="o">&gt;</span><span class="p">:</span>
+  <span class="mi">2</span>           <span class="mi">0</span> <span class="n">BUILD_LIST</span>               <span class="mi">0</span>
+              <span class="mi">2</span> <span class="n">LOAD_FAST</span>                <span class="mi">0</span> <span class="p">(</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span>
+        <span class="o">&gt;&gt;</span>    <span class="mi">4</span> <span class="n">FOR_ITER</span>                 <span class="mi">8</span> <span class="p">(</span><span class="n">to</span> <span class="mi">14</span><span class="p">)</span>
+              <span class="mi">6</span> <span class="n">STORE_FAST</span>               <span class="mi">1</span> <span class="p">(</span><span class="n">i</span><span class="p">)</span>
+              <span class="mi">8</span> <span class="n">LOAD_FAST</span>                <span class="mi">1</span> <span class="p">(</span><span class="n">i</span><span class="p">)</span>
+             <span class="mi">10</span> <span class="n">LIST_APPEND</span>              <span class="mi">2</span>
+             <span class="mi">12</span> <span class="n">JUMP_ABSOLUTE</span>            <span class="mi">4</span>
+        <span class="o">&gt;&gt;</span>   <span class="mi">14</span> <span class="n">RETURN_VALUE</span>
+
+<span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="comments-about-the-rejection-of-and-patterns">
+<h2>Comments about the rejection of AND (&amp;) patterns<a class="headerlink" href="#comments-about-the-rejection-of-and-patterns" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://www.python.org/dev/peps/pep-0622/#id77">I saw AND patterns rejected</a>, for</p>
+<blockquote>
+<div>However, it’s not clear how useful this would be…</div></blockquote>
+<p>This can be extremely useful when working with custom patterns.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">match</span> <span class="n">value</span><span class="p">:</span>
+    <span class="n">case</span> <span class="n">P1</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">and</span> <span class="n">P2</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="n">when</span> <span class="n">pred</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">P1</span></code> and <code class="docutils literal notranslate"><span class="pre">P2</span></code> here may be custom patterns, each of which destructs the data with
+one perspective, and extract something we’d use latter.</p>
+<p>This can be very frequent in the real world, say we’re working with URL strings,
+assume that we’ve implemented some small patterns like <code class="docutils literal notranslate"><span class="pre">Urlsplit</span></code> and <code class="docutils literal notranslate"><span class="pre">Urlopen</span></code>,
+which respectively uses <code class="docutils literal notranslate"><span class="pre">urllib.parse.urlsplit</span></code> and <code class="docutils literal notranslate"><span class="pre">urllib.request.urlopen</span></code>
+and presents destructed results:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">match</span> <span class="n">url</span><span class="p">:</span>
+    <span class="n">case</span> <span class="n">Urlsplit</span><span class="p">(</span><span class="n">netloc</span><span class="o">=</span><span class="n">n</span><span class="p">)</span> <span class="ow">and</span> <span class="n">Urlopen</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="mi">404</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">==</span> <span class="s2">&quot;docs.python.org&quot;</span><span class="p">:</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>Without AND patterns, we cannot reuse the existing patterns like
+<code class="docutils literal notranslate"><span class="pre">Urlsplit</span></code> or <code class="docutils literal notranslate"><span class="pre">Urlopen</span></code>. This disables the composability/modularity of programs.</p>
+<p>By providing AND patterns, it becomes feasible for us to decouple our codes by implementing small patterns.
+Users can reuse our patterns by combining them with AND patterns and OR patterns, even if we don’t know how our code will get used.</p>
+</div>
+<div class="section" id="consider-performance-guards-as-patterns">
+<h2>Consider Performance: Guards As Patterns<a class="headerlink" href="#consider-performance-guards-as-patterns" title="Permalink to this headline">¶</a></h2>
+<p>It’s well known that in many programming languages having pattern matching, the guards are treated as a special syntax. There’re a few:</p>
+<div class="highlight-haskell notranslate"><div class="highlight"><pre><span></span><span class="kr">case</span> <span class="n">expr</span> <span class="kr">of</span>
+    <span class="n">pat</span> <span class="o">|</span> <span class="n">guard</span> <span class="ow">-&gt;</span> <span class="o">...</span>
+</pre></div>
+</div>
+<div class="highlight-ocaml notranslate"><div class="highlight"><pre><span></span><span class="k">match</span> <span class="n">expr</span> <span class="k">with</span>
+<span class="o">|</span> <span class="n">pat</span> <span class="k">when</span> <span class="n">guard</span> <span class="o">-&gt;</span> <span class="o">...</span>
+</pre></div>
+</div>
+<div class="highlight-scala notranslate"><div class="highlight"><pre><span></span><span class="n">expr</span> <span class="k">match</span> <span class="o">{</span>
+    <span class="k">case</span> <span class="n">pat</span> <span class="k">if</span> <span class="n">guard</span> <span class="k">=&gt;</span> <span class="o">...</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">match</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pat</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">guard</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">...,</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>…many examples</p>
+<p>It seems that it’s a routine to make guards as a special syntax.</p>
+<p>However, the problem is, <strong>all of them have very powerful static compilers or JIT compilers</strong>, in this case, <strong>putting conditional jumps later will help to optimize instruction pipelines for them</strong>.</p>
+<p>Python does not have such advanced optimizations, hence an early check might helps to avoid redundant computations. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">match</span> <span class="n">expr</span><span class="p">:</span>
+    <span class="n">case</span> <span class="n">C</span><span class="p">(</span><span class="n">pat1</span> <span class="n">when</span> <span class="n">p1</span><span class="p">,</span> <span class="n">pat2</span><span class="p">,</span> <span class="n">pat3</span><span class="p">):</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>If the failure of pat1 is considered frequent, we might put the check <code class="docutils literal notranslate"><span class="pre">p1</span></code> earlier, to avoid computing
+<code class="docutils literal notranslate"><span class="pre">pat2</span></code>, <code class="docutils literal notranslate"><span class="pre">pat3</span></code> redundantly in the most cases.</p>
+<p>I have to admit adding a syntax for this is quite an issue, but the feature and its benefits can be practical.</p>
+</div>
+<div class="section" id="grammar-change-feature-request-parameterized-patterns">
+<h2>Grammar Change &amp; Feature Request: Parameterized Patterns<a class="headerlink" href="#grammar-change-feature-request-parameterized-patterns" title="Permalink to this headline">¶</a></h2>
+<p>I saw this in the <a class="reference external" href="https://www.python.org/dev/peps/pep-0622/#id20">Deferred Ideas</a>, and I want to stress this again at here.</p>
+<p>The parameterized patterns can be very convenient in practice, and Microsoft Docs has given good explanations about this: <a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/active-patterns#parameterized-active-patterns">F# Documents: Parameterized Active Patterns</a>.</p>
+<p>This can be naturally achieved in Python, by changing the <a class="reference external" href="https://github.com/brandtbucher/cpython/blob/276c2b08270861f939f79b6ceec995effe83073f/Grammar/python.gram#L253">grammar</a> from</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">class_pattern</span><span class="p">[</span><span class="n">expr_ty</span><span class="p">]:</span>
+    <span class="o">|</span> <span class="n">func</span><span class="o">=</span><span class="n">name_or_attr</span> <span class="s1">&#39;(&#39;</span> <span class="s1">&#39;)&#39;</span> <span class="p">{</span> <span class="n">_Py_Call</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">EXTRA</span><span class="p">)</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>to</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">class_pattern</span><span class="p">[</span><span class="n">expr_ty</span><span class="p">]:</span>
+    <span class="o">|</span> <span class="n">func</span><span class="o">=</span><span class="n">call_or_attr</span> <span class="s1">&#39;(&#39;</span> <span class="s1">&#39;)&#39;</span> <span class="p">{</span> <span class="n">_Py_Call</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">EXTRA</span><span class="p">)</span> <span class="p">}</span>
+    <span class="o">|</span> <span class="o">...</span>
+
+<span class="n">call_or_attr</span><span class="p">[</span><span class="n">expr_ty</span><span class="p">]:</span>
+    <span class="o">|</span> <span class="n">call</span>  <span class="c1"># derives python&#39;s call syntax</span>
+    <span class="o">|</span> <span class="n">NAME</span>
+
+<span class="n">call</span><span class="p">:</span> <span class="o">...</span> <span class="c1"># maybe &#39;primary&#39;</span>
+</pre></div>
+</div>
+<p>In my implementation of pattern matching, <a class="reference external" href="https://github.com/thautwarm/moshmosh">moshmosh</a>, a pattern is just an <code class="docutils literal notranslate"><span class="pre">expr</span></code>, For instance:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moshmosh.extension</span> <span class="kn">import</span> <span class="n">perform_extension</span>
+<span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">getsource</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="k">def</span> <span class="nf">rewrite</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="n">getsource</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="n">perform_extension</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+    <span class="n">exec</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span>
+
+<span class="k">class</span> <span class="nc">Regex</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="c1"># This is moshmosh&#39;s &#39;__match__&#39; protocol,</span>
+    <span class="c1"># which is different from PEP 622 proposal.</span>
+    <span class="c1"># Also, slightly differs from</span>
+    <span class="c1"># the proposal by this article</span>
+    <span class="k">def</span> <span class="nf">__match__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_arg</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n_arg</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">match</span> <span class="ow">and</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+<span class="c1"># REPRODUCTION HINTS: the next line has semantics, do not delete it!</span>
+<span class="c1"># +pattern-matching</span>
+    <span class="k">with</span> <span class="n">match</span><span class="p">(</span><span class="s2">&quot;PEP 622!&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">Regex</span><span class="p">(</span><span class="s2">&quot;PEP (\d+\!)&quot;</span><span class="p">)(</span><span class="n">a</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;not matched&quot;</span><span class="p">)</span>
+
+<span class="n">rewrite</span><span class="p">(</span><span class="n">test</span><span class="p">)()</span>
+<span class="c1">#=&gt; 622!</span>
+</pre></div>
+</div>
+<p>Also, this can make <code class="docutils literal notranslate"><span class="pre">InRange</span></code> pattern more efficient:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">InRange</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__match__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">instance</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">range</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+<span class="n">match</span> <span class="mi">5</span><span class="p">:</span>
+    <span class="n">case</span> <span class="n">InRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)():</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="an-alternative-match-protocol-can-be-better-in-simplicity-efficiency-and-expressivity">
+<h2>An Alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> Protocol Can be Better in Simplicity, Efficiency, and Expressivity.<a class="headerlink" href="#an-alternative-match-protocol-can-be-better-in-simplicity-efficiency-and-expressivity" title="Permalink to this headline">¶</a></h2>
+<p>Let me firstly introduce an alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol.</p>
+<ul>
+<li><p class="first">RULE: no args</p>
+<p><code class="docutils literal notranslate"><span class="pre">match</span> <span class="pre">v:</span> <span class="pre">case</span> <span class="pre">C()</span></code> matches, iff</p>
+<p><code class="docutils literal notranslate"><span class="pre">C.__match__(v,</span> <span class="pre">0,</span> <span class="pre">())</span> <span class="pre">is</span> <span class="pre">()</span></code>.</p>
+</li>
+<li><p class="first">RULE: only positional args</p>
+<p><code class="docutils literal notranslate"><span class="pre">match</span> <span class="pre">v:</span> <span class="pre">case</span> <span class="pre">C(a1,</span> <span class="pre">a2,</span> <span class="pre">...,</span> <span class="pre">an)</span></code> matches, iff</p>
+<p><code class="docutils literal notranslate"><span class="pre">C.__match__(v,</span> <span class="pre">n,</span> <span class="pre">())</span></code> matches a sequence pattern <code class="docutils literal notranslate"><span class="pre">(a1,</span> <span class="pre">...,</span> <span class="pre">an)</span></code>.</p>
+</li>
+<li><p class="first">RULE: only keyword args</p>
+<p><code class="docutils literal notranslate"><span class="pre">match</span> <span class="pre">v:</span> <span class="pre">case</span> <span class="pre">C(k1=kp1,</span> <span class="pre">...,</span> <span class="pre">kn=kpn)</span></code> matches, iff</p>
+<p><code class="docutils literal notranslate"><span class="pre">C.__match__(v,</span> <span class="pre">0,</span> <span class="pre">('k1',</span> <span class="pre">...,</span> <span class="pre">'kn'))</span></code> matches a tuple pattern <code class="docutils literal notranslate"><span class="pre">(kp1,</span> <span class="pre">...,</span> <span class="pre">kpn)</span></code>.</p>
+</li>
+<li><p class="first">RULE: positional + keyword</p>
+<p><code class="docutils literal notranslate"><span class="pre">match</span> <span class="pre">v:</span> <span class="pre">case</span> <span class="pre">C(a1,</span> <span class="pre">...,</span> <span class="pre">am,</span> <span class="pre">k1=kp1,</span> <span class="pre">...,</span> <span class="pre">kn=kpn)</span></code> matches, iff</p>
+<p><code class="docutils literal notranslate"><span class="pre">C.__match__(v,</span> <span class="pre">m,</span> <span class="pre">('k1',</span> <span class="pre">...,</span> <span class="pre">'kn'))</span></code> matches a tuple pattern <code class="docutils literal notranslate"><span class="pre">(a1,</span> <span class="pre">...,</span> <span class="pre">am,</span> <span class="pre">kp1,</span> <span class="pre">...,</span> <span class="pre">kpn)</span></code></p>
+</li>
+</ul>
+<p>In fact, above 4 rules are consistent, and can be unified into one.</p>
+<p>I separated them into 4, to show this is <strong>FULL-FEATURED</strong>, which means it can cover the functionalities of the <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol presented in PEP 622.</p>
+<p><strong>The advantage of this alternative design</strong> will make the custom patterns</p>
+<ul class="simple">
+<li><strong>simpler to write and understand</strong>, and</li>
+<li><strong>more efficient in runtime</strong>, and</li>
+<li><strong>more expressive</strong></li>
+</ul>
+<div class="section" id="simplicity-of-the-alternative-match-protocol">
+<h3>Simplicity of the alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol<a class="headerlink" href="#simplicity-of-the-alternative-match-protocol" title="Permalink to this headline">¶</a></h3>
+<p>Avoiding <code class="docutils literal notranslate"><span class="pre">__match_args__</span></code> already brings simplicity.</p>
+<p>Besides, as the PEP says, <code class="docutils literal notranslate"><span class="pre">InRange</span></code> shall be made with custom patterns,
+we could consider its implementation.</p>
+<p>After reading the PEP, I got to know how to implement this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Check</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">InRangeProxy</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lo_check</span><span class="p">,</span> <span class="n">hi_check</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lo_check</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hi_check</span> <span class="o">=</span> <span class="n">lo_check</span><span class="p">,</span> <span class="n">hi_check</span>
+    
+<span class="k">class</span> <span class="nc">InRange</span><span class="p">:</span>
+    <span class="n">__match_args__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lo_check&#39;</span><span class="p">,</span> <span class="s1">&#39;hi_check&#39;</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>    
+    <span class="k">def</span> <span class="nf">__match__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">InRangeProxy</span><span class="p">(</span>
+            <span class="n">Check</span><span class="p">(</span><span class="k">lambda</span> <span class="n">lo</span><span class="p">:</span> <span class="n">lo</span> <span class="o">&lt;=</span> <span class="n">instance</span><span class="p">),</span>
+            <span class="n">Check</span><span class="p">(</span><span class="k">lambda</span> <span class="n">hi</span><span class="p">:</span> <span class="n">instance</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">)</span>
+        <span class="p">)</span>
+
+<span class="n">match</span> <span class="mi">5</span><span class="p">:</span>
+    <span class="n">case</span> <span class="n">InRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>However, with the protocol proposed in this article:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Check</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">InRange</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__match__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">argcount</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
+       <span class="k">assert</span> <span class="ow">not</span> <span class="n">kwargs</span>
+       <span class="n">match</span> <span class="n">argcount</span><span class="p">:</span>
+           <span class="n">case</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="p">(</span><span class="n">Check</span><span class="p">(</span><span class="k">lambda</span> <span class="n">hi</span><span class="p">:</span> <span class="n">instance</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">),</span> <span class="p">)</span>
+           <span class="n">case</span> <span class="mi">2</span><span class="p">:</span> <span class="k">return</span> <span class="p">(</span><span class="n">Check</span><span class="p">(</span><span class="k">lambda</span> <span class="n">lo</span><span class="p">:</span> <span class="n">lo</span> <span class="o">&lt;=</span> <span class="n">instance</span><span class="p">),</span>
+                           <span class="n">Check</span><span class="p">(</span><span class="k">lambda</span> <span class="n">hi</span><span class="p">:</span> <span class="n">instance</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">))</span>
+           <span class="n">case</span> <span class="n">_</span><span class="p">:</span> <span class="k">raise</span> <span class="n">ImpossibleMatch</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+
+<span class="n">match</span> <span class="mi">5</span><span class="p">:</span>
+    <span class="n">case</span> <span class="n">InRange</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">):</span> <span class="c1"># in &#39;range(0, 10)&#39;</span>
+        <span class="o">...</span>
+    <span class="n">case</span> <span class="n">InRange</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span> <span class="c1"># in &#39;range(6)&#39;</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>Works exactly the same.</p>
+<p>We will get the following benefits:</p>
+<ul class="simple">
+<li>we avoid introducing a <code class="docutils literal notranslate"><span class="pre">__match_args__</span></code>, and its relatively complex rules for <code class="docutils literal notranslate"><span class="pre">__match__</span></code>.</li>
+<li>we avoid introducing a proxy type</li>
+<li>the return of <code class="docutils literal notranslate"><span class="pre">__match__</span></code> has a shape quite similar to the pattern(intuitive).</li>
+</ul>
+</div>
+<div class="section" id="the-alternative-match-protocol-is-efficient">
+<h3>The alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol is efficient<a class="headerlink" href="#the-alternative-match-protocol-is-efficient" title="Permalink to this headline">¶</a></h3>
+<p>Using a proxy type can result in more allocations, but this is not the most severe drawbacks.</p>
+<p>The most crucial 2 drawbacks of current <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol are:</p>
+<ol class="simple">
+<li>it cannot verify the validation of argument count/keyword names earlier.</li>
+<li><code class="docutils literal notranslate"><span class="pre">__match_args__</span></code> produces an indirect lookup.</li>
+</ol>
+<p><strong>For the first point</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">match</span> <span class="n">expr</span><span class="p">:</span>
+    <span class="n">case</span> <span class="n">C1</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">C2</span><span class="p">(</span><span class="o">...</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="n">C3</span><span class="p">(</span><span class="o">...</span><span class="p">),</span> <span class="n">c</span><span class="o">=</span><span class="n">C4</span><span class="p">(</span><span class="o">...</span><span class="p">)):</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>Now, tell me, what if destructuring <code class="docutils literal notranslate"><span class="pre">C1</span></code> should only accept keyword arguments <code class="docutils literal notranslate"><span class="pre">a</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>?</p>
+<p>Currently, should we have to compute the matching for <code class="docutils literal notranslate"><span class="pre">C2(...)</span></code>, <code class="docutils literal notranslate"><span class="pre">C3(...)</span></code>, then find <code class="docutils literal notranslate"><span class="pre">c=C4(...)</span></code> invalid.</p>
+<p>This is inefficient.</p>
+<p>Also, when it comes to the positional arguments, currently we can limitedly check if the argument count is valid, by checking the count of sub-patterns with <code class="docutils literal notranslate"><span class="pre">len(__match_args__)</span></code>. However our proposal <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol allows more flexible checks. See <a class="reference external" href="#Better-Expressivity">Better Expressivity</a> for more details.</p>
+<p>Anyway, with our proposal <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol, we can fail a match in proper time, to avoid redundant computations.</p>
+<p><strong>For the second point</strong>, indirect lookups can be expensive for tiny operations:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span>In [1]: x = [1, 2, 3]
+
+In [2]: y = [&quot;aaa&quot;, &quot;bbb&quot;, &quot;aba&quot;]
+
+
+In [3]: class S:
+   ...:     def __init__(self, kws, args):
+   ...:          for kw, arg in zip(kws, args):
+   ...:              setattr(self, kw, arg)
+   ...:          self._kws = kws
+ 
+In [4]: s = S(y, x)
+
+In [5]: %timeit x[1]
+73.1 ns ± 1.54 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
+
+In [6]: %timeit getattr(s, s._kws[1])
+296 ns ± 8.25 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+</pre></div>
+</div>
+<p>With compiler tricks, we can make <code class="docutils literal notranslate"><span class="pre">getattr(s,</span> <span class="pre">s._kws[1])</span></code> faster, but it shall be still far slower than <code class="docutils literal notranslate"><span class="pre">x[1]</span></code>.</p>
+<p>Drawbacks of this proposal: when a proxy type is not needed, this alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> may be slower, as a tuple is always allocated.</p>
+</div>
+<div class="section" id="the-alternative-match-protocol-results-in-better-expressivity">
+<h3>The alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol results in better expressivity<a class="headerlink" href="#the-alternative-match-protocol-results-in-better-expressivity" title="Permalink to this headline">¶</a></h3>
+<p>So far, the design for patterns <code class="docutils literal notranslate"><span class="pre">[]</span></code> is <strong>generic</strong>, which means <code class="docutils literal notranslate"><span class="pre">Sequence</span></code> instead of <code class="docutils literal notranslate"><span class="pre">list</span></code>, which can be non-intuitive in some degree.</p>
+<p>With this alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol, <code class="docutils literal notranslate"><span class="pre">*</span></code> in class pattern is automatically supported:</p>
+<p>Like <code class="docutils literal notranslate"><span class="pre">Sequence(a1,</span> <span class="pre">a2,</span> <span class="pre">*aseq,</span> <span class="pre">an)</span></code>, we need to do nothing other than implementing tuple patterns and this <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol.</p>
+<p>This is sufficient to support <code class="docutils literal notranslate"><span class="pre">Sequence</span></code> interface, and can be implemented with our proposal <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol.</p>
+<p>It’s considered useful to support arbitrary number of positional arguments for our custom patterns:</p>
+<ul class="simple">
+<li>We have many kinds of data structure interfaces, other than only <code class="docutils literal notranslate"><span class="pre">Sequence</span></code> and <code class="docutils literal notranslate"><span class="pre">Mapping</span></code>.</li>
+<li>We can then leave list literals(<code class="docutils literal notranslate"><span class="pre">[*_]</span></code>) as-is, I mean this should only matches a <code class="docutils literal notranslate"><span class="pre">list</span></code> instead of any <code class="docutils literal notranslate"><span class="pre">Sequence</span></code>s.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="miscellaneous">
+<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="else-clauses-in-pattern-matching">
+<h3><code class="docutils literal notranslate"><span class="pre">else</span></code> Clauses in Pattern Matching<a class="headerlink" href="#else-clauses-in-pattern-matching" title="Permalink to this headline">¶</a></h3>
+<p>Just like what Ethan and others said in the mailing list, an <code class="docutils literal notranslate"><span class="pre">else</span></code> clause can be considered pretty: Every control flow statement has <code class="docutils literal notranslate"><span class="pre">else</span></code>.</p>
+<p>Consistency considered important.</p>
+<p><a class="reference external" href="https://mail.python.org/archives/list/python-dev&#64;python.org/thread/RFW56R7LTSC3QSNIZPNZ26FZ3ZEUCZ3C/">Guido replied “because it’s not needed”</a>, for</p>
+<blockquote>
+<div>But “case _:” is going to work regardless, so we might as well use it. Rust, Scala and F# do this too.</div></blockquote>
+<p>It’s pretty okay to hold the both. Rust, Scala and F# are static languages, our counterpart could be Ruby,
+which does use <code class="docutils literal notranslate"><span class="pre">else</span></code> even though they have wildcard patterns <code class="docutils literal notranslate"><span class="pre">_</span></code>.</p>
+<p>Besides, In Haskell, <code class="docutils literal notranslate"><span class="pre">otherwise</span></code> is also introduced as well as the wildcard pattern <code class="docutils literal notranslate"><span class="pre">_</span></code>.</p>
+<p>The main reason for the existence of anti-<code class="docutils literal notranslate"><span class="pre">else</span></code> voices is, the indentation level of <code class="docutils literal notranslate"><span class="pre">case</span></code> is greater than that of <code class="docutils literal notranslate"><span class="pre">match</span></code>,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">match</span> <span class="n">expr</span><span class="p">:</span>
+    <span class="n">case</span> <span class="n">pattern</span><span class="p">:</span>
+        <span class="o">...</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="o">...</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Hence it becomes an issue to decide where to allow an <code class="docutils literal notranslate"><span class="pre">else</span></code> clause.</p>
+</div>
+<div class="section" id="grammar-of-patterns-could-become-that-of-expressions">
+<h3>Grammar of Patterns Could Become That of Expressions<a class="headerlink" href="#grammar-of-patterns-could-become-that-of-expressions" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://github.com/brandtbucher/cpython/blob/276c2b08270861f939f79b6ceec995effe83073f/Grammar/python.gram#L203"><em>In the grammar</em></a>, the following definition could be totally okay.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>case_block[match_case_ty]:
+    | &quot;case&quot; pattern=named_expression guard=guard? &#39;:&#39; body=block {
+</pre></div>
+</div>
+<p>~~Or patterns can be <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">or</span> <span class="pre">b</span></code> instead of <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">|</span> <span class="pre">b</span></code>, the operator precedence is already perfect.~~
+So far using <code class="docutils literal notranslate"><span class="pre">|</span></code> in patterns seems to be consistent with its use in expressions.</p>
+<p>When emitting bytecode from an AST node parsed from <code class="docutils literal notranslate"><span class="pre">.a</span></code>, we can raise a <code class="docutils literal notranslate"><span class="pre">SyntaxError</span></code>.</p>
+<p>This way will make the implementation extremely easy and neat, I can evidence this as I have already implemented a Python pattern matching very close to what proposed by PEP 622, and I researched and implemented them a lot in a wider scope.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/Design/PEP622-1.md.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2020, thautwarm.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

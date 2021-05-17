@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>第一章 跨越亿年的孤独 &#8212; thautwarm&#39;s blog pages</title>
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default ">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../guide.html">
+          Site-32</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/thautwarm">GitHub</a></li>
+                <li><a href="../../PL/index.html">PL</a></li>
+                <li><a href="../../Design/index.html">Design</a></li>
+                <li><a href="../../DSL/index.html">DSL</a></li>
+                <li><a href="../index.html">Fiction</a></li>
+                <li><a href="../../Others/index.html">Others</a></li>
+                <li><a href="../../Backup/index.html">Backup</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../guide.html">Site-32 <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Site-32 Considered Harmful</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Compiler/index.html">Compiler</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Design/index.html">Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html">General Programming In Julia Language From An Advanced Standpoint</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#first-class">First-Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#polymorphisms-of-multiple-dispatch">Polymorphisms of Multiple Dispatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#full-featured-macros">Full-Featured Macros</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#macro-the-function-from-ast-to-ast">Macro, the Function from AST to AST</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#scope-and-hygiene">Scope and Hygiene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#other-useful-knowledge-for-julia-macros">Other Useful Knowledge for Julia Macros</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#a-big-step-forward-in-ast-manipulations">A Big Step Forward in AST Manipulations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#limitation-absence-of-function-types">Limitation: Absence of Function Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../Design/Some-Thoughts-About-The-RestrainJIT.html">Some Thoughts About The Restrain JIT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../Design/Research-Restrain-JIT.html">Research: Review and Observations of Python JIT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/Research-Restrain-JIT.html#history">History</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/Research-Restrain-JIT.html#observations">Observations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../Design/PEP622-1.html">My Comments about PEP 622(V1)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/PEP622-1.html#my-concerns">My Concerns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/PEP622-1.html#scoping-issues">Scoping Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/PEP622-1.html#comments-about-the-rejection-of-and-patterns">Comments about the rejection of AND (&amp;) patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/PEP622-1.html#consider-performance-guards-as-patterns">Consider Performance: Guards As Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/PEP622-1.html#grammar-change-feature-request-parameterized-patterns">Grammar Change &amp; Feature Request: Parameterized Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/PEP622-1.html#an-alternative-match-protocol-can-be-better-in-simplicity-efficiency-and-expressivity">An Alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> Protocol Can be Better in Simplicity, Efficiency, and Expressivity.</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../Design/PEP622-1.html#simplicity-of-the-alternative-match-protocol">Simplicity of the alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../Design/PEP622-1.html#the-alternative-match-protocol-is-efficient">The alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol is efficient</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../Design/PEP622-1.html#the-alternative-match-protocol-results-in-better-expressivity">The alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol results in better expressivity</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/PEP622-1.html#miscellaneous">Miscellaneous</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../Design/PEP622-1.html#else-clauses-in-pattern-matching"><code class="docutils literal notranslate"><span class="pre">else</span></code> Clauses in Pattern Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../Design/PEP622-1.html#grammar-of-patterns-could-become-that-of-expressions">Grammar of Patterns Could Become That of Expressions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../Design/PEP622-2.html">PEP 622(V2)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/PEP622-2.html#bringing-else-back-is-rejected">Bringing <code class="docutils literal notranslate"><span class="pre">else</span></code> Back is Rejected</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/PEP622-2.html#variables-in-patterns-bindings-instead-of-evaluations-and-comparisons">Variables in Patterns: Bindings instead of Evaluations and Comparisons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/PEP622-2.html#alternative-match-protocol">Alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/PEP622-2.html#the-switch-semantics">The Switch Semantics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/PEP622-2.html#scope">Scope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Design/PEP622-2.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../DSL/index.html">DSL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../DSL/write-your-a-query-language-with-MLStyle.html">Write You A Query Language</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../DSL/write-your-a-query-language-with-MLStyle.html#definition-of-syntaxes">Definition of Syntaxes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../DSL/write-your-a-query-language-with-MLStyle.html#codegen-target">Codegen Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../DSL/write-your-a-query-language-with-MLStyle.html#refinement-of-codegen-typed-columns">Refinement of Codegen: Typed Columns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../DSL/write-your-a-query-language-with-MLStyle.html#implementation">Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../DSL/write-your-a-query-language-with-MLStyle.html#enjoy-you-a-query-language">Enjoy You A Query Language</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Fiction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#id1">2021年4月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#id3">2020年10月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#id4">2020年6月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#id7">2020年4月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#id9">2019年10月</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#id10">日前安排</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#id18">目录</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../日记2019-10-13.html">Smarter Witnesses for Type Classes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-13.html#notation">Notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-13.html#instance-resolution-variables-as-instances">Instance Resolution &amp; Variables As Instances</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-13.html#the-most-general-instance-problem-overlapping-instance-problem">“The Most General Instance” Problem &amp; “Overlapping Instance” Problem</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-13.html#id1">优化</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-13.html#id2">该算法和相应语言设计的好处</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-13.html#id3">不足之处</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../日记2019-10-15.html">我和Python的故事</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-15.html#id1">第0节</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-15.html#id2">第1节: 科学计算, Python, 生物信息学和数据挖掘</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-15.html#id3">第2节: 转型的经过, 走向程序语言设计领域</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-15.html#id4">第3节: 想要给Python添加高级语言特性的理想</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-15.html#id5">第4节: Flowpython</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-15.html#bnf-parser-generator">第4节: BNF, Parser Generator和语言制造机器</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../日记2019-10-30.html">杂谈</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-30.html#pycon-china-2019">PyCon China 2019 成都</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../日记2019-10-30.html#id2">直面自己的人格缺陷</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../日记2019-11-06.html">杂谈</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../日记2019-11-14.html">我太难了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../日记2019-11-17.html">我太懂了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../日记2020-01-07.html">打通</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../日记2020-01-07.html#parsing">Parsing</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../日记2020-01-07.html#python">Python 字节码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../日记2020-02-02.html">Tagless Final in F#</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../日记2020-02-07.html">Encoding Typeclass Default Methods in Purescript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../日记2020-02-11.html">近期规划</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../日记2020-02-11.html#purescript-python">Purescript-Python</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../日记2020-02-11.html#anf">从表达式优先到语句优先: ANF变换</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../日记2020-02-11.html#pythonfirst-class">Python虚拟机上的First-class的表达式优先</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../日记2020-02-11.html#id2">社区意见</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../cure/和平日久.html">如何写出令人感到幸福的小说</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../cure/和平日久.html#id2">合理利用“无敌”元素</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../cure/和平日久.html#id3">“纯爱”而非“后宫”</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../cure/和平日久.html#id4">细腻的画面感</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../cure/和平日久.html#id5">节奏流畅的回忆</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../cure/和平日久.html#id6">暗线和潜台词</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../cure/和平日久.html#id7">总结</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../cure/乐理菜鸡怎么给自己的小说写bgm.html">乐理菜鸡怎么给自己的小说写BGM?</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../cure/乐理菜鸡怎么给自己的小说写bgm.html#id1">找调</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../cure/乐理菜鸡怎么给自己的小说写bgm.html#id2">打谱</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../cure/乐理菜鸡怎么给自己的小说写bgm.html#id3">总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../PL/index.html">Programming Language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../PL/HKT.html">Higher Kinded Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PL/typeclass.html">Type Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/typeclass.html#about-abstractions">About Abstractions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/typeclass.html#about-separation-of-type-definitions-and-data-manipulations">About Separation of Type Definitions and Data Manipulations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PL/paper-reading-LHKP.html">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/paper-reading-LHKP.html#how-to">How-To</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/paper-reading-LHKP.html#static-resolution-more-polymorphic">Static Resolution: More polymorphic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/paper-reading-LHKP.html#limitation1-much-higher-kinded">Limitation1: Much Higher Kinded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/paper-reading-LHKP.html#limitation2-identity">Limitation2: Identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/paper-reading-LHKP.html#why-this-lightweight-higher-polymorphism-instead-of-the-haskell-approach">Why this Lightweight-Higher-Polymorphism instead of the Haskell approach</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PL/HKT-typeclass-FSharp.html">Compelling Higher Kinded Types and Type Classes in F#</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/HKT-typeclass-FSharp.html#active-pattern">Active Pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/HKT-typeclass-FSharp.html#statically-resolved-type-parameters">Statically Resolved Type Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/HKT-typeclass-FSharp.html#the-getsig-function-and-implicits">The <em>getsig</em> Function and Implicits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/HKT-typeclass-FSharp.html#why-abstractclass">Why AbstractClass?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/HKT-typeclass-FSharp.html#why-functor-f-instead-of-the-straightforward-functor">Why <em>Functor&lt;’F&gt;</em> instead of the straightforward <em>Functor</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/HKT-typeclass-FSharp.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PL/plfp-20191212.html">FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/plfp-20191212.html#terminology">Terminology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/plfp-20191212.html#background">Background</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/plfp-20191212.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/plfp-20191212.html#application">Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../PL/plfp-20191212.html#scoping-name-resolution">Scoping: Name Resolution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../PL/plfp-20191212.html#typing-type-inference">Typing: Type Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/plfp-20191212.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PL/plfp-20191219.html">Tagless Final For Writing Compilers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/plfp-20191219.html#problem">Problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/plfp-20191219.html#tagless-final-for-compiler-phases">Tagless Final For Compiler Phases</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../PL/plfp-20191219.html#quick-start-for-tagless-final">Quick Start for Tagless Final</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../PL/plfp-20191219.html#grammar">“Grammar”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../PL/plfp-20191219.html#expanding-representation">Expanding Representation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../PL/plfp-20191219.html#problems-of-decoupling-and-compositing">Problems of Decoupling and Compositing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../PL/plfp-20191219.html#fsym">FSYM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../PL/plfp-20191219.html#laziness-for-mutual-dependencies">Laziness, for Mutual Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/plfp-20191219.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PL/elaborating-julia.html">Julia Counts for PL Researchers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/elaborating-julia.html#expressiveness">Expressiveness</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/elaborating-julia.html#staging">Staging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/elaborating-julia.html#advantages-as-a-codegen-backend">Advantages as a codegen backend</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PL/tagless-final-pattern-match.html">First-class Pattern Matching in the Final Approach</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/tagless-final-pattern-match.html#core-ideas">Core Ideas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/tagless-final-pattern-match.html#full-implementation-in-haskell">Full implementation in Haskell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/tagless-final-pattern-match.html#enhancement-1">Enhancement 1</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PL/tagless-final-for-julia.html">Julia Benefits from Tagless Final</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/tagless-final-for-julia.html#what-happened-today">What Happened Today?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/tagless-final-for-julia.html#an-example-turns-out-to-be-type-unstable">An Example Turns Out to be Type Unstable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/tagless-final-for-julia.html#tagless-final-encoding-about-above-code">Tagless Final Encoding about Above Code</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PL/hrt-use-case.html">Some Use Cases for Higher Rank Polymorphisms(No Monad)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/hrt-use-case.html#polymorphic-functions-for-edsl">Polymorphic Functions for eDSL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/hrt-use-case.html#existential-types">Existential Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../PL/hrt-use-case.html#manipulation-for-heterogeneous-data">Manipulation for Heterogeneous Data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Backup/index.html">Backup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Backup/高观点下的Julia泛用编程.html">高观点下的Julia泛用编程</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Others/index.html">Others</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../Others/contributions.html">Thautwarm’s Open Source Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../Others/contributions.html#projects-owned-by-other-individuals-organizations">Projects Owned By Other Individuals/Organizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Others/contributions.html#leading-projects">Leading Projects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../Others/contributions.html#other-notable-personal-projects">Other Notable Personal Projects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Subsections <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">第一章 跨越亿年的孤独</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="id1">
+<h1>第一章 跨越亿年的孤独<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>像一只蚂蚁藏身山岭，我躲在风化疮痍的高楼里，盯着等级5的状态栏发愣。</p>
+<p>落日静谧，城市废墟显得疲惫倦怠，像走向终焉的古老神祇。</p>
+<p>“我亲爱的勇者大人，可以请您拯救我们的世界吗？”</p>
+<p>当时听见这样的呼唤，少女的哭腔里含着悲戚和叹息。</p>
+<p>但这些日子以来，我只遇见寂静的沙漠，还有尘封黄沙中的城市建筑群。</p>
+<p>我常常能找到岩石上的雕刻，但就连它们也都褪色磨损。</p>
+<p>这个世界，仿佛早在无数岁月前便已经死去。</p>
+<hr class="docutils" />
+<p>「附近检测到圣伊蕾文教堂，这里有王国最好的风琴表演，勇者大人不妨在此小憩。」</p>
+<p>没有感情的女声响起，凭借这个提示，我仿佛从黄沙覆盖的瓦砾中窥见这里昔日的光景。</p>
+<p>太阳在城市的高墙外落下，巨大的阴影缓慢吞噬废墟。</p>
+<p>我没有驻足，我需要在日落前到达山城半腰的神殿。</p>
+<p>那里应该最安全。</p>
+<p>「附近检测到皇家拍卖行，勇者大人可以在这里得到传说的宝物——只要金币足够。」只是碎石满布的土墙，而我也没有金币。</p>
+<p>「附近检测到尤里乌斯剧院，勇者大人可以在这里了解我们的历史和文化。」明明是个露天角斗场。</p>
+<p>「附近检测到——」</p>
+<p>“——我可以关掉这些没用的提示吗，‘勇者系统’？”这只是我给祂取的名字。</p>
+<p>与其说是一个辅助勇者的系统，倒更像是过去文明的记录者与诉说者。虽然也会提供有关魔法、神秘与力量的重要信息，但更多听到的还是如何在不复存在的世界中生活。</p>
+<p>机械的女声没有回答，我也并不意外。我经常会问祂很多问题，但绝大多数时候并没有任何回应。</p>
+<p>「当然，如果这是您的意思。」</p>
+<p>看来这次运气不错，</p>
+<p>“以后不必再指导我的日常生活。”</p>
+<p>没有了勇者系统的打扰，我很快沿着山壁爬上神殿，在那里看见浮游空中的瘦长幽灵。</p>
+<p>「探测到未知的魔法体，推测为文明灭亡后一亿年间诞生。魔力强度评估为90级。」</p>
+<p>瘦长幽灵转过来，没有眼白的瞳孔中有黑色火焰在燃烧。</p>
+<p>我不顾高空坠落的危险松手坠下岩壁，指尖在半空勾勒魔法的印记。</p>
+<p>「探测到勇者正在释放减速魔法，强烈建议低级别时在魔法作坊购买相应的卷轴。」</p>
+<p>魔法成功了，身体在减速。但脑子像是进了一层雾，迷糊中恍惚看见瘦长幽灵和我面对着面。</p>
+<p>我昏死了过去，醒来时浑身被雨水打湿。</p>
+<p>外面雷雨大作，水从屋顶的窟窿和像是窗户的窟窿涌入我掉进的房屋。</p>
+<p>我支起快要散架的身子移动，踏上几层台阶，躺在高处的壁炉旁，因为寒冷，我用魔法点了一把火。</p>
+<p>「探测到壁炉中有助燃的魔法元素块，火焰可以持续燃烧。」</p>
+<p>水流越来越大，从一边窗户灌往另一边，台阶下的水位已经很危险，但应该不会来到壁炉这里。</p>
+<p>「警告: 检测到房屋有倾塌危险。」</p>
+<p>虽然魔力所剩无几，我还是咬咬牙用出加固的土系魔法。</p>
+<p>「探测到勇者正在释放加固魔法，强烈建议在低级别时在魔法作坊购买——」</p>
+<p>“你闭嘴啊——!哪里有魔法作坊啊！”</p>
+<p>用泄愤式的怒吼打断系统荒谬的提示，我感觉到更多的倦意。或许是因为魔力透支，也或许是因为情绪失控。</p>
+<p>壁炉中的火焰很暖，也驱散了四周湍急的水流带来的潮湿，我躺在这里，听火焰声、雨声和水流声。</p>
+<p>“我会死吗？”</p>
+<p>系统没有回答。</p>
+<p>“我能回到自己的世界吗？”</p>
+<p>「一定可以的，我亲爱的勇者大人」</p>
+<p>“要怎么做？”</p>
+<p>「按照贤者塔为您制定的计划，游历各个国家，在他们的帮助下变强，消除邪灵，战胜‘文明之筛’」</p>
+<p>我揉了揉太阳穴，“文明之筛在哪里？”</p>
+<p>系统没有回答。</p>
+<p>我有些迷茫，</p>
+<p>“我无法积累伙伴羁绊，所以无法解放圣剑；世界已经毁灭，我没有地方学习强大的魔法。我看不到未来。”</p>
+<p>我对着壁炉发了半晌的呆。</p>
+<p>忽然，系统说话了。</p>
+<p>「探测到壁炉中有同源魔力记录，是否尝试读取？」</p>
+<p>“什么是同源魔力。”</p>
+<p>「同一来源的魔力。」</p>
+<p>除此之外没有问到更多。</p>
+<p>「是否尝试读取？」</p>
+<p>“是。”</p>
+<hr class="docutils" />
+<p>「读取中… 读取成功。判定记录创建于一亿xxxxxxxxx年前。」</p>
+<p>壁炉的火光中映出模糊的荧幕，女孩裹着单薄的袍子，在堆满杂物的房间一角发抖。</p>
+<p>无法分清荧幕中的雨和雷电是来自身边的现实还是魔法的记录。</p>
+<p>「您…您好，我…我是魔女。」</p>
+<p>“你好…”我下意识的回答。</p>
+<p>「如果有人能听见的话，很抱歉，我…我并不能听见您…」</p>
+<p>「但我还是想请求您能听我说说话…」</p>
+<p>我注视着火光，</p>
+<p>“为什么她能留下不朽的魔法记录？”</p>
+<p>系统没有回答。</p>
+<p>但那边的女孩转向了我，</p>
+<p>「我在贤者塔度过了很多年，在那座古老的图书馆里，我得到了关于世界毁灭的预言」</p>
+<p>「直到今天之前，我都在为了阻止世界毁灭努力——但我好像必须放弃了」</p>
+<p>「我的研究让我变得孤独，魔力也在不断流失」</p>
+<p>「贤者塔把我当做异端赶了出去，知情的人们都在反对我」</p>
+<p>「我怀疑自己，我不知道，我不知道这算不算错误的一生…」</p>
+<p>她开始呜咽，抓起袍子去擦拭眼泪。</p>
+<p>「我想要一个朋友，我想要被关心着——我愿意用我的一切回报。」她这样说。</p>
+<p>我不介意帮助她满足愿望，至少，看在她预见了末日的份上。</p>
+<p>——可是我与她之间相隔了一亿年。</p>
+<p>我与她之间的距离，比虚构与真实的鸿沟还要更加遥远。</p>
+<p>「您…在听吗？」</p>
+<p>「您愿意成为我的朋友？」</p>
+<p>“可我要怎么做？”</p>
+<p>我哭笑不得地开口。</p>
+<p>我不明白我为什么要讲话，我明明知道她听不到。</p>
+<p>「只要说出来就好了… 如果您愿意的话…」她紧张地盯着我。</p>
+<p>她真的能看到我吗？</p>
+<p>我正想说点别的话来验证。</p>
+<p>「——求求您，不要说别的… 如果，您愿意的话。」</p>
+<p>我看着她。</p>
+<p>她的意思究竟是…</p>
+<p>魔女捂着心口，「… 可以吗？」</p>
+<p>「我是魔女，我想成为您的朋友。」她努力作出笑容。</p>
+<p>“我是勇者，我愿意成为你的朋友。”</p>
+<p>忽然间，壁炉火光的荧幕中掠过闪电，面目可怖的瘦长尸体正在她身旁的窗户外看着。</p>
+<p>系统的警报声响起，</p>
+<p>「警报: 探测到邪灵，魔力评估50级。」</p>
+<p>或许…… 那具瘦长尸体……不是她那边的……？</p>
+<p>我猛然转过头，瞳孔骤然放大的同时，我一跃而起，穿过屋顶的窟窿，顶着洪流往岩壁上攀爬。</p>
+<p>一定要想办法进入神殿。</p>
+<p>那具恐怖的邪灵嚎叫着，撞塌房屋，死死跟在我后面。</p>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../../_sources/Fiction/hero-and-witch/a1.md.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2020, thautwarm.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

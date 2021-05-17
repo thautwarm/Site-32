@@ -1,0 +1,34 @@
+日记 2019-11-14
+
+我太难了
+===================================
+
+
+好事是, 前几天Julia社区里蛮多给我的appreciation, 很暖心, 有厉害的人给recognition真的是嗨爆了.
+
+坏事是, 这几天在refactor JuliaVariables.jl时遇到了阻碍, 已经一周都没想出解决方案了.
+
+JuliaVariables.jl要做的, 就是接收一个Julia AST, 返回带scope的AST, 也就是scope analyzer, 但做起来实在是, **太难了** .
+
+即使我已经写好了一个AST无关的scope solver框架, 但从Julia的AST去build solver依然还是太难了.
+
+其等价功能的scheme代码, 按照Julia项目里 `julia-syntax.scm <https://github.com/JuliaLang/julia/blob/6527de0c0fe8120531df9b439fd89e9480e3a652/src/julia-syntax.scm#L2579>`_ 来看,
+是有4000行以上的.
+
+这和Python那边scope分析的情况不同: 即使CPython那边symbol table分析写得是不太好的, 有2000行的c文件, 但仍可以被使用更好算法的一百多行python代码解决.
+
+不过, Python的scope analyzer实现之所以简单, 是因为Python的简洁和一致性, 几乎达到了没有module的ML语言一般(但表达力落后得较多).
+
+Julia的情况不同, 它context-sensitive的语法构造比较多, 导致需要写代码处理special case.
+
+比如赋值符号 :code:`=` .
+
+在tuple里就不是赋值, 是namedtuple;
+
+LHS是函数调用, 例如 :code:`f(x) = x` 就是函数定义;
+
+在 :code:`let` 和 :code:`for` 里, LHS是内部作用域的, RHS是外部作用域的.
+
+总之思考很久没有漂亮的做法, 一贯好用的tagless-final在这里似乎也遇到了小挫折...
+
+个人开发者, 想要模仿Julia实现里那及其复杂的几千行是不太可行的, 必须要依靠进步的算法和技术, 以及自动化工具.

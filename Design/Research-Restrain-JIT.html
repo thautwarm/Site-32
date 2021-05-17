@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Research: Review and Observations of Python JIT &#8212; thautwarm&#39;s blog pages</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="My Comments about PEP 622(V1)" href="PEP622-1.html" />
+    <link rel="prev" title="Some Thoughts About The Restrain JIT" href="Some-Thoughts-About-The-RestrainJIT.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default ">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../guide.html">
+          Site-32</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/thautwarm">GitHub</a></li>
+                <li><a href="../PL/index.html">PL</a></li>
+                <li><a href="index.html">Design</a></li>
+                <li><a href="../DSL/index.html">DSL</a></li>
+                <li><a href="../Fiction/index.html">Fiction</a></li>
+                <li><a href="../Others/index.html">Others</a></li>
+                <li><a href="../Backup/index.html">Backup</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../guide.html">Site-32 <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Site-32 Considered Harmful</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Compiler/index.html">Compiler</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Design</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html">General Programming In Julia Language From An Advanced Standpoint</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#first-class">First-Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#polymorphisms-of-multiple-dispatch">Polymorphisms of Multiple Dispatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#full-featured-macros">Full-Featured Macros</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#macro-the-function-from-ast-to-ast">Macro, the Function from AST to AST</a></li>
+<li class="toctree-l4"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#scope-and-hygiene">Scope and Hygiene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#other-useful-knowledge-for-julia-macros">Other Useful Knowledge for Julia Macros</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#a-big-step-forward-in-ast-manipulations">A Big Step Forward in AST Manipulations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#limitation-absence-of-function-types">Limitation: Absence of Function Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Some-Thoughts-About-The-RestrainJIT.html">Some Thoughts About The Restrain JIT</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Research: Review and Observations of Python JIT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#history">History</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#observations">Observations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="PEP622-1.html">My Comments about PEP 622(V1)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#my-concerns">My Concerns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#scoping-issues">Scoping Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#comments-about-the-rejection-of-and-patterns">Comments about the rejection of AND (&amp;) patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#consider-performance-guards-as-patterns">Consider Performance: Guards As Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#grammar-change-feature-request-parameterized-patterns">Grammar Change &amp; Feature Request: Parameterized Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#an-alternative-match-protocol-can-be-better-in-simplicity-efficiency-and-expressivity">An Alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> Protocol Can be Better in Simplicity, Efficiency, and Expressivity.</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="PEP622-1.html#simplicity-of-the-alternative-match-protocol">Simplicity of the alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="PEP622-1.html#the-alternative-match-protocol-is-efficient">The alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol is efficient</a></li>
+<li class="toctree-l4"><a class="reference internal" href="PEP622-1.html#the-alternative-match-protocol-results-in-better-expressivity">The alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol results in better expressivity</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#miscellaneous">Miscellaneous</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="PEP622-1.html#else-clauses-in-pattern-matching"><code class="docutils literal notranslate"><span class="pre">else</span></code> Clauses in Pattern Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="PEP622-1.html#grammar-of-patterns-could-become-that-of-expressions">Grammar of Patterns Could Become That of Expressions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="PEP622-2.html">PEP 622(V2)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#bringing-else-back-is-rejected">Bringing <code class="docutils literal notranslate"><span class="pre">else</span></code> Back is Rejected</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#variables-in-patterns-bindings-instead-of-evaluations-and-comparisons">Variables in Patterns: Bindings instead of Evaluations and Comparisons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#alternative-match-protocol">Alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#the-switch-semantics">The Switch Semantics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#scope">Scope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../DSL/index.html">DSL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html">Write You A Query Language</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#definition-of-syntaxes">Definition of Syntaxes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#codegen-target">Codegen Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#refinement-of-codegen-typed-columns">Refinement of Codegen: Typed Columns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#implementation">Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#enjoy-you-a-query-language">Enjoy You A Query Language</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Fiction/index.html">Fiction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id1">2021年4月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id3">2020年10月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id4">2020年6月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id7">2020年4月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id9">2019年10月</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Fiction/index.html#id10">日前安排</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Fiction/index.html#id18">目录</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-13.html">Smarter Witnesses for Type Classes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#notation">Notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#instance-resolution-variables-as-instances">Instance Resolution &amp; Variables As Instances</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#the-most-general-instance-problem-overlapping-instance-problem">“The Most General Instance” Problem &amp; “Overlapping Instance” Problem</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id1">优化</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id2">该算法和相应语言设计的好处</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id3">不足之处</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-15.html">我和Python的故事</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id1">第0节</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id2">第1节: 科学计算, Python, 生物信息学和数据挖掘</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id3">第2节: 转型的经过, 走向程序语言设计领域</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id4">第3节: 想要给Python添加高级语言特性的理想</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id5">第4节: Flowpython</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#bnf-parser-generator">第4节: BNF, Parser Generator和语言制造机器</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-30.html">杂谈</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-30.html#pycon-china-2019">PyCon China 2019 成都</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-30.html#id2">直面自己的人格缺陷</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-06.html">杂谈</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-14.html">我太难了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-17.html">我太懂了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-01-07.html">打通</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-01-07.html#parsing">Parsing</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-01-07.html#python">Python 字节码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-02.html">Tagless Final in F#</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-07.html">Encoding Typeclass Default Methods in Purescript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-11.html">近期规划</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-02-11.html#purescript-python">Purescript-Python</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#anf">从表达式优先到语句优先: ANF变换</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#pythonfirst-class">Python虚拟机上的First-class的表达式优先</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#id2">社区意见</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/cure/和平日久.html">如何写出令人感到幸福的小说</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id2">合理利用“无敌”元素</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id3">“纯爱”而非“后宫”</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id4">细腻的画面感</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id5">节奏流畅的回忆</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id6">暗线和潜台词</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id7">总结</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html">乐理菜鸡怎么给自己的小说写BGM?</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id1">找调</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id2">打谱</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id3">总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PL/index.html">Programming Language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../PL/HKT.html">Higher Kinded Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/typeclass.html">Type Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/typeclass.html#about-abstractions">About Abstractions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/typeclass.html#about-separation-of-type-definitions-and-data-manipulations">About Separation of Type Definitions and Data Manipulations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/paper-reading-LHKP.html">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#how-to">How-To</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#static-resolution-more-polymorphic">Static Resolution: More polymorphic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#limitation1-much-higher-kinded">Limitation1: Much Higher Kinded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#limitation2-identity">Limitation2: Identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#why-this-lightweight-higher-polymorphism-instead-of-the-haskell-approach">Why this Lightweight-Higher-Polymorphism instead of the Haskell approach</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html">Compelling Higher Kinded Types and Type Classes in F#</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#active-pattern">Active Pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#statically-resolved-type-parameters">Statically Resolved Type Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#the-getsig-function-and-implicits">The <em>getsig</em> Function and Implicits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#why-abstractclass">Why AbstractClass?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#why-functor-f-instead-of-the-straightforward-functor">Why <em>Functor&lt;’F&gt;</em> instead of the straightforward <em>Functor</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html">FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#terminology">Terminology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#background">Background</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#application">Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191212.html#scoping-name-resolution">Scoping: Name Resolution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191212.html#typing-type-inference">Typing: Type Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191219.html">Tagless Final For Writing Compilers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#problem">Problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#tagless-final-for-compiler-phases">Tagless Final For Compiler Phases</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#quick-start-for-tagless-final">Quick Start for Tagless Final</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#grammar">“Grammar”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#expanding-representation">Expanding Representation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#problems-of-decoupling-and-compositing">Problems of Decoupling and Compositing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#fsym">FSYM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#laziness-for-mutual-dependencies">Laziness, for Mutual Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/elaborating-julia.html">Julia Counts for PL Researchers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#expressiveness">Expressiveness</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#staging">Staging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#advantages-as-a-codegen-backend">Advantages as a codegen backend</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/tagless-final-pattern-match.html">First-class Pattern Matching in the Final Approach</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#core-ideas">Core Ideas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#full-implementation-in-haskell">Full implementation in Haskell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#enhancement-1">Enhancement 1</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/tagless-final-for-julia.html">Julia Benefits from Tagless Final</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#what-happened-today">What Happened Today?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#an-example-turns-out-to-be-type-unstable">An Example Turns Out to be Type Unstable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#tagless-final-encoding-about-above-code">Tagless Final Encoding about Above Code</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/hrt-use-case.html">Some Use Cases for Higher Rank Polymorphisms(No Monad)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/hrt-use-case.html#polymorphic-functions-for-edsl">Polymorphic Functions for eDSL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/hrt-use-case.html#existential-types">Existential Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/hrt-use-case.html#manipulation-for-heterogeneous-data">Manipulation for Heterogeneous Data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Backup/index.html">Backup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Backup/高观点下的Julia泛用编程.html">高观点下的Julia泛用编程</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Others/index.html">Others</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Others/contributions.html">Thautwarm’s Open Source Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#projects-owned-by-other-individuals-organizations">Projects Owned By Other Individuals/Organizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#leading-projects">Leading Projects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#other-notable-personal-projects">Other Notable Personal Projects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Subsections <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Research: Review and Observations of Python JIT</a><ul>
+<li><a class="reference internal" href="#history">History</a></li>
+<li><a class="reference internal" href="#observations">Observations</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="research-review-and-observations-of-python-jit">
+<h1>Research: Review and Observations of Python JIT<a class="headerlink" href="#research-review-and-observations-of-python-jit" title="Permalink to this headline">¶</a></h1>
+<p>When we talk about Python, a popular industrial programming language,
+it is well-known that Python’s Just-In-Time(JIT) compilation support has become a long-term issue.</p>
+<p>A JIT compiler which will fundamentally speed up the program execution is likely to make
+a big impact. Recently, it seems that the majority of dynamic programming languages have already supported JIT,
+<a class="reference external" href="https://www.ruby-lang.org/en/news/2018/12/25/ruby-2-6-0-released/">even for Ruby</a>, which is usually compared with Python. Further, Python is still performing an important role in some important domains of web backend, machine learning and so on. In these domains, as making heavy and nested abstractions in Python is costly, performance disasters arise, such as whenever you need a Python loop over a collection whose size is proportional to the problem.</p>
+<p>Figuring out an approach to make an easily-available and fully compatible(highlight: <strong>C extensions + work for ordinary CPython</strong>) Python JIT, is no doubt a research which is not only technically impactful, but also economically valuable.</p>
+<p>I for one, have spent quite a few years investigating and experiencing on the topics related to Python JIT.
+To conduct this research of Python JIT, it is considered beneficial for us to review the history of Python JIT,
+and propose our initial observations distinguished from the previous attempts.</p>
+<div class="section" id="history">
+<h2>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<p>There’re several attempts on Python JIT, and the major are <a class="reference external" href="https://github.com/dropbox/pyston">Pyston</a>, <a class="reference external" href="https://github.com/microsoft/Pyjion">Pyjion</a>, <a class="reference external" href="https://bitbucket.org/pypy/pypy/src">PyPy</a> and <a class="reference external" href="http://numba.pydata.org/">Numba</a>. Still are there other respectable attempts like Psyco, JitPy or HOPE etc., about which we heard less.</p>
+<p>In a general point of view, PyPy shall be the most successful among all existing Python JITs. In the early years it used <strong>partial evaluation(PE)</strong>, and finally turned to <strong>meta tracing</strong>. They gave the reason <a class="reference external" href="https://morepypy.blogspot.com/2018/09/the-first-15-years-of-pypy.html#why-did-we-abandon-partial-evaluation">here</a>, which needs our attention and study, but according to different goals and technique standpoints/preferences between us and PyPy team, it’s too early to say PE is worse than tracing. To be honest, I do have lots of opinions in their final conclusions and decisions.</p>
+<p>Pyjion presented 3 goals in its <a class="reference external" href="https://github.com/microsoft/Pyjion#what-are-the-goals-of-this-project">GitHub Homepage</a>. The design looks good, even just the first one. I’m really curious about whether their first goal is achieved or not, which is about making Python JIT customizable. Pyjion are mainly based on the <a class="reference external" href="https://github.com/dotnet/roslyn">Microsoft .NET Roslyn Compiler</a>, and leads to some advantages like mature techniques and avoiding implementing JIT optimization algorithms, but some downsides like heavy dependencies and heavily referencing external frameworks as well.</p>
+<p>Additionally, Pyjion didn’t announce a drop, while their development is quite inactive. As a result, the pronunciation of Pyjion, “pigeon”, just reminds me of a Chinese meme “咕咕”. This Chinese meme is for describing a person who’s always postponing his work but telling “Yes yes, I’m working”. No offense but just for fun.</p>
+<p>Pyston is also a pretty successful one, but dead for lack of money. Although they finally gave up developing Pyston and chose Go programming language for the initial purpose then, <a class="reference external" href="https://blog.pyston.org/">they did make a progress</a>. Their technique seems called inline caches(ICs). This looks very similar to the old Psyco JIT compiler and what I did in <a class="reference external" href="https://github.com/thautwarm/restrain-jit/tree/master/restrain_jit">Restrain-JIT Cython backend</a>. I’m in favour of it haha, but I don’t think it costly in time and money. They should employ me at that time. What’s more, Pyston improves runtime with LLVM, which I’m also kind of familiar with.</p>
+<p>Numba seems to be focusing on numeric computing, but I know they did a lot to support JITing generic programs. I think so far(2020.04) Numba can compile all Python programs into the LLVM versions with its <code class="docutils literal notranslate"><span class="pre">object</span> <span class="pre">mode</span></code>, but it is still a mystery for me that why calling a Numba compiled function has so huge overhead. This fact just gets observed when the compiled function is really small, like just an addition(<code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">f(a,</span> <span class="pre">b):</span> <span class="pre">return</span> <span class="pre">a</span> <span class="pre">+</span> <span class="pre">b</span></code>), you amazingly find a 100x performance hit. Cython has no such issues. Anyway Numba can be very fast due to its type inference and LLVM codegen, but usually difficult to find use cases other than its <code class="docutils literal notranslate"><span class="pre">nopython</span> <span class="pre">mode</span></code> works, i.e., numeric computing.</p>
+<p>There’re also things like GraalPython, which is also not a fully compatible Python JIT because you cannot use it in CPython, the dominant Python implementation that Python developers are working with.</p>
+<p>The obstacles shown to the previous Python JIT attempts, just suggest the inactivity of the motion of Python community towards sacrificing some compatibility: The widely used(generally available) Python JIT are Numba and PyPy, where the former drops making a big news for full-featured Python, while the latter just makes a new runtime and somewhat a programming language. All attempts to achieving general purpose and full compatibility, just failed.</p>
+</div>
+<div class="section" id="observations">
+<h2>Observations<a class="headerlink" href="#observations" title="Permalink to this headline">¶</a></h2>
+<p>I feel like to mention Psyco here, one of the earliest attempts.</p>
+<p>Armin Rigo tried to specialize the function calls with arguments’ Python types during the runtime, <a class="reference external" href="http://psyco.sourceforge.net/psyco.ps.gz">which</a> is really a concise and impressive speed up strategy and gives me a familiarity of some kind of PE, Pyston’s IC, or part of Julia programming language’s JIT.</p>
+<p>What if we want to achieve some <strong>stably-effected, easily-compatible, concisely-implemented, not-that-aggressive and extensible</strong> JIT?</p>
+<p>I’d appreciate Psyco’s efforts at that early stage.</p>
+<p>Also, encounter with a programming language called Julia inspired me a lot. Julia shows how powerful it could be to simultaneously apply staging(a PE technology), runtime type inference, runtime specialization and many other features. It shall be nice for me to adopt some techniques from Julia for the Python JIT research.</p>
+<p>Julia and Psyco are like existing proof-of-concepts, which makes me strongly believe the brightness of the future of this research.</p>
+<p>Moreover, I’ve already made progress by developing the project called Restrain-JIT, which I’ve mentioned afore in this document. In Restrain-JIT, I use Cython, a fastest Python to C/C++ compiler, to compile runtime generated code, and rewrite Python bytecode to support monitoring “hot code”, perform control flow analysis and Relooper-like conversions to allow Python stack virtual machine to Cython source code with simple register allocation optimizations, and finally got a stable speed up in a subset of Python.</p>
+<p>This attempt gave me a chance to present a talk in PyConChina 2019, and the corresponding slides(barely in Chinese but the figures are easy to understand) are available at <a class="reference external" href="https://github.com/PyConChina/2019-Slides/blob/master/Chengdu/3_Thautwarm_%E8%A7%A3%E6%94%BEpython%E7%9A%84%E8%A1%A8%E8%BE%BE%E5%8A%9B_%E6%80%A7%E8%83%BD%E5%92%8C%E5%AE%89%E5%85%A8%E6%80%A7_%E8%AF%AD%E6%B3%95%E5%92%8C%E8%AF%AD%E4%B9%89%E6%89%A9%E5%B1%95_JIT_%E9%9D%99%E6%80%81%E6%A3%80%E6%9F%A5.pdf">this link</a> where the JIT part starts from page 24.</p>
+<p>(TODO)</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/Design/Research-Restrain-JIT.md.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2020, thautwarm.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

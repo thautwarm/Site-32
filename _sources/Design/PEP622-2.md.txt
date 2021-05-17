@@ -1,0 +1,236 @@
+# PEP 622(V2)
+
+## Bringing `else` Back is Rejected
+
+The main reason why people cannot converge on this is the problem of indentation setting.
+
+Although other control flow statements in Python can have an `else` clause, when putting an `else`
+to match statements, there're several options:
+
+1. `else` alighed with `case`
+
+    ```python
+    match expr:
+       case pat1:
+           ...
+       case pat2:
+           ...
+       else:
+           ...    
+    ```   
+2. `else` alighed with `match`
+
+    ```python
+    match expr:
+       case pat1:
+           ...
+       case pat2:
+           ...
+    else:
+       ...    
+    ```
+   
+3. Both..
+   
+This proposal has been rejeted as said [here](https://github.com/gvanrossum/patma/issues/89#issuecomment-652782965).
+
+> I propose that we reject this idea. The reasoning should be
+> - case _: works just fine
+> - There will forever be confusion(*) about the indentation level of the else:
+> - "Completionist" arguments like "every other statement has one" are pretty useless (and false)
+
+## Variables in Patterns: Bindings instead of Evaluations and Comparisons
+
+The concerned issue is [#90](https://github.com/gvanrossum/patma/issues/90).
+
+Some of the community feel terrible about the following code
+ 
+```python
+Bar = ...
+match x:
+    case Bar:
+        ...
+```
+
+That they think binding `x` to `Bar` might not be a good semantics,
+instead, checking if `x == Bar` might be better.
+
+The progress of this is, people converged to `a.b` means comparing matching target with `a.b`.
+
+`.b` is out.
+
+As the uppercase conventions to indicate enumerations in quite many programming languages,
+an idea to use an uppercase name for loading variables instead of binding variables were
+came up with. This seems nearly rejected by PEP 622 authors.
+
+The use of uppercase names are not restricted in Python during these years. It's certainly not a good
+option to make them behave as those in Haskell/ML/Scala.
+
+## Alternative `__match__` Protocol
+
+[#100](https://github.com/gvanrossum/patma/issues/100) by me is rejected.
+
+[A similar proposal](https://github.com/gvanrossum/patma/issues/8#issuecomment-616354418) is already made in the early stage(but I have to say they're not identical),
+and [the reason why Guido rejected it](https://github.com/gvanrossum/patma/issues/8#issuecomment-618688792).
+
+The previously accepted one is more memory efficient, while this alternative one can be faster and more flexible.
+
+Further, [the `__match__` protocol is now ditched](https://github.com/gvanrossum/patma/issues/115).
+
+I'm actually in favor of this.
+
+`__match__` will after all enable something like AND patterns and active patterns in F#.
+
+Of course I love active patterns, because I used it a lot in F#, which is quite useful in compiler works
+and web development, as it provides user-friendly options to express domain concepts into the programming part.
+
+So far, [PEP 622 authors are negative towards the benefits of AND patterns and active patterns](https://github.com/gvanrossum/patma/issues/97#issuecomment-649875519).
+
+Hence, in order to actually disable AND patterns and active patterns,
+it's good to ditch `__match__` and everything will get fine. There're many good concerns presented in [#115](https://github.com/gvanrossum/patma/issues/115),
+say, no `__match__` still works for many exemlar use cases discovered by PEP 622 authors,
+and we can add a proper `__match__` protocol later if users actually need it and call for it.
+
+## The Switch Semantics
+
+As I used to overwhelming the tracker repository, I stopped posting more proposals.
+
+One of which is the switch semantics, which could speed up pattern matching in some cases.
+
+This could be achieved by **Label As Value**, just like how switch/match things got implemented in a static language.
+
+In Python we also have **Label As Value**, by using the Python bytecode instruction [**END_FINALLY**](https://docs.python.org/3/library/dis.html#opcode-END_FINALLY).
+
+I was told about this by [@bhuztez](https://github.com/bhuztez), and he seems to know this from [GOSUB](https://code.lardcave.net/2009/07/27/135526/).
+ 
+Besides, I've made an intermediate language implementing this feature, compiling to Python bytecode:
+
+[Sijuiacion Language](https://sijuiacion-lang.readthedocs.io/en/latest/instructions.html#indir).
+
+```sijuiacion
+label a
+...
+blockaddr a  # get the address of label a
+indir        # according to TOS(top of stack), jump to some label 
+```
+
+In above code, we use `label a`, define a label, it will have an offset `I<a>` among all instructions in the same function.
+
+You can use `goto a` to jump to label `a` directly.
+
+However, for pattern matching or switch cases, an indirect jump can be performant.
+
+`blockaddr a` will access the offset of label `a` in the whole instructions, and push it to TOS;
+
+`indir` consumes TOS, and jump to the corresponding offset.
+
+Above sijuiacion things will be compiled to CPython bytecode instructions with the help of `END_FINALLY`.
+
+If we have such a match statement:
+
+```python
+match expr:
+    case C1(...):
+        # block 1
+        ...
+    case C2(...):
+        # block 2
+        ...
+    case C2(...):
+        # block 3
+        ...
+    case C3(...):
+        # block 4
+    case _:
+        # block 5
+        ...
+```
+
+And if we can know some static and unique *tags* held by `C1`, `C2`, ...,
+we can generate a constant table `TABLE = {tag(C1): <blockaddr 1>, tag(C2): <blockaddr 2>, tag(C3): <blockaddr 4>}`,
+we could generate such instructions:
+
+```sijuiacion
+LOAD_CONST <TABLE>
+# we compute the label value and push it ot TOS
+<call dict.get(TABLE, tag(match_target), <blockaddr 5>)> 
+indir  # indirect jump according to TOS
+```
+
+In this way, we can very fast decide which cases are possible to try.
+
+However, a global variable like `C1`, `C2`, `C3` is actually dynamic variables in Python,
+this will cause it difficult to create a jump table.
+
+Besides, active patterns will disable such optimizations.
+
+## Scope
+
+[#96](https://github.com/gvanrossum/patma/issues/96) is shutdown as
+PEP 622 authors didn't agree that this was an issue.
+
+
+```python
+a =  1
+match [10, 20]:
+    case [a, 2]:
+        ...
+    case _:
+        print(a) # 1 or 10?
+```
+
+Some concern against using name shadowing technique is,
+`locals` and other Python reflection things are already widely used to access local names,
+and it might be difficult to predict where the lifetime of a variable has ended up.
+
+This is not a problem, because name shadowing just generates some "weird" names, and statically
+shadows some existing variables.
+
+Its implementation within the CPython codebase can be easily made when building symbol tables,
+or building bytecode instructions.
+ 
+I can make a demonstration for name shadowing steps based on the following code, and assume that
+we perform this when building bytecode instructions.
+
+```python
+a = 1
+match expr:
+    case C(a, 1) if (lambda : a < 2)():
+        print(a)
+        ...
+```
+
+0. We create an empty map `ENV`, from user-written names to generated names.
+
+1. When visiting the sub-patterns of `C(a, 1)`, we saw `a`, we generate some name for `a`, maybe
+   `$a.h@z`, which shall be an invalid Python identifier. We add the mapping to `ENV`(`ENV[a := $a.h@z]`).
+
+2. When visiting the name `a` in the guard `(lambda : a < 2)()`, we lookup `ENV`(`ENV.get("a", "a")`),
+   hence we will actually get the generated name `"$a.h@z"` here.
+   
+3. If the case `C(a, 1) if (lambda : a < 2)()` failed, we just exit it. Notice that variable `a` is not bound,
+
+4. Otherwise, before `print(a)`, we inserted instructions to do name bindings `a = $a.h@z`.
+
+As you can see, name shadowing can also be totally made with AST transformations
+(this can be better as you don't need to care about whether a variable is (cell)bound/free/global):
+
+```python
+a = 1
+match expr:
+    case C($a.h@z, 1) if (lambda : $a.h@z < 2)():
+        a = $a.h@z
+        print(a)
+        ...
+```
+
+How about `locals`? Or other reflection tools?
+
+Fine. The generated are invalid identifiers, you can just skip them.
+
+However, it's rejected after all. [This semantics is already clarified](https://github.com/gvanrossum/patma/issues/110)
+in some degree, in PEP 622. 
+
+## Miscellaneous
+
+I forgot them. TODO.  

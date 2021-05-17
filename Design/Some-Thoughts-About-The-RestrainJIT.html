@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Some Thoughts About The Restrain JIT &#8212; thautwarm&#39;s blog pages</title>
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Research: Review and Observations of Python JIT" href="Research-Restrain-JIT.html" />
+    <link rel="prev" title="General Programming In Julia Language From An Advanced Standpoint" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="../_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="../_static/bootstrap-sphinx.js "></script>
+
+  </head><body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default ">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../guide.html">
+          Site-32</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="https://github.com/thautwarm">GitHub</a></li>
+                <li><a href="../PL/index.html">PL</a></li>
+                <li><a href="index.html">Design</a></li>
+                <li><a href="../DSL/index.html">DSL</a></li>
+                <li><a href="../Fiction/index.html">Fiction</a></li>
+                <li><a href="../Others/index.html">Others</a></li>
+                <li><a href="../Backup/index.html">Backup</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../guide.html">Site-32 <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Site-32 Considered Harmful</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Compiler/index.html">Compiler</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Design</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html">General Programming In Julia Language From An Advanced Standpoint</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#first-class">First-Class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#polymorphisms-of-multiple-dispatch">Polymorphisms of Multiple Dispatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#full-featured-macros">Full-Featured Macros</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#macro-the-function-from-ast-to-ast">Macro, the Function from AST to AST</a></li>
+<li class="toctree-l4"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#scope-and-hygiene">Scope and Hygiene</a></li>
+<li class="toctree-l4"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#other-useful-knowledge-for-julia-macros">Other Useful Knowledge for Julia Macros</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#a-big-step-forward-in-ast-manipulations">A Big Step Forward in AST Manipulations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="General-Programming-In-Julia-Language-From-An-Advanced-Standpoint.html#limitation-absence-of-function-types">Limitation: Absence of Function Types</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Some Thoughts About The Restrain JIT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Research-Restrain-JIT.html">Research: Review and Observations of Python JIT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Research-Restrain-JIT.html#history">History</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Research-Restrain-JIT.html#observations">Observations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="PEP622-1.html">My Comments about PEP 622(V1)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#my-concerns">My Concerns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#scoping-issues">Scoping Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#comments-about-the-rejection-of-and-patterns">Comments about the rejection of AND (&amp;) patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#consider-performance-guards-as-patterns">Consider Performance: Guards As Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#grammar-change-feature-request-parameterized-patterns">Grammar Change &amp; Feature Request: Parameterized Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#an-alternative-match-protocol-can-be-better-in-simplicity-efficiency-and-expressivity">An Alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> Protocol Can be Better in Simplicity, Efficiency, and Expressivity.</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="PEP622-1.html#simplicity-of-the-alternative-match-protocol">Simplicity of the alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="PEP622-1.html#the-alternative-match-protocol-is-efficient">The alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol is efficient</a></li>
+<li class="toctree-l4"><a class="reference internal" href="PEP622-1.html#the-alternative-match-protocol-results-in-better-expressivity">The alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> protocol results in better expressivity</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-1.html#miscellaneous">Miscellaneous</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="PEP622-1.html#else-clauses-in-pattern-matching"><code class="docutils literal notranslate"><span class="pre">else</span></code> Clauses in Pattern Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="PEP622-1.html#grammar-of-patterns-could-become-that-of-expressions">Grammar of Patterns Could Become That of Expressions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="PEP622-2.html">PEP 622(V2)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#bringing-else-back-is-rejected">Bringing <code class="docutils literal notranslate"><span class="pre">else</span></code> Back is Rejected</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#variables-in-patterns-bindings-instead-of-evaluations-and-comparisons">Variables in Patterns: Bindings instead of Evaluations and Comparisons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#alternative-match-protocol">Alternative <code class="docutils literal notranslate"><span class="pre">__match__</span></code> Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#the-switch-semantics">The Switch Semantics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#scope">Scope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PEP622-2.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../DSL/index.html">DSL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html">Write You A Query Language</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#definition-of-syntaxes">Definition of Syntaxes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#codegen-target">Codegen Target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#refinement-of-codegen-typed-columns">Refinement of Codegen: Typed Columns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#implementation">Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../DSL/write-your-a-query-language-with-MLStyle.html#enjoy-you-a-query-language">Enjoy You A Query Language</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Fiction/index.html">Fiction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id1">2021年4月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id3">2020年10月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id4">2020年6月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id7">2020年4月</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Fiction/index.html#id9">2019年10月</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Fiction/index.html#id10">日前安排</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Fiction/index.html#id18">目录</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-13.html">Smarter Witnesses for Type Classes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#notation">Notation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#instance-resolution-variables-as-instances">Instance Resolution &amp; Variables As Instances</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#the-most-general-instance-problem-overlapping-instance-problem">“The Most General Instance” Problem &amp; “Overlapping Instance” Problem</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id1">优化</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id2">该算法和相应语言设计的好处</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-13.html#id3">不足之处</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-15.html">我和Python的故事</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id1">第0节</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id2">第1节: 科学计算, Python, 生物信息学和数据挖掘</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id3">第2节: 转型的经过, 走向程序语言设计领域</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id4">第3节: 想要给Python添加高级语言特性的理想</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#id5">第4节: Flowpython</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-15.html#bnf-parser-generator">第4节: BNF, Parser Generator和语言制造机器</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-10-30.html">杂谈</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-30.html#pycon-china-2019">PyCon China 2019 成都</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2019-10-30.html#id2">直面自己的人格缺陷</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-06.html">杂谈</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-14.html">我太难了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2019-11-17.html">我太懂了</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-01-07.html">打通</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-01-07.html#parsing">Parsing</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-01-07.html#python">Python 字节码</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-02.html">Tagless Final in F#</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-07.html">Encoding Typeclass Default Methods in Purescript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/日记2020-02-11.html">近期规划</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/日记2020-02-11.html#purescript-python">Purescript-Python</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#anf">从表达式优先到语句优先: ANF变换</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#pythonfirst-class">Python虚拟机上的First-class的表达式优先</a></li>
+<li class="toctree-l6"><a class="reference internal" href="../Fiction/日记2020-02-11.html#id2">社区意见</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/cure/和平日久.html">如何写出令人感到幸福的小说</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id2">合理利用“无敌”元素</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id3">“纯爱”而非“后宫”</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id4">细腻的画面感</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id5">节奏流畅的回忆</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id6">暗线和潜台词</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/和平日久.html#id7">总结</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html">乐理菜鸡怎么给自己的小说写BGM?</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id1">找调</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id2">打谱</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../Fiction/cure/乐理菜鸡怎么给自己的小说写bgm.html#id3">总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PL/index.html">Programming Language</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../PL/HKT.html">Higher Kinded Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/typeclass.html">Type Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/typeclass.html#about-abstractions">About Abstractions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/typeclass.html#about-separation-of-type-definitions-and-data-manipulations">About Separation of Type Definitions and Data Manipulations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/paper-reading-LHKP.html">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#how-to">How-To</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#static-resolution-more-polymorphic">Static Resolution: More polymorphic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#limitation1-much-higher-kinded">Limitation1: Much Higher Kinded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#limitation2-identity">Limitation2: Identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/paper-reading-LHKP.html#why-this-lightweight-higher-polymorphism-instead-of-the-haskell-approach">Why this Lightweight-Higher-Polymorphism instead of the Haskell approach</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html">Compelling Higher Kinded Types and Type Classes in F#</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#active-pattern">Active Pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#statically-resolved-type-parameters">Statically Resolved Type Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#the-getsig-function-and-implicits">The <em>getsig</em> Function and Implicits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#why-abstractclass">Why AbstractClass?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#why-functor-f-instead-of-the-straightforward-functor">Why <em>Functor&lt;’F&gt;</em> instead of the straightforward <em>Functor</em></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/HKT-typeclass-FSharp.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191212.html">FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#terminology">Terminology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#background">Background</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#application">Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191212.html#scoping-name-resolution">Scoping: Name Resolution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191212.html#typing-type-inference">Typing: Type Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191212.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/plfp-20191219.html">Tagless Final For Writing Compilers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#problem">Problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#tagless-final-for-compiler-phases">Tagless Final For Compiler Phases</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#quick-start-for-tagless-final">Quick Start for Tagless Final</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#grammar">“Grammar”</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#expanding-representation">Expanding Representation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#problems-of-decoupling-and-compositing">Problems of Decoupling and Compositing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#fsym">FSYM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PL/plfp-20191219.html#laziness-for-mutual-dependencies">Laziness, for Mutual Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/plfp-20191219.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/elaborating-julia.html">Julia Counts for PL Researchers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#expressiveness">Expressiveness</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#staging">Staging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/elaborating-julia.html#advantages-as-a-codegen-backend">Advantages as a codegen backend</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/tagless-final-pattern-match.html">First-class Pattern Matching in the Final Approach</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#core-ideas">Core Ideas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#full-implementation-in-haskell">Full implementation in Haskell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-pattern-match.html#enhancement-1">Enhancement 1</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/tagless-final-for-julia.html">Julia Benefits from Tagless Final</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#what-happened-today">What Happened Today?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#an-example-turns-out-to-be-type-unstable">An Example Turns Out to be Type Unstable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/tagless-final-for-julia.html#tagless-final-encoding-about-above-code">Tagless Final Encoding about Above Code</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PL/hrt-use-case.html">Some Use Cases for Higher Rank Polymorphisms(No Monad)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../PL/hrt-use-case.html#polymorphic-functions-for-edsl">Polymorphic Functions for eDSL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/hrt-use-case.html#existential-types">Existential Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../PL/hrt-use-case.html#manipulation-for-heterogeneous-data">Manipulation for Heterogeneous Data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Backup/index.html">Backup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Backup/高观点下的Julia泛用编程.html">高观点下的Julia泛用编程</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Others/index.html">Others</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Others/contributions.html">Thautwarm’s Open Source Contributions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#projects-owned-by-other-individuals-organizations">Projects Owned By Other Individuals/Organizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#leading-projects">Leading Projects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Others/contributions.html#other-notable-personal-projects">Other Notable Personal Projects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Subsections <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Some Thoughts About The Restrain JIT</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="section" id="some-thoughts-about-the-restrain-jit">
+<h1>Some Thoughts About The Restrain JIT<a class="headerlink" href="#some-thoughts-about-the-restrain-jit" title="Permalink to this headline">¶</a></h1>
+<p>Yesterday is the PyConChina 2019, and I made a talk about the JIT stuffs. Actually,
+about my recent project, the <a class="reference external" href="https://github.com/thautwarm/restrain-jit/">Restrain Python JIT</a> .</p>
+<p>In this project I did a backend-independent IR generation from the existing Python bytecode
+instructions, and made an instance back end targeting the Julia Language.</p>
+<p>The instructions passed to Julia can be described with following specification:</p>
+<p><strong>P.S</strong> : this instructions are only for Julia back end, but the process of instruction
+generation will work for all prospective back ends due to an emulation of Tagless Final Style in Python:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/thautwarm/restrain-jit/blob/8c158693e4548da799bdcab2858ca2b64e1f0521/restrain_jit/abs_compiler/from_bc.py">from_bc.py</a></li>
+<li><a class="reference external" href="https://github.com/thautwarm/restrain-jit/blob/8c158693e4548da799bdcab2858ca2b64e1f0521/restrain_jit/vm/am.py#L267">run_machine</a></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="n">A</span> <span class="n">lhs</span><span class="p">:</span><span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="n">rhs</span><span class="p">:</span><span class="s1">&#39;Instr&#39;</span><span class="p">;</span>
+
+<span class="n">abc</span> <span class="n">Instr</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">App</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">f</span><span class="p">:</span><span class="n">Repr</span> <span class="n">args</span><span class="p">:</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">Repr</span><span class="p">];</span>
+<span class="n">data</span> <span class="n">Ass</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">reg</span><span class="p">:</span><span class="n">Reg</span> <span class="n">val</span><span class="p">:</span><span class="n">Repr</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">Load</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">reg</span><span class="p">:</span><span class="n">Reg</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">Store</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">reg</span><span class="p">:</span><span class="n">Reg</span> <span class="n">val</span><span class="p">:</span><span class="n">Repr</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">JmpIf</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">label</span><span class="p">:</span><span class="nb">str</span> <span class="n">cond</span><span class="p">:</span><span class="n">Repr</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">JmpIfPush</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">label</span><span class="p">:</span><span class="nb">str</span> <span class="n">cond</span><span class="p">:</span><span class="n">Repr</span> <span class="n">leave</span><span class="p">:</span><span class="n">Repr</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">Jmp</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">label</span><span class="p">:</span><span class="nb">str</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">Label</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">label</span><span class="p">:</span><span class="nb">str</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">Peek</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">offset</span><span class="p">:</span><span class="nb">int</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">Return</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">val</span><span class="p">:</span><span class="n">Repr</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">Push</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">val</span><span class="p">:</span><span class="n">Repr</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">Pop</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="p">;</span>
+<span class="n">data</span> <span class="n">PyGlob</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">qual</span><span class="p">:</span><span class="nb">str</span> <span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">JlGlob</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">qual</span><span class="p">:</span><span class="nb">str</span> <span class="n">name</span><span class="p">:</span><span class="nb">str</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">UnwindBlock</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">instrs</span><span class="p">:</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">A</span><span class="p">];</span>
+<span class="n">data</span> <span class="n">PopException</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">must</span><span class="p">:</span><span class="nb">bool</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Above code, explicitly, is for generating Python dataclasses, and for instance,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">abc</span> <span class="n">Instr</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>corresponds to</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Instr</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span> <span class="k">pass</span>
+</pre></div>
+</div>
+<p>and,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="n">App</span><span class="p">(</span><span class="n">Instr</span><span class="p">)</span> <span class="n">f</span><span class="p">:</span><span class="n">Repr</span> <span class="n">args</span><span class="p">:</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">Repr</span><span class="p">];</span>
+</pre></div>
+</div>
+<p>generates</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">App</span><span class="p">(</span><span class="n">Instr</span><span class="p">):</span>
+    <span class="n">f</span><span class="p">:</span><span class="n">Repr</span>
+    <span class="n">args</span><span class="p">:</span><span class="n">typing</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">Repr</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>where <code class="code docutils literal notranslate"><span class="pre">Repr</span></code> is short for <strong>representation</strong> :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">abc</span> <span class="n">Repr</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">Reg</span><span class="p">(</span><span class="n">Repr</span><span class="p">)</span> <span class="n">n</span><span class="p">:</span><span class="nb">str</span><span class="p">;</span>
+<span class="n">data</span> <span class="n">Const</span><span class="p">(</span><span class="n">Repr</span><span class="p">)</span> <span class="n">val</span><span class="p">:</span><span class="nb">object</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>It’s indeed a small set of instructions, and it’s a mixture of stack machine instructions and
+register machine instructions.</p>
+<p>The reason why I did this is, Python bytecode instructions are
+based on a stack machine and I cannot trivially eliminate the Python’s <code class="code docutils literal notranslate"><span class="pre">Push</span></code> (e.g.,
+<code class="code docutils literal notranslate"><span class="pre">LOAD_FAST</span></code> , <code class="code docutils literal notranslate"><span class="pre">LOAD_DEREF</span></code> )
+and <code class="code docutils literal notranslate"><span class="pre">Pop</span></code> (e.g., <code class="code docutils literal notranslate"><span class="pre">POP_TOP</span></code> ) instructions without writing a pass to
+analyze the control flows(i.e, the jump instructions by for-loops).</p>
+<p>After generating the instructions for Julia back end, I use an existing Python-Julia bridging library to
+send the those instructions to Julia, and Julia converts them to the regulr Julia objects, actually,
+in the form of <a class="reference external" href="https://github.com/thautwarm/RestrainJIT.jl/blob/cf7c1d7c0b6eb517db46ae1b2339b560e2b0a2a1/src/instr_repr.jl">algebraic data types</a>:</p>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@data</span> <span class="n">Instr</span> <span class="k">begin</span>
+    <span class="n">Value</span><span class="p">(</span><span class="n">v</span><span class="o">::</span><span class="kt">Any</span><span class="p">)</span>
+    <span class="n">App</span><span class="p">(</span><span class="n">f</span><span class="o">::</span> <span class="n">Repr</span><span class="p">,</span> <span class="n">args</span><span class="o">::</span> <span class="n">Vec</span><span class="p">{</span><span class="n">Repr</span><span class="p">})</span>
+    <span class="n">Ass</span><span class="p">(</span><span class="n">reg</span><span class="o">::</span><span class="n">Reg</span><span class="p">,</span> <span class="n">val</span><span class="o">::</span><span class="n">Repr</span><span class="p">)</span>
+    <span class="n">Load</span><span class="p">(</span><span class="n">reg</span><span class="o">::</span><span class="n">Reg</span><span class="p">)</span>
+    <span class="n">Store</span><span class="p">(</span><span class="n">reg</span><span class="o">::</span><span class="n">Reg</span><span class="p">,</span> <span class="n">val</span><span class="o">::</span><span class="n">Repr</span><span class="p">)</span>
+    <span class="n">JmpIf</span><span class="p">(</span><span class="n">label</span><span class="o">::</span><span class="kt">Symbol</span><span class="p">,</span> <span class="n">cond</span><span class="o">::</span><span class="n">Repr</span><span class="p">)</span>
+    <span class="n">JmpIfPush</span><span class="p">(</span><span class="n">label</span><span class="o">::</span><span class="kt">Symbol</span><span class="p">,</span> <span class="n">cond</span><span class="o">::</span><span class="n">Repr</span><span class="p">,</span> <span class="n">leave</span><span class="o">::</span><span class="n">Repr</span><span class="p">)</span>
+    <span class="n">Jmp</span><span class="p">(</span><span class="n">label</span><span class="o">::</span><span class="kt">Symbol</span><span class="p">)</span>
+    <span class="n">Label</span><span class="p">(</span><span class="n">label</span><span class="o">::</span><span class="kt">Symbol</span><span class="p">)</span>
+    <span class="n">Peek</span><span class="p">(</span><span class="n">offset</span><span class="o">::</span><span class="kt">Int</span><span class="p">)</span>
+    <span class="n">Return</span><span class="p">(</span><span class="n">val</span><span class="o">::</span><span class="n">Repr</span><span class="p">)</span>
+    <span class="n">Push</span><span class="p">(</span><span class="n">val</span><span class="o">::</span><span class="n">Repr</span><span class="p">)</span>
+    <span class="n">Pop</span><span class="p">()</span>
+    <span class="n">PyGlob</span><span class="p">(</span><span class="n">sym</span><span class="o">::</span><span class="kt">Symbol</span><span class="p">)</span>
+    <span class="n">JlGlob</span><span class="p">(</span><span class="n">qual</span><span class="o">::</span><span class="kt">Union</span><span class="p">{</span><span class="n">Nothing</span><span class="p">,</span> <span class="kt">Symbol</span><span class="p">},</span> <span class="n">name</span><span class="o">::</span><span class="kt">Symbol</span><span class="p">)</span>
+    <span class="n">UnwindBlock</span><span class="p">(</span><span class="n">instrs</span><span class="o">::</span><span class="n">Vec</span><span class="p">{</span><span class="o">&lt;:</span><span class="n">AbsA</span><span class="p">})</span>
+    <span class="n">PopException</span><span class="p">(</span><span class="n">must</span><span class="o">::</span><span class="kt">Bool</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Then codegen from the instructions.</p>
+<p>However, Julia cannot eval the generated codes directly, otherwise will suffer from the <a class="reference external" href="https://discourse.julialang.org/t/world-age-problem-explanation/9714">“World Age Problem”</a> .</p>
+<p>To end this, I introduced my <a class="reference external" href="https://github.com/thautwarm/GeneralizedGenerated.jl">GG.jl</a> in the JIT back end implementation, and finally the whole system works.</p>
+<p>However, there’re still performance problems.</p>
+<p>The Python jump instructions will finally result into
+some goto statements(via <code class="code docutils literal notranslate"><span class="pre">&#64;goto</span></code> and <cite>&#64;label</cite>) in Julia, and I said before that I haven’t eliminated
+push-pop instructions, which means I have to introduce a stack in the generated code. And it gets severe
+when handling Python <code class="code docutils literal notranslate"><span class="pre">try</span></code> statements, due to the some reason I have to introduce another stack
+for storing exceptions.</p>
+<p>Above cases make it slow for Python’s <code class="code docutils literal notranslate"><span class="pre">try</span></code> and <code class="code docutils literal notranslate"><span class="pre">for</span></code>. Although there’re easy workarounds( <code class="code docutils literal notranslate"><span class="pre">monad</span></code> s instead
+of <code class="code docutils literal notranslate"><span class="pre">try</span></code> statements, and the <code class="code docutils literal notranslate"><span class="pre">foreach</span></code> function instead of <code class="code docutils literal notranslate"><span class="pre">for</span></code> statements) to avoid
+suffering the performance loss, the compile time overhead is another disaster.</p>
+<p>So, I came up with an idea of transforming the generated instructions to fast Julia functions,
+and I guess it might be a bit faster to compile than using my <a class="reference external" href="https://github.com/thautwarm/GeneralizedGenerated.jl">GG.jl</a> .</p>
+<p>I just posted the idea here today, though without an implementation yet.</p>
+<p>Instead of converting generated instructions of Python objects to Julia instances,
+we can also translate them to Julia types, and then we write an interpreter-like
+function in Julia to interpret the types, and the fast performance of Julia’s
+generated functions may help this case, and even do better to eliminate my stack
+encoding. Of course, it’s just a guess now. I tried to finish it today, but it seems
+still need more time.</p>
+<p>I’ll use a pure stack machine instructions to show the design:</p>
+<ol class="arabic simple">
+<li>make some types for representing instructions</li>
+</ol>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">abstract</span> <span class="k">type</span> <span class="n">S</span> <span class="k">end</span>
+<span class="k">struct</span> <span class="n">S0</span> <span class="o">&lt;:</span> <span class="n">S</span> <span class="k">end</span>
+<span class="k">struct</span> <span class="n">S1</span><span class="p">{</span><span class="n">T</span><span class="p">}</span> <span class="o">&lt;:</span> <span class="n">S</span> <span class="k">end</span>
+<span class="k">struct</span> <span class="n">S2</span><span class="p">{</span><span class="n">T</span><span class="p">,</span> <span class="n">G</span><span class="p">}</span> <span class="o">&lt;:</span> <span class="n">S</span> <span class="k">end</span>
+
+<span class="k">struct</span> <span class="n">App</span><span class="p">{</span><span class="n">N</span><span class="p">}</span> <span class="k">end</span>
+<span class="k">struct</span> <span class="n">Push</span><span class="p">{</span><span class="kt">Val</span><span class="p">}</span> <span class="k">end</span>
+<span class="k">struct</span> <span class="n">Pop</span> <span class="k">end</span>
+<span class="k">struct</span> <span class="n">Ass</span><span class="p">{</span><span class="n">Sym</span><span class="p">}</span> <span class="k">end</span>
+<span class="k">struct</span> <span class="n">Label</span><span class="p">{</span><span class="n">L</span><span class="p">}</span> <span class="k">end</span>
+<span class="k">struct</span> <span class="n">Jmp</span><span class="p">{</span><span class="n">L</span><span class="p">}</span> <span class="k">end</span>
+<span class="k">struct</span> <span class="n">JmpIf</span><span class="p">{</span><span class="n">L</span><span class="p">}</span> <span class="k">end</span>
+<span class="k">struct</span> <span class="n">Return</span> <span class="k">end</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>based on the types, I write an interpreter-like generated function:</li>
+</ol>
+<div class="highlight-Julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span> <span class="n">interp</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="o">::</span><span class="kt">Type</span><span class="p">{</span><span class="n">S2</span><span class="p">{</span><span class="n">Return</span><span class="p">,</span> <span class="n">Tail</span><span class="p">}},</span> <span class="n">__stack__</span><span class="o">::</span><span class="kt">Tuple</span><span class="p">{</span><span class="n">Hd</span><span class="p">,</span> <span class="n">Tl</span><span class="p">},</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span><span class="o">::</span><span class="n">Hd</span> <span class="n">where</span> <span class="p">{</span><span class="n">Tail</span><span class="p">,</span> <span class="n">Hd</span><span class="p">,</span> <span class="n">Tl</span><span class="p">}</span>
+    <span class="n">stack</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">end</span>
+
+<span class="n">pop_n</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="p">(</span><span class="kt">Expr</span><span class="p">[],</span> <span class="n">x</span><span class="p">)</span> <span class="o">:</span>
+    <span class="k">begin</span> <span class="n">vs</span><span class="p">,</span> <span class="n">tl</span> <span class="o">=</span> <span class="n">pop_n</span><span class="p">(</span><span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">push!</span><span class="p">(</span><span class="n">vs</span><span class="p">,</span> <span class="o">:</span><span class="p">(</span><span class="o">$</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">vs</span><span class="p">,</span> <span class="n">tl</span>
+    <span class="k">end</span>
+
+<span class="nd">@generated</span> <span class="k">function</span> <span class="n">interp</span><span class="p">(</span>
+    <span class="n">past_instrs</span><span class="o">::</span><span class="kt">Type</span><span class="p">{</span><span class="n">Past</span><span class="p">},</span>
+    <span class="n">left_instrs</span><span class="o">::</span><span class="kt">Type</span><span class="p">{</span><span class="n">S2</span><span class="p">{</span><span class="n">App</span><span class="p">{</span><span class="n">N</span><span class="p">},</span> <span class="n">Follow</span><span class="p">}},</span>
+    <span class="n">__stack__</span><span class="p">,</span>
+    <span class="o">::</span><span class="kt">Type</span><span class="p">{</span><span class="n">S1</span><span class="p">{</span><span class="n">LocalNames</span><span class="p">}},</span>
+    <span class="n">localvars</span><span class="o">...</span>
+<span class="p">)</span> <span class="n">where</span> <span class="p">{</span><span class="n">Past</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">LocalNames</span><span class="p">,</span> <span class="n">Follow</span><span class="p">}</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">hd</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">elts</span><span class="p">,</span> <span class="n">tl</span> <span class="o">=</span> <span class="n">pop_n</span><span class="p">(</span><span class="o">:</span><span class="n">__stack__</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">elts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">view</span><span class="p">(</span><span class="n">elts</span><span class="p">,</span> <span class="mi">2</span><span class="o">:</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">quote</span>
+        <span class="n">__stack__</span> <span class="o">=</span> <span class="p">(</span><span class="o">$</span><span class="n">f</span><span class="p">(</span><span class="o">$</span><span class="p">(</span><span class="n">args</span><span class="o">...</span><span class="p">)),</span> <span class="o">$</span><span class="n">tl</span><span class="p">)</span>
+        <span class="n">interp</span><span class="p">(</span><span class="n">S2</span><span class="p">{</span><span class="n">App</span><span class="p">{</span><span class="n">N</span><span class="p">},</span> <span class="n">Past</span><span class="p">},</span> <span class="n">Follow</span><span class="p">,</span> <span class="n">__stack__</span><span class="p">,</span> <span class="n">S1</span><span class="p">{</span><span class="n">Names</span><span class="p">},</span> <span class="n">localvars</span><span class="o">...</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Some explanations:</p>
+<ul class="simple">
+<li>The argument <code class="code docutils literal notranslate"><span class="pre">past_instrs</span></code> for prospective jumping back. To implement loops, jumping back is needed.</li>
+<li>The argument <code class="code docutils literal notranslate"><span class="pre">localvars</span></code> is all local variables could be accessed in the function.</li>
+<li>The type parameter <code class="code docutils literal notranslate"><span class="pre">LocalNames</span></code> is for statically looking up local variables from its names.</li>
+</ul>
+<p>I’m to implement it in the future, to examine if this way will keep performance and reduce the JIT overhead.</p>
+<p>If not, the Julia back end for the Restrain Python JIT might be useless(unless for computations in really big scales).</p>
+<p>If Julia cannot be a good JIT back end for CPython, I’ll try JVM. JVM is a stack machine and it’s not that slow to
+boot up. Further, the .class files can be loaded dynamically and also with JIT support, and my friends who know
+much about Java and JVM told me JVM is also good for optimizing the dynamically typed codes.</p>
+<p>However, if I do use JVM as a back end in the future, I think keeping CPython’s C extensions working will be difficult.</p>
+<p>Actually I’m not sure, because I didn’t know much about JVM, but if it’s the truth, I’ll give up trying JVM.</p>
+<p>Keeping <a class="reference external" href="https://github.com/thautwarm/restrain-jit/blob/master/docs/What-is-CPython-Compatible.md">CPython Compatible</a> is the most important, in my opinion.</p>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+        <br/>
+        
+<div id="sourcelink">
+  <a href="../_sources/Design/Some-Thoughts-About-The-RestrainJIT.rst.txt"
+     rel="nofollow">Source</a>
+</div>
+      
+    </p>
+    <p>
+        &copy; Copyright 2020, thautwarm.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.0.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

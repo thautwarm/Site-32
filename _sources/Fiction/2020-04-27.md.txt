@@ -1,0 +1,19 @@
+# Some Notes
+
+This is really a bad error report
+```julia
+function f()
+end
+
+a, b, c = f()
+
+# => ERROR: LoadError: MethodError: no method matching iterate(::Nothing)
+```
+
+We can certainly make such a report:
+
+```
+# =>
+    `a, b, c = f()`(code snippet) unpacking from Nothing failed for(the semantics)
+    ERROR: LoadError: MethodError: no method matching iterate(::Nothing)
+```

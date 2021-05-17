@@ -1,0 +1,77 @@
+打通
+=================
+
+
+Parsing
+------------
+
+第一件事, 终于打通了Python parser方面沒有可用库的情況.
+
+我几年前注意到模式匹配和parsing的相似性, 然后写了不少垃圾的bnf到parserc的框架,
+这些东西垃圾到甚至可以回溯， 你可敢信?
+
+在上下文相关parsing的执念被[rbnf.py](https://github.com/thautwarm/RBNF)完结后, 我才开始注意parsing除开"能用"以外的东西.
+
+
+在[Yet Another Python Python](https://github.com/Xython/YAPyPy) import一个sklearn需要10秒钟这件事里,
+我认识到了实现工业级语言(Python)的parser一定得有**足够快的启动时间**, 而且没优化的语言实现的parserc真的是不敢用的。
+
+我dig into了一些profile的结果, 最后分析latency的原因如下:
+
+1. 之前对左递归的处理上有大量的性能损失。 原先的考虑是, 为了允许动态添加parsing rule,
+左递归是不应该静态分析的, 然后全都放在运行时发现左递归路径, 但这个考虑有点偏执了。
+
+2. 为了支持上下文相关parsing, 引入的一些结构, 例如一种检查当前状态的组合子, 会去调用python的eval, 这是codegen的失策。
+
+3. 回溯, 也不做点lookahead
+
+
+针对上面的问题, 后面用Haskell写了一个类似[OCaml Menhir](http://gallium.inria.fr/~fpottier/menhir)的跨语言parsing框架, [RBNF.hs](https://github.com/thautwarm/RBNF.hs).
+
+这个RBNF.hs使用我自己发现的一种LL文法编译方式(转换为图, 在图上抽象解释生成中间表示， 再编译到OCaml, Python, Julia等语言).
+
+然后用上了海量的parsing优化技术, 文法inline, LL的静态左递归分析, lookahead的决策树优化, 然后性能成为了parser中的豪杰,
+除了在极其复杂且optional规则多的文法(例如LLVM IR)上可能生成几百万行代码以外, 其他还好。
+
+RBNF.hs的问题:
+- 语法糖不够, 像menhir的`list`, `separated_list`以及一些parameterised polymorphic没有实现, 但这个在目前的rbnf上再叠一层high level rbnf就好, 不是大问题。
+- 不支持nullable语法, 例如`a : [b]`. 因为实现中用的一些优化要求production非空，否则不停机. 理论上, 有时可以支持nullable语法, 但支持起来很麻烦, 干脆就没做. 实用中发现还好, 所以也不是大问题。印象里, 之前oleg老爷给我的那篇paper里, 我是受到了启发, 觉得可以确定支持nullable的条件, 但很久了, 忘了.
+- lookahead优化有bug. 有些时候`a ::= b ...; b ::= 'b'`不过编译(报出有回溯), 但`a ::= 'b' ...`就可以, 这个问题还没弄清楚, 直觉可能是bug, 例如我应该用GADT重写[Marisa中间码](https://github.com/thautwarm/RBNF.hs/blob/master/src/RBNF/IRs/Marisa.hs).
+- type infer有点问题, 一开始ocaml后端是可用的, 后面python那边修了几个bug, type infer模块没更新, 然后一直infer不过了。生成代码仔细检查过是没有问题的, 那就是typing过程出错了。这个不是小问题, 但目前只打算做python, c, julia的后端, ocaml毕竟有menhir了没我什么事.
+
+上述问题并没有影响目前python端的使用, [rbnf-rts](https://github.com/thautwarm/rbnf-rts)的使用。目前我就是Python世界里的menhir,
+不带一点水分, **世界最快**. 这种可以静态生成的parser有个好处, 首先可以bootstrap自己, 然后用起来依赖很小. lark说自己依赖小, 我好想笑.
+
+话外提几句.
+
+Menhir 个人感觉是我觉得最好的parsing框架, 它的语法糖没有丝毫需要查文档才能秒懂的, 我爱死它了。
+
+最开始的我搞parser时就是"杂质"概念搞多了, 或者为了使用或者实现稍微方便一点, 就在bnf中引入新构造, 还大量引入, 不可.
+
+反例就是Haskell BNFC那边, 以及Python的lark-parser, 都引入了相当多的"杂质"概念. 什么production一个term就不会生成节点啊, 什么label啊, xswl. 不否认实用性, 但质疑feature设计动机的正当性. 我除开`rbnf-rts`和`RBNF.hs`, 就只有`RBNF.jl`引入的"杂质概念"比较少了, `RBNF.py`那些简直就是黑历史, 虽然上下文相关parsing很厉害.
+
+总之, 现在, 终于! 在parser的功能和性能上, 我走到了一个双赢点.
+
+希望读博前能把上下文相关parsing引入到RBNF.hs里, 但是动力不大hhh.
+
+轻松， 海阔天空.
+
+
+Python 字节码
+-------------------
+
+这比较research specific. 我们做编译器的, 随手就做好几十个, 但是codegen到哪儿是个学问。
+
+python字节码有几个好:
+- 直接接入Python生态, 能用的三方库很多, 覆盖面全.
+- Python的编译系统, packaging系统都很容易自定义. 对于后者, 如果愿意持续开发一个语言, 可以把pypi当作免费服务器.
+- 运行时报错定位, 这个太重要的了. 这也是我舍弃我写的Idris-Python, 并放弃为agda写Python后端的原因.
+- Python VM上有GC, 不多说...
+- Python 字节码的level比较高, 一个基于Python字节码写起来, 甚至比直接写Python表达力强, 不会出现不能写多行lambda这种, 被前端语法限制的弟弟问题.
+- Python有indirect jump(感谢傻逼不撸兔子), 再把pattern matching编译到if-else上, 脾气再好也要骂街了.
+
+所以我就在Python上写了一个IR, 语言名字就叫[sijuiacion/"橘里橘气"](https://sijuiacion-lang.readthedocs.io/en/latest). 名字不正经, 项目很牛逼, 但也没人懂.
+
+不过无论如何, 终于一人把Python编译器相关最基本的工具栈从"无"变成了"有", 敲码自由的梦想又近了很多.
+
+那就这样了, 写嗨了, 实验室网也把arch也更新完了, 回寝室做炒饭!

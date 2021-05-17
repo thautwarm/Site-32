@@ -1,0 +1,502 @@
+# My Comments about PEP 622(V1)
+
+## My Concerns
+
+Python pattern matching is what in the very beginning motivates me, to study in the field of Programming Languages.
+
+Now I'm skilled in more than 30 programming languages, and have developed a lot of interests in many other topics. My research topic is CPython compatible JIT compiler, it seems I cannot graduate if I cannot work it out.
+
+From these facts, you know how special Python is to me.
+
+Today, a friend of mine, [laike9m](https://laike9m.com/) referred me a tweet which talks about PEP 622, Structural Pattern Matching for Python..
+
+My youth recalled!
+
+Next, I read up the proposal, went to the cpython repo branch and checked the grammar.
+
+There're quite a few issues with the PEP and maybe the implementations,
+and I'd give my concerns in this article.
+
+To convince the readers, I'd show my concerns with pattern matching stuffs:
+
+1. I'm familiar with pattern matching in many programming languages(including the languages mentioned in PEP 622).
+
+2. I understand the most complex and compelling parts of pattern matching in F#/OCaml, Haskell.
+
+3. I wrote lots of Scala code during some period, and I nearly only use case classes + abstract classes(using ADTs), and traits.
+
+4. I studied Elixir and Erlang and used to earn money with them, by writing games. Especially, I love Elixir's pin-operators.
+
+5. I wrote lots of pattern matching implementations for Python:
+    - [moshmosh](https://github.com/thautwarm/moshmosh)(it's a Japanese phrase used in phone calls), which provides a nearly full-featured pattern matching implementation(most stuffs mentioned in PEP 622 are implemented there), and I'm pretty sure this is so far the fastest implementation because I do code generation statically.
+    - [Xython/pattern-matching](https://github.com/Xython/pattern-matching), this is only for fun. The infrastructure of this library is conceptually the same as the very popular one PamPy, but I did this in year 2017.
+
+6. I also implemented the [Extensible Pattern Matching for Julia Programming Language](https://github.com/thautwarm/MLStyle.jl). Unlike moshmosh and Xython/pattern-matching, this library is actually widely in use because it's very efficient, extensible and effective.
+
+7. (this item is a little bit academic)I have understandings about pattern matching from some other point of views, for instance, I can use denotational semantics to show the underlying structures of pattern matching: [First-class Pattern Matching in the Final Approach](https://thautwarm.github.io/Site-32/PL/tagless-final-pattern-match.html).
+
+8. Maybe people in Python-ideas mailing list could remember what I post there in the summer of 2017. I modified CPython codebase and made something called "flowpython", it supports basic pattern matching but is quite naïve/limited. Besides, I learned *BNF from CPython project, thanks a lot, now I'm quite skilled in parsing things.. that's another story..
+
+
+## Scoping Issues
+
+A simple example could show this:
+
+```python
+a = 1
+match [2, 3]:
+    case [0, 1]: ...
+    case [a, 2]: ...
+    case _:
+        print(a)
+```
+
+A pattern might fail in the halfway, I don't yet see the specification talk anything about this problem.
+
+In the exemplar code, variable `a` should be `1` before a match clause succeeded,
+and especially, expected to be `1` in the body of `case _`.
+
+However, [as the specification said](https://www.python.org/dev/peps/pep-0622/#match-semantics):
+
+> Name bindings made during a successful pattern match outlive the executed suite and can be used after the match statement. This follows the logic of other Python statements that can bind names, such as for loop and with statement.
+
+It seems that `a` will be modified unexpectedly to `2`, when we come to the last match clause.
+
+This is dangerous.
+
+In [moshmosh](https://github.com/thautwarm/moshmosh), I solved this issue by a simple technique called **gensym**, which means generating unique symbols that users cannot write down.
+
+By gensym, before any match clause succeeded, an occurrence of name pattern will **locally shadow** a symbol. A simple scoping analysis shall solve this, by transforming
+
+```python
+a = 1
+match [2, 3]:
+    case [0, 1]: ...
+    case [a, 2]: ...
+    case _:
+        print(a)
+```
+
+into
+
+```python
+a = 1
+match [2, 3]:
+    case [0, 1]: ...
+    case [x$asda, 2]: 
+        a = x$asda
+        ...
+    case _:
+        print(a)
+```
+
+`x$asda` is a unique variable name used internally, exactly like how what we emit code for list/map/set comprehensions.
+
+HINTS For people not familiar with CPython compiler details: we generate a variable whose name is `.0`, 
+which couldn't be written down by a user:
+
+```python
+import dis
+
+@dis.dis
+def f(x):
+   return [i for i in x]
+
+...
+Disassembly of <code object <listcomp> at 0x000002694FF09C00, file "<...>", line 2>:
+  2           0 BUILD_LIST               0
+              2 LOAD_FAST                0 (.0)
+        >>    4 FOR_ITER                 8 (to 14)
+              6 STORE_FAST               1 (i)
+              8 LOAD_FAST                1 (i)
+             10 LIST_APPEND              2
+             12 JUMP_ABSOLUTE            4
+        >>   14 RETURN_VALUE
+
+...
+```
+
+## Comments about the rejection of AND (&) patterns
+
+[I saw AND patterns rejected](https://www.python.org/dev/peps/pep-0622/#id77), for
+
+> However, it's not clear how useful this would be...
+
+This can be extremely useful when working with custom patterns.
+
+```python
+match value:
+    case P1(a, b) and P2(c) when pred(a, b, c):
+        ...
+```
+
+`P1` and `P2` here may be custom patterns, each of which destructs the data with
+one perspective, and extract something we'd use latter.
+
+This can be very frequent in the real world, say we're working with URL strings,
+assume that we've implemented some small patterns like `Urlsplit` and `Urlopen`,
+which respectively uses `urllib.parse.urlsplit` and `urllib.request.urlopen`
+and presents destructed results:
+
+```python
+match url:
+    case Urlsplit(netloc=n) and Urlopen(code=c)
+        if c == 404 and n == "docs.python.org":
+        ...
+```
+
+Without AND patterns, we cannot reuse the existing patterns like
+`Urlsplit` or `Urlopen`. This disables the composability/modularity of programs.
+
+By providing AND patterns, it becomes feasible for us to decouple our codes by implementing small patterns.
+Users can reuse our patterns by combining them with AND patterns and OR patterns, even if we don't know how our code will get used.
+
+## Consider Performance: Guards As Patterns
+
+It's well known that in many programming languages having pattern matching, the guards are treated as a special syntax. There're a few:
+
+```haskell
+case expr of
+    pat | guard -> ...
+```
+
+```ocaml
+match expr with
+| pat when guard -> ...
+```
+
+```scala
+expr match {
+    case pat if guard => ...
+}
+```
+
+```rust
+match expr {
+    pat if guard => ...,
+}
+```
+
+...many examples
+
+It seems that it's a routine to make guards as a special syntax.
+
+However, the problem is, **all of them have very powerful static compilers or JIT compilers**, in this case, **putting conditional jumps later will help to optimize instruction pipelines for them**. 
+
+Python does not have such advanced optimizations, hence an early check might helps to avoid redundant computations. For example:
+
+```python
+match expr:
+    case C(pat1 when p1, pat2, pat3):
+        ...
+```
+
+If the failure of pat1 is considered frequent, we might put the check `p1` earlier, to avoid computing
+`pat2`, `pat3` redundantly in the most cases.
+
+I have to admit adding a syntax for this is quite an issue, but the feature and its benefits can be practical.
+
+## Grammar Change & Feature Request: Parameterized Patterns
+
+I saw this in the [Deferred Ideas](https://www.python.org/dev/peps/pep-0622/#id20), and I want to stress this again at here.
+
+The parameterized patterns can be very convenient in practice, and Microsoft Docs has given good explanations about this: [F# Documents: Parameterized Active Patterns](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/active-patterns#parameterized-active-patterns).
+
+This can be naturally achieved in Python, by changing the [grammar](https://github.com/brandtbucher/cpython/blob/276c2b08270861f939f79b6ceec995effe83073f/Grammar/python.gram#L253) from
+
+```
+class_pattern[expr_ty]:
+    | func=name_or_attr '(' ')' { _Py_Call(func, NULL, NULL, EXTRA) }
+```
+
+to
+
+```
+class_pattern[expr_ty]:
+    | func=call_or_attr '(' ')' { _Py_Call(func, NULL, NULL, EXTRA) }
+    | ...
+
+call_or_attr[expr_ty]:
+    | call  # derives python's call syntax
+    | NAME
+
+call: ... # maybe 'primary'
+```
+
+In my implementation of pattern matching, [moshmosh](https://github.com/thautwarm/moshmosh), a pattern is just an `expr`, For instance:
+
+```python
+from moshmosh.extension import perform_extension
+from inspect import getsource
+import re
+
+def rewrite(f):
+    src = getsource(f)
+    src = perform_extension(src)
+    exec(src, f.__globals__)
+    return f.__globals__[f.__name__]
+
+class Regex:
+    def __init__(self, r):
+        self.p = re.compile(r)
+
+    # This is moshmosh's '__match__' protocol,
+    # which is different from PEP 622 proposal.
+    # Also, slightly differs from
+    # the proposal by this article
+    def __match__(self, n_arg, instance):
+        if n_arg == 1:
+            match = self.p.match(instance)
+            return match and match.groups()
+
+def test():
+# REPRODUCTION HINTS: the next line has semantics, do not delete it!
+# +pattern-matching
+    with match("PEP 622!"):
+        if Regex("PEP (\d+\!)")(a):
+            print(a)
+        if _:
+            print("not matched")
+
+rewrite(test)()
+#=> 622!
+```
+
+Also, this can make `InRange` pattern more efficient:
+
+```python
+class InRange:
+    def __init__(self, lo, hi):
+        self.range = range(lo, hi)
+
+    def __match__(self, instance):
+        if instance in self.range:
+            return self
+match 5:
+    case InRange(0, 10)():
+        ...
+```
+
+## An Alternative `__match__` Protocol Can be Better in Simplicity, Efficiency, and Expressivity.
+
+
+Let me firstly introduce an alternative `__match__` protocol.
+
+
+- RULE: no args
+
+  `match v: case C()` matches, iff
+   
+  `C.__match__(v, 0, ()) is ()`.
+
+- RULE: only positional args
+   
+  `match v: case C(a1, a2, ..., an)` matches, iff
+
+  `C.__match__(v, n, ())` matches a sequence pattern `(a1, ..., an)`.
+
+- RULE: only keyword args
+  
+  `match v: case C(k1=kp1, ..., kn=kpn)` matches, iff
+
+  `C.__match__(v, 0, ('k1', ..., 'kn'))` matches a tuple pattern `(kp1, ..., kpn)`.
+
+- RULE: positional + keyword
+
+  `match v: case C(a1, ..., am, k1=kp1, ..., kn=kpn)` matches, iff
+
+  `C.__match__(v, m, ('k1', ..., 'kn'))` matches a tuple pattern `(a1, ..., am, kp1, ..., kpn)`
+
+In fact, above 4 rules are consistent, and can be unified into one.
+
+I separated them into 4, to show this is **FULL-FEATURED**, which means it can cover the functionalities of the `__match__` protocol presented in PEP 622.
+
+
+**The advantage of this alternative design** will make the custom patterns
+- **simpler to write and understand**, and
+- **more efficient in runtime**, and
+- **more expressive**
+
+### Simplicity of the alternative `__match__` protocol
+
+Avoiding `__match_args__` already brings simplicity.
+
+Besides, as the PEP says, `InRange` shall be made with custom patterns,
+we could consider its implementation.
+
+After reading the PEP, I got to know how to implement this:
+
+```python
+class Check:
+    def __init__(self, f):
+        self.f = f
+    def __eq__(self, o):
+        return self.f(o)
+
+class InRangeProxy:
+    def __init__(self, lo_check, hi_check):
+        self.lo_check, self.hi_check = lo_check, hi_check
+    
+class InRange:
+    __match_args__ = ['lo_check', 'hi_check']
+
+    @classmethod    
+    def __match__(self, instance):
+        return InRangeProxy(
+            Check(lambda lo: lo <= instance),
+            Check(lambda hi: instance < hi)
+        )
+
+match 5:
+    case InRange(0, 10):
+        ...
+```
+
+However, with the protocol proposed in this article:
+
+```python
+class Check:
+    def __init__(self, f):
+        self.f = f
+    def __eq__(self, o):
+        return self.f(o)
+
+class InRange:
+    def __match__(self, instance, argcount: int, kwargs: Tuple[str, ...]):
+       assert not kwargs
+       match argcount:
+           case 1: return (Check(lambda hi: instance < hi), )
+           case 2: return (Check(lambda lo: lo <= instance),
+                           Check(lambda hi: instance < hi))
+           case _: raise ImpossibleMatch("...")
+
+match 5:
+    case InRange(6, 10): # in 'range(0, 10)'
+        ...
+    case InRange(6): # in 'range(6)'
+        ...
+```
+
+Works exactly the same.
+
+We will get the following benefits:
+
+- we avoid introducing a `__match_args__`, and its relatively complex rules for `__match__`.
+- we avoid introducing a proxy type
+- the return of `__match__` has a shape quite similar to the pattern(intuitive).
+
+###  The alternative `__match__` protocol is efficient
+
+Using a proxy type can result in more allocations, but this is not the most severe drawbacks.
+
+The most crucial 2 drawbacks of current `__match__` protocol are:
+
+1. it cannot verify the validation of argument count/keyword names earlier.
+2. `__match_args__` produces an indirect lookup.
+
+**For the first point**:
+
+```python
+match expr:
+    case C1(a=C2(...), b=C3(...), c=C4(...)):
+        ...
+```
+
+Now, tell me, what if destructuring `C1` should only accept keyword arguments `a` and `b`?
+
+Currently, should we have to compute the matching for `C2(...)`, `C3(...)`, then find `c=C4(...)` invalid.
+
+This is inefficient.
+
+Also, when it comes to the positional arguments, currently we can limitedly check if the argument count is valid, by checking the count of sub-patterns with `len(__match_args__)`. However our proposal `__match__` protocol allows more flexible checks. See [Better Expressivity](#Better-Expressivity) for more details.
+
+Anyway, with our proposal `__match__` protocol, we can fail a match in proper time, to avoid redundant computations.
+
+**For the second point**, indirect lookups can be expensive for tiny operations:
+
+```ipython
+In [1]: x = [1, 2, 3]
+
+In [2]: y = ["aaa", "bbb", "aba"]
+
+
+In [3]: class S:
+   ...:     def __init__(self, kws, args):
+   ...:          for kw, arg in zip(kws, args):
+   ...:              setattr(self, kw, arg)
+   ...:          self._kws = kws
+ 
+In [4]: s = S(y, x)
+
+In [5]: %timeit x[1]
+73.1 ns ± 1.54 ns per loop (mean ± std. dev. of 7 runs, 10000000 loops each)
+
+In [6]: %timeit getattr(s, s._kws[1])
+296 ns ± 8.25 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+```
+
+With compiler tricks, we can make `getattr(s, s._kws[1])` faster, but it shall be still far slower than `x[1]`.
+
+Drawbacks of this proposal: when a proxy type is not needed, this alternative `__match__` may be slower, as a tuple is always allocated.
+
+### The alternative `__match__` protocol results in better expressivity
+
+So far, the design for patterns `[]` is **generic**, which means `Sequence` instead of `list`, which can be non-intuitive in some degree.
+
+With this alternative `__match__` protocol, `*` in class pattern is automatically supported:
+
+Like `Sequence(a1, a2, *aseq, an)`, we need to do nothing other than implementing tuple patterns and this `__match__` protocol.
+
+This is sufficient to support `Sequence` interface, and can be implemented with our proposal `__match__` protocol. 
+
+It's considered useful to support arbitrary number of positional arguments for our custom patterns:
+
+- We have many kinds of data structure interfaces, other than only `Sequence` and `Mapping`.
+- We can then leave list literals(`[*_]`) as-is, I mean this should only matches a `list` instead of any `Sequence`s.
+
+## Miscellaneous 
+
+### `else` Clauses in Pattern Matching
+
+Just like what Ethan and others said in the mailing list, an `else` clause can be considered pretty: Every control flow statement has `else`.
+
+Consistency considered important.
+
+[Guido replied "because it's not needed"](https://mail.python.org/archives/list/python-dev@python.org/thread/RFW56R7LTSC3QSNIZPNZ26FZ3ZEUCZ3C/), for 
+> But "case _:" is going to work regardless, so we might as well use it. Rust, Scala and F# do this too.
+
+
+It's pretty okay to hold the both. Rust, Scala and F# are static languages, our counterpart could be Ruby,
+which does use `else` even though they have wildcard patterns `_`.
+
+Besides, In Haskell, `otherwise` is also introduced as well as the wildcard pattern `_`.
+
+The main reason for the existence of anti-`else` voices is, the indentation level of `case` is greater than that of `match`,
+
+```python
+match expr:
+    case pattern:
+        ...
+    else:
+        ...
+else:
+    ...
+```
+
+Hence it becomes an issue to decide where to allow an `else` clause.  
+
+### Grammar of Patterns Could Become That of Expressions
+
+[*In the grammar*](https://github.com/brandtbucher/cpython/blob/276c2b08270861f939f79b6ceec995effe83073f/Grammar/python.gram#L203), the following definition could be totally okay.
+
+```
+case_block[match_case_ty]:
+    | "case" pattern=named_expression guard=guard? ':' body=block {
+```
+
+~~Or patterns can be `a or b` instead of `a | b`, the operator precedence is already perfect.~~
+So far using `|` in patterns seems to be consistent with its use in expressions.
+
+When emitting bytecode from an AST node parsed from `.a`, we can raise a `SyntaxError`.
+
+This way will make the implementation extremely easy and neat, I can evidence this as I have already implemented a Python pattern matching very close to what proposed by PEP 622, and I researched and implemented them a lot in a wider scope.
