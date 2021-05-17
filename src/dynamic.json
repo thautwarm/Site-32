@@ -169,6 +169,16 @@
             "Higher Rank Polymorphisms"
         ],
         "release_date": "2020-09-17 06:35"
+    },
+    {
+        "title": "Summer 2021: Parser Generator Targeting Julia",
+        "where": "Others.eligibility-test-summer-2021",
+        "keywords": [
+            "Parser Generator",
+            "Julia",
+            "Chinese-中文"
+        ],
+        "release_date": "2021-05-17 09:07"
     }
     
 ]

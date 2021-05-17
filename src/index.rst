@@ -15,6 +15,25 @@ Quick links:
 
     <br>
     <div class="panel panel-primary">
+      <div class="panel-heading">Summer 2021: Parser Generator Targeting Julia</div>
+      <div class="panel-body">
+        keywords: Parser Generator&nbsp;,&nbsp;Julia&nbsp;,&nbsp;Chinese-中文
+      </div>
+
+      <div class="panel-footer">
+        <a href="./Others/eligibility-test-summer-2021.html">Check</a>
+        <span class="pull-right">Mon, May 17, 2021.&nbsp; 09: 07 </span>
+      </div>
+    </div>
+
+
+
+.. raw:: html
+
+
+
+    <br>
+    <div class="panel panel-warning">
       <div class="panel-heading">Some Use Cases for Higher Rank Polymorphisms(No Monad)</div>
       <div class="panel-body">
         keywords: Higher Rank Polymorphisms
@@ -33,7 +52,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-warning">
+    <div class="panel panel-success">
       <div class="panel-heading">More about PEP 622(V2)</div>
       <div class="panel-body">
         keywords: Python&nbsp;,&nbsp;PEP 622&nbsp;,&nbsp;Pattern Matching
@@ -52,7 +71,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">My Comments about PEP 622(V1)</div>
       <div class="panel-body">
         keywords: Python&nbsp;,&nbsp;PEP 622&nbsp;,&nbsp;Pattern Matching
@@ -71,7 +90,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-primary">
+    <div class="panel panel-warning">
       <div class="panel-heading">Julia Benefits from Tagless Final</div>
       <div class="panel-body">
         keywords: Programming Language&nbsp;,&nbsp;Julia&nbsp;,&nbsp;Tagless Final&nbsp;,&nbsp;Algebraic Data Types&nbsp;,&nbsp;Performance
@@ -90,7 +109,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-warning">
+    <div class="panel panel-success">
       <div class="panel-heading">First-class Pattern Matching in the Final Approach</div>
       <div class="panel-body">
         keywords: Programming Language&nbsp;,&nbsp;Haskell&nbsp;,&nbsp;Higher Rank Types&nbsp;,&nbsp;Tagless Final&nbsp;,&nbsp;First-class Pattern Matching
@@ -109,7 +128,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">Julia Counts for PL Researcher</div>
       <div class="panel-body">
         keywords: Programming Language&nbsp;,&nbsp;Julia&nbsp;,&nbsp;Macro&nbsp;,&nbsp;Staging&nbsp;,&nbsp;Code Generation
@@ -128,7 +147,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-primary">
+    <div class="panel panel-warning">
       <div class="panel-heading">Tagless Final For Writing Compilers</div>
       <div class="panel-body">
         keywords: Tagless Final&nbsp;,&nbsp;Compiler&nbsp;,&nbsp;OCaml&nbsp;,&nbsp;Interpretation
@@ -147,7 +166,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-warning">
+    <div class="panel panel-success">
       <div class="panel-heading">FSYM: An Abstraction On Tagless-Final Style To Compositing And Decoupling Multiple Interpretations</div>
       <div class="panel-body">
         keywords: Tagless Final&nbsp;,&nbsp;Compiler&nbsp;,&nbsp;Decoupling&nbsp;,&nbsp;OCaml&nbsp;,&nbsp;Functional Programming&nbsp;,&nbsp;Interpretation
@@ -166,7 +185,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">Some Thoughts About The Restrain JIT</div>
       <div class="panel-body">
         keywords: Python&nbsp;,&nbsp;Python JIT&nbsp;,&nbsp;Julia&nbsp;,&nbsp;Julia Generated Functions
@@ -185,7 +204,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-primary">
+    <div class="panel panel-warning">
       <div class="panel-heading">Staging和Julia生成函数</div>
       <div class="panel-body">
         keywords: Chinese-中文&nbsp;,&nbsp;Julia&nbsp;,&nbsp;Staging技术&nbsp;,&nbsp;Julia生成函数&nbsp;,&nbsp;Julia的World Age问题
@@ -204,7 +223,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-warning">
+    <div class="panel panel-success">
       <div class="panel-heading">General Programming In Julia From An Advanced Standpoint</div>
       <div class="panel-body">
         keywords: Julia&nbsp;,&nbsp;General Programming&nbsp;,&nbsp;Pattern Macthing&nbsp;,&nbsp;Syntactic Macro&nbsp;,&nbsp;Hygineic Macro&nbsp;,&nbsp;Programming Language&nbsp;,&nbsp;Polymorphism&nbsp;,&nbsp;Haskell
@@ -223,7 +242,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">Write You A Query Language</div>
       <div class="panel-body">
         keywords: EDSL&nbsp;,&nbsp;Julia&nbsp;,&nbsp;Query Language&nbsp;,&nbsp;Pattern Macthing&nbsp;,&nbsp;MLStyle.jl&nbsp;,&nbsp;Tutorial
@@ -242,7 +261,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-primary">
+    <div class="panel panel-warning">
       <div class="panel-heading">Compelling Higher Kinded Types and Type Classes in F#</div>
       <div class="panel-body">
         keywords: F#&nbsp;,&nbsp;Higher Kinded Types&nbsp;,&nbsp;Type Class&nbsp;,&nbsp;Ad-hoc Polymorphism&nbsp;,&nbsp;Active Patterns&nbsp;,&nbsp;Static Resolved Type Parameters&nbsp;,&nbsp;Implicits
@@ -261,7 +280,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-warning">
+    <div class="panel panel-success">
       <div class="panel-heading">Higher Kinded Types</div>
       <div class="panel-body">
         keywords: Higher-Kinded-Types&nbsp;,&nbsp;Introduction
@@ -280,7 +299,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-success">
+    <div class="panel panel-primary">
       <div class="panel-heading">Type Classes</div>
       <div class="panel-body">
         keywords: Type Class&nbsp;,&nbsp;Introduction&nbsp;,&nbsp;Polymorphism
@@ -299,7 +318,7 @@ Quick links:
 
 
     <br>
-    <div class="panel panel-primary">
+    <div class="panel panel-warning">
       <div class="panel-heading">Paper Reading: Lightweight-Higher-Kinded-Polymorphism</div>
       <div class="panel-body">
         keywords: Programming language&nbsp;,&nbsp;Higher Kinded Types&nbsp;,&nbsp;Type Class&nbsp;,&nbsp;OCaml&nbsp;,&nbsp;Ad-hoc Polymorphism
