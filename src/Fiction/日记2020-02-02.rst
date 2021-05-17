@@ -83,7 +83,7 @@ Tagless Final in F#
 
 produces
 
-.. code-block::
+.. code-block:: text
 
     zero by nat: 
     0

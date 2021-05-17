@@ -128,7 +128,7 @@ Instance Resolution & Variables As Instances
 
 overlapping的情形, 实际上是两个备选instance的类型 :code:`a, b` 满足
 
-.. code-block::
+.. code-block:: F#
 
     assert a < b == false
     assert b < a == false
