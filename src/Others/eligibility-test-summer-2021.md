@@ -3,13 +3,18 @@
 ## 活动简介
 
 感谢[中科院](http://www.is.cas.cn/)与[OpenEuler](https://openeuler.org/zh/)主办了[Summer 2021](https://summer.iscas.ac.cn/)。
+
 [Julia中文社区](https://discourse.juliacn.com/)得到了合作的机会，我们因此有幸能开展一些有趣的开源项目，为学生们提供一个理想的机会，既考虑技术追求，又可以涵盖学生的经济现实考虑。
 
 这里是其中一个项目「Parser Generator Targeting Julia」的报名细节文档。
 
 ## 项目简介
 
-[Julia语言](https://julialang.org/)中的parsing任务通常是手工的。然而，以更小的时间和精力来制造parser是可行的。一个广泛使用的选项是parser generator，它利用声明式编程的优势，从简洁的规范中生成（可能后端无关的）的parser，并消除那些对parser开发者来说没有必要的工作。我们考虑为Julia实现一个parser generator，尤其注意拥有用户友好的报错、时间高效的生成程序以及强大的解析能力。
+[Julia语言](https://julialang.org/)中的parsing任务通常是手工的。然而，以更小的时间和精力来制造parser是可行的。
+
+一个广泛使用的选项是parser generator，它利用声明式编程的优势，从简洁的规范中生成（可能后端无关的）的parser，并消除那些对parser开发者来说没有必要的工作。
+
+我们考虑为Julia实现一个parser generator，尤其注意拥有用户友好的报错、时间高效的生成程序以及强大的解析能力。
 
 ## 报名方式
 
