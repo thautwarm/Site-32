@@ -6,3 +6,4 @@ Others
    :caption: Contents:
 
    contributions.rst
+   eligibility-test
