@@ -14,11 +14,12 @@ In this article, we introduce a few "more practical" use cases for higher rank p
 
 ## Polymorphic Functions for eDSL
 
-```ocaml
-type 'a expr = ..
-```
 
 Could your `eDSL` hold functions? Moreover, think about polymorphic ones?
+
+```ocaml
+type 'a expr = ?
+```
 
 `eDSL` can be implemented in OCaml as follow. Such an `eDSL` is powered by a subset of OCaml's own type system. (You can access the full implementation via this [GitHub Link](https://gist.github.com/thautwarm/080795ebc7d1c26d1e7f103ceb1ec1ca))
 
